@@ -1,0 +1,2398 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<ui version="4.0">
+ <class>StrangeBrew</class>
+ <widget class="QMainWindow" name="StrangeBrew">
+  <property name="geometry">
+   <rect>
+    <x>0</x>
+    <y>0</y>
+    <width>759</width>
+    <height>847</height>
+   </rect>
+  </property>
+  <property name="windowTitle">
+   <string>StrangeBrew</string>
+  </property>
+  <property name="windowIcon">
+   <iconset resource="SB_Images.qrc">
+    <normaloff>:/menu/brew_png</normaloff>:/menu/brew_png</iconset>
+  </property>
+  <widget class="QWidget" name="centralWidget">
+   <layout class="QGridLayout" name="gridLayout_15">
+    <item row="0" column="0">
+     <widget class="QLineEdit" name="nameEdit">
+      <property name="text">
+       <string>Recipe Name</string>
+      </property>
+     </widget>
+    </item>
+    <item row="1" column="0">
+     <widget class="QSplitter" name="splitter_3">
+      <property name="sizePolicy">
+       <sizepolicy hsizetype="Expanding" vsizetype="Expanding">
+        <horstretch>0</horstretch>
+        <verstretch>0</verstretch>
+       </sizepolicy>
+      </property>
+      <property name="orientation">
+       <enum>Qt::Vertical</enum>
+      </property>
+      <widget class="QTabWidget" name="recipeTabs">
+       <property name="sizePolicy">
+        <sizepolicy hsizetype="Expanding" vsizetype="MinimumExpanding">
+         <horstretch>2</horstretch>
+         <verstretch>2</verstretch>
+        </sizepolicy>
+       </property>
+       <property name="minimumSize">
+        <size>
+         <width>0</width>
+         <height>300</height>
+        </size>
+       </property>
+       <property name="maximumSize">
+        <size>
+         <width>16777215</width>
+         <height>400</height>
+        </size>
+       </property>
+       <property name="focusPolicy">
+        <enum>Qt::NoFocus</enum>
+       </property>
+       <property name="currentIndex">
+        <number>0</number>
+       </property>
+       <widget class="QWidget" name="details">
+        <property name="sizePolicy">
+         <sizepolicy hsizetype="Expanding" vsizetype="Expanding">
+          <horstretch>0</horstretch>
+          <verstretch>0</verstretch>
+         </sizepolicy>
+        </property>
+        <attribute name="title">
+         <string>Details</string>
+        </attribute>
+        <layout class="QGridLayout" name="gridLayout">
+         <item row="0" column="0">
+          <widget class="QLabel" name="brewerLabel">
+           <property name="text">
+            <string>Brewer</string>
+           </property>
+          </widget>
+         </item>
+         <item row="0" column="1" colspan="4">
+          <widget class="QLineEdit" name="brewerEdit"/>
+         </item>
+         <item row="0" column="5">
+          <widget class="QLabel" name="efficiencyLabel">
+           <property name="text">
+            <string>Efficiency</string>
+           </property>
+          </widget>
+         </item>
+         <item row="0" column="6" colspan="2">
+          <widget class="QSpinBox" name="efficiencySpin">
+           <property name="buttonSymbols">
+            <enum>QAbstractSpinBox::PlusMinus</enum>
+           </property>
+           <property name="suffix">
+            <string>%</string>
+           </property>
+           <property name="maximum">
+            <number>100</number>
+           </property>
+           <property name="value">
+            <number>75</number>
+           </property>
+          </widget>
+         </item>
+         <item row="0" column="8">
+          <widget class="QLabel" name="ogLabel">
+           <property name="text">
+            <string>OG</string>
+           </property>
+          </widget>
+         </item>
+         <item row="0" column="9" colspan="3">
+          <widget class="QDoubleSpinBox" name="ogSpin">
+           <property name="decimals">
+            <number>3</number>
+           </property>
+           <property name="minimum">
+            <double>0.900000000000000</double>
+           </property>
+           <property name="maximum">
+            <double>2.000000000000000</double>
+           </property>
+           <property name="singleStep">
+            <double>0.001000000000000</double>
+           </property>
+           <property name="value">
+            <double>1.000000000000000</double>
+           </property>
+          </widget>
+         </item>
+         <item row="0" column="12">
+          <widget class="QLabel" name="alcoholLabel">
+           <property name="text">
+            <string>Alc</string>
+           </property>
+          </widget>
+         </item>
+         <item row="0" column="13">
+          <widget class="QLCDNumber" name="alcoholNumber">
+           <property name="font">
+            <font>
+             <weight>75</weight>
+             <bold>true</bold>
+            </font>
+           </property>
+           <property name="segmentStyle">
+            <enum>QLCDNumber::Filled</enum>
+           </property>
+          </widget>
+         </item>
+         <item row="0" column="14">
+          <widget class="QComboBox" name="alcoholCombo">
+           <property name="currentText">
+            <string>Volume</string>
+           </property>
+           <item>
+            <property name="text">
+             <string>Volume</string>
+            </property>
+           </item>
+           <item>
+            <property name="text">
+             <string>Weight</string>
+            </property>
+           </item>
+          </widget>
+         </item>
+         <item row="1" column="0" colspan="2">
+          <widget class="QLabel" name="dateLabel">
+           <property name="text">
+            <string>Date</string>
+           </property>
+          </widget>
+         </item>
+         <item row="1" column="2" colspan="3">
+          <widget class="QDateTimeEdit" name="dateTimeEdit">
+           <property name="displayFormat">
+            <string>dd/MM/yy</string>
+           </property>
+           <property name="calendarPopup">
+            <bool>true</bool>
+           </property>
+          </widget>
+         </item>
+         <item row="1" column="5">
+          <widget class="QLabel" name="attenuationLabel">
+           <property name="text">
+            <string>Attenuation</string>
+           </property>
+          </widget>
+         </item>
+         <item row="1" column="6" colspan="2">
+          <widget class="QSpinBox" name="attenuationSpin">
+           <property name="buttonSymbols">
+            <enum>QAbstractSpinBox::PlusMinus</enum>
+           </property>
+           <property name="suffix">
+            <string>%</string>
+           </property>
+           <property name="maximum">
+            <number>100</number>
+           </property>
+           <property name="value">
+            <number>75</number>
+           </property>
+          </widget>
+         </item>
+         <item row="1" column="8">
+          <widget class="QLabel" name="fgLabel">
+           <property name="text">
+            <string>FG</string>
+           </property>
+          </widget>
+         </item>
+         <item row="1" column="9" colspan="3">
+          <widget class="QDoubleSpinBox" name="fgSpin">
+           <property name="decimals">
+            <number>3</number>
+           </property>
+           <property name="minimum">
+            <double>0.900000000000000</double>
+           </property>
+           <property name="maximum">
+            <double>2.000000000000000</double>
+           </property>
+           <property name="singleStep">
+            <double>0.001000000000000</double>
+           </property>
+           <property name="value">
+            <double>1.000000000000000</double>
+           </property>
+          </widget>
+         </item>
+         <item row="1" column="12">
+          <widget class="QLabel" name="ibuLabel">
+           <property name="text">
+            <string>IBU</string>
+           </property>
+          </widget>
+         </item>
+         <item row="1" column="13">
+          <widget class="QLCDNumber" name="ibuNumber">
+           <property name="font">
+            <font>
+             <weight>75</weight>
+             <bold>true</bold>
+            </font>
+           </property>
+          </widget>
+         </item>
+         <item row="1" column="14">
+          <widget class="QComboBox" name="ibuCombo">
+           <item>
+            <property name="text">
+             <string>Tinseth</string>
+            </property>
+           </item>
+           <item>
+            <property name="text">
+             <string>Ragez</string>
+            </property>
+           </item>
+           <item>
+            <property name="text">
+             <string>Garetz</string>
+            </property>
+           </item>
+          </widget>
+         </item>
+         <item row="2" column="1" colspan="11">
+          <widget class="QComboBox" name="styleCombo">
+           <item>
+            <property name="text">
+             <string>Style</string>
+            </property>
+           </item>
+          </widget>
+         </item>
+         <item row="2" column="12">
+          <widget class="QLabel" name="colourLabel">
+           <property name="text">
+            <string>Colour</string>
+           </property>
+          </widget>
+         </item>
+         <item row="2" column="13">
+          <widget class="QLCDNumber" name="colourNumber">
+           <property name="font">
+            <font>
+             <weight>75</weight>
+             <bold>true</bold>
+            </font>
+           </property>
+          </widget>
+         </item>
+         <item row="2" column="14">
+          <widget class="QComboBox" name="colourCombo">
+           <item>
+            <property name="text">
+             <string>EBC</string>
+            </property>
+           </item>
+           <item>
+            <property name="text">
+             <string>SRM</string>
+            </property>
+           </item>
+          </widget>
+         </item>
+         <item row="3" column="1" colspan="11">
+          <widget class="QComboBox" name="yeastCombo">
+           <item>
+            <property name="text">
+             <string>Yeast</string>
+            </property>
+           </item>
+          </widget>
+         </item>
+         <item row="3" column="12" rowspan="2" colspan="3">
+          <widget class="QFrame" name="colourBox">
+           <property name="frameShape">
+            <enum>QFrame::StyledPanel</enum>
+           </property>
+           <property name="frameShadow">
+            <enum>QFrame::Raised</enum>
+           </property>
+          </widget>
+         </item>
+         <item row="4" column="0" colspan="3">
+          <widget class="QLabel" name="preBoilLabel">
+           <property name="text">
+            <string>Pre-Boil</string>
+           </property>
+          </widget>
+         </item>
+         <item row="4" column="3">
+          <widget class="QDoubleSpinBox" name="preBoilSpin">
+           <property name="maximum">
+            <double>1000.000000000000000</double>
+           </property>
+          </widget>
+         </item>
+         <item row="4" column="4" colspan="3">
+          <widget class="QComboBox" name="boilVolumeUnitsCombo"/>
+         </item>
+         <item row="4" column="8" colspan="3">
+          <widget class="QLabel" name="boilTimeLabel">
+           <property name="text">
+            <string>Boil Time</string>
+           </property>
+          </widget>
+         </item>
+         <item row="4" column="11">
+          <widget class="QSpinBox" name="boilTimeSpin">
+           <property name="maximum">
+            <number>240</number>
+           </property>
+           <property name="value">
+            <number>60</number>
+           </property>
+          </widget>
+         </item>
+         <item row="5" column="0">
+          <widget class="QLabel" name="postBoilLabel">
+           <property name="text">
+            <string>Post-Boil</string>
+           </property>
+          </widget>
+         </item>
+         <item row="5" column="3">
+          <widget class="QDoubleSpinBox" name="postBoilSpin">
+           <property name="maximum">
+            <double>1000.000000000000000</double>
+           </property>
+          </widget>
+         </item>
+         <item row="5" column="7" colspan="3">
+          <widget class="QLabel" name="evapLabel">
+           <property name="text">
+            <string>Evaporation</string>
+           </property>
+          </widget>
+         </item>
+         <item row="5" column="10" colspan="2">
+          <widget class="QDoubleSpinBox" name="evapSpin">
+           <property name="singleStep">
+            <double>0.010000000000000</double>
+           </property>
+           <property name="value">
+            <double>1.500000000000000</double>
+           </property>
+          </widget>
+         </item>
+         <item row="5" column="12" colspan="2">
+          <widget class="QComboBox" name="evapType">
+           <item>
+            <property name="text">
+             <string>Constant</string>
+            </property>
+           </item>
+           <item>
+            <property name="text">
+             <string>Percent</string>
+            </property>
+           </item>
+          </widget>
+         </item>
+        </layout>
+       </widget>
+       <widget class="QWidget" name="style">
+        <attribute name="title">
+         <string>Style</string>
+        </attribute>
+        <layout class="QGridLayout" name="gridLayout_3">
+         <item row="1" column="0" rowspan="11">
+          <widget class="QListView" name="stylesList"/>
+         </item>
+         <item row="8" column="1">
+          <widget class="QLabel" name="abvStyleLabel">
+           <property name="text">
+            <string>ABV</string>
+           </property>
+          </widget>
+         </item>
+         <item row="9" column="4">
+          <widget class="QLabel" name="ogRecipe">
+           <property name="text">
+            <string>OG Recipe</string>
+           </property>
+           <property name="alignment">
+            <set>Qt::AlignCenter</set>
+           </property>
+          </widget>
+         </item>
+         <item row="8" column="5">
+          <widget class="QLabel" name="abvStyleHigh">
+           <property name="text">
+            <string/>
+           </property>
+          </widget>
+         </item>
+         <item row="1" column="1">
+          <widget class="QLabel" name="ibuStyleLabel">
+           <property name="text">
+            <string>IBU</string>
+           </property>
+          </widget>
+         </item>
+         <item row="6" column="4">
+          <widget class="QLabel" name="abvRecipe">
+           <property name="text">
+            <string>ABV Recipe</string>
+           </property>
+           <property name="alignment">
+            <set>Qt::AlignCenter</set>
+           </property>
+          </widget>
+         </item>
+         <item row="11" column="4">
+          <layout class="QGridLayout" name="gridLayout_2">
+           <item row="0" column="0">
+            <widget class="QLabel" name="ogbuLabel">
+             <property name="text">
+              <string>OG:BU Ratio</string>
+             </property>
+            </widget>
+           </item>
+           <item row="0" column="1">
+            <widget class="QLabel" name="ogbuValue">
+             <property name="text">
+              <string>ogbuValue</string>
+             </property>
+            </widget>
+           </item>
+          </layout>
+         </item>
+         <item row="10" column="1">
+          <widget class="QLabel" name="ogStyleLabel">
+           <property name="text">
+            <string>OG</string>
+           </property>
+          </widget>
+         </item>
+         <item row="5" column="1">
+          <widget class="QLabel" name="colourStyleLabel">
+           <property name="text">
+            <string>Colour</string>
+           </property>
+          </widget>
+         </item>
+         <item row="5" column="4">
+          <widget class="QProgressBar" name="colourProgress">
+           <property name="toolTip">
+            <string/>
+           </property>
+           <property name="value">
+            <number>24</number>
+           </property>
+           <property name="format">
+            <string/>
+           </property>
+          </widget>
+         </item>
+         <item row="3" column="4">
+          <widget class="QLabel" name="colourRecipe">
+           <property name="text">
+            <string>Colour Recipe</string>
+           </property>
+           <property name="alignment">
+            <set>Qt::AlignCenter</set>
+           </property>
+          </widget>
+         </item>
+         <item row="10" column="5">
+          <widget class="QLabel" name="ogStyleHigh">
+           <property name="text">
+            <string/>
+           </property>
+          </widget>
+         </item>
+         <item row="8" column="2">
+          <widget class="QLabel" name="abvStyleLow">
+           <property name="text">
+            <string/>
+           </property>
+          </widget>
+         </item>
+         <item row="0" column="0">
+          <widget class="QLabel" name="matchedLabel">
+           <property name="text">
+            <string>Matched Styles</string>
+           </property>
+          </widget>
+         </item>
+         <item row="10" column="2">
+          <widget class="QLabel" name="ogStyleLow">
+           <property name="text">
+            <string/>
+           </property>
+          </widget>
+         </item>
+         <item row="1" column="5">
+          <widget class="QLabel" name="ibuStyleHigh">
+           <property name="text">
+            <string/>
+           </property>
+          </widget>
+         </item>
+         <item row="5" column="2">
+          <widget class="QLabel" name="colourStyleLow">
+           <property name="text">
+            <string/>
+           </property>
+          </widget>
+         </item>
+         <item row="0" column="4">
+          <widget class="QLabel" name="ibuRecipe">
+           <property name="text">
+            <string>IBU Recipe</string>
+           </property>
+           <property name="alignment">
+            <set>Qt::AlignCenter</set>
+           </property>
+          </widget>
+         </item>
+         <item row="5" column="5">
+          <widget class="QLabel" name="colourStyleHigh">
+           <property name="text">
+            <string/>
+           </property>
+          </widget>
+         </item>
+         <item row="1" column="2">
+          <widget class="QLabel" name="ibuStyleLow">
+           <property name="text">
+            <string/>
+           </property>
+          </widget>
+         </item>
+         <item row="1" column="4">
+          <widget class="QProgressBar" name="ibuProgress">
+           <property name="value">
+            <number>24</number>
+           </property>
+           <property name="format">
+            <string/>
+           </property>
+          </widget>
+         </item>
+         <item row="8" column="4">
+          <widget class="QProgressBar" name="abvProgress">
+           <property name="value">
+            <number>24</number>
+           </property>
+           <property name="format">
+            <string/>
+           </property>
+          </widget>
+         </item>
+         <item row="10" column="4">
+          <widget class="QProgressBar" name="ogProgress">
+           <property name="value">
+            <number>24</number>
+           </property>
+           <property name="format">
+            <string/>
+           </property>
+          </widget>
+         </item>
+        </layout>
+       </widget>
+       <widget class="QWidget" name="misc">
+        <attribute name="title">
+         <string>Misc</string>
+        </attribute>
+        <layout class="QGridLayout" name="gridLayout_27">
+         <item row="0" column="2">
+          <widget class="QLabel" name="commentsLabel">
+           <property name="text">
+            <string>Comments</string>
+           </property>
+          </widget>
+         </item>
+         <item row="0" column="3">
+          <spacer name="horizontalSpacer_6">
+           <property name="orientation">
+            <enum>Qt::Horizontal</enum>
+           </property>
+           <property name="sizeHint" stdset="0">
+            <size>
+             <width>278</width>
+             <height>20</height>
+            </size>
+           </property>
+          </spacer>
+         </item>
+         <item row="1" column="2" colspan="2">
+          <widget class="QTextEdit" name="commentsText"/>
+         </item>
+         <item row="2" column="0">
+          <widget class="QSplitter" name="splitter">
+           <property name="orientation">
+            <enum>Qt::Horizontal</enum>
+           </property>
+           <widget class="QPushButton" name="addMisc">
+            <property name="maximumSize">
+             <size>
+              <width>88</width>
+              <height>16777215</height>
+             </size>
+            </property>
+            <property name="text">
+             <string>+</string>
+            </property>
+           </widget>
+           <widget class="QPushButton" name="delMisc">
+            <property name="maximumSize">
+             <size>
+              <width>87</width>
+              <height>16777215</height>
+             </size>
+            </property>
+            <property name="text">
+             <string>-</string>
+            </property>
+           </widget>
+          </widget>
+         </item>
+         <item row="2" column="1">
+          <spacer name="horizontalSpacer_7">
+           <property name="orientation">
+            <enum>Qt::Horizontal</enum>
+           </property>
+           <property name="sizeHint" stdset="0">
+            <size>
+             <width>174</width>
+             <height>20</height>
+            </size>
+           </property>
+          </spacer>
+         </item>
+         <item row="2" column="2" colspan="2">
+          <spacer name="horizontalSpacer_5">
+           <property name="orientation">
+            <enum>Qt::Horizontal</enum>
+           </property>
+           <property name="sizeHint" stdset="0">
+            <size>
+             <width>349</width>
+             <height>20</height>
+            </size>
+           </property>
+          </spacer>
+         </item>
+         <item row="0" column="0" rowspan="2" colspan="2">
+          <widget class="QTableView" name="miscIngredientsList">
+           <property name="editTriggers">
+            <set>QAbstractItemView::DoubleClicked|QAbstractItemView::EditKeyPressed|QAbstractItemView::SelectedClicked</set>
+           </property>
+           <property name="alternatingRowColors">
+            <bool>true</bool>
+           </property>
+          </widget>
+         </item>
+        </layout>
+        <zorder>commentsText</zorder>
+        <zorder>miscIngredientsList</zorder>
+        <zorder>commentsLabel</zorder>
+        <zorder>splitter</zorder>
+        <zorder>horizontalSpacer_5</zorder>
+        <zorder>horizontalSpacer_6</zorder>
+        <zorder>horizontalSpacer_7</zorder>
+       </widget>
+       <widget class="QWidget" name="notes">
+        <attribute name="title">
+         <string>Notes</string>
+        </attribute>
+        <layout class="QGridLayout" name="gridLayout_4">
+         <item row="0" column="0" rowspan="2" colspan="2">
+          <widget class="QListView" name="notesList"/>
+         </item>
+         <item row="0" column="2">
+          <widget class="QComboBox" name="noteCombo"/>
+         </item>
+         <item row="0" column="3">
+          <widget class="QDateEdit" name="noteDate"/>
+         </item>
+         <item row="1" column="2" colspan="2">
+          <widget class="QTextEdit" name="notesEdit"/>
+         </item>
+         <item row="2" column="0">
+          <widget class="QPushButton" name="addNote">
+           <property name="text">
+            <string>+</string>
+           </property>
+          </widget>
+         </item>
+         <item row="2" column="1">
+          <widget class="QPushButton" name="delNote">
+           <property name="text">
+            <string>-</string>
+           </property>
+          </widget>
+         </item>
+         <item row="2" column="2" colspan="2">
+          <spacer name="horizontalSpacer_2">
+           <property name="orientation">
+            <enum>Qt::Horizontal</enum>
+           </property>
+           <property name="sizeHint" stdset="0">
+            <size>
+             <width>454</width>
+             <height>20</height>
+            </size>
+           </property>
+          </spacer>
+         </item>
+        </layout>
+       </widget>
+       <widget class="QWidget" name="dilution">
+        <attribute name="title">
+         <string>Dilution</string>
+        </attribute>
+        <widget class="QCheckBox" name="enableDilution">
+         <property name="geometry">
+          <rect>
+           <x>50</x>
+           <y>10</y>
+           <width>131</width>
+           <height>21</height>
+          </rect>
+         </property>
+         <property name="text">
+          <string>Dilute Recipe</string>
+         </property>
+        </widget>
+        <widget class="QLabel" name="dilutePostBoilLabel">
+         <property name="geometry">
+          <rect>
+           <x>30</x>
+           <y>40</y>
+           <width>61</width>
+           <height>16</height>
+          </rect>
+         </property>
+         <property name="text">
+          <string>Post Boil</string>
+         </property>
+        </widget>
+        <widget class="QLabel" name="dilutePostBoilValue">
+         <property name="geometry">
+          <rect>
+           <x>100</x>
+           <y>40</y>
+           <width>57</width>
+           <height>15</height>
+          </rect>
+         </property>
+         <property name="text">
+          <string>volValue</string>
+         </property>
+        </widget>
+       </widget>
+       <widget class="QWidget" name="mash">
+        <attribute name="title">
+         <string>Mash</string>
+        </attribute>
+        <layout class="QGridLayout" name="gridLayout_5">
+         <item row="0" column="2">
+          <widget class="QLineEdit" name="mashNameEdit"/>
+         </item>
+         <item row="1" column="0" colspan="6">
+          <widget class="QTableView" name="mashStepsTable"/>
+         </item>
+         <item row="0" column="1">
+          <widget class="QPushButton" name="delMashStep">
+           <property name="maximumSize">
+            <size>
+             <width>30</width>
+             <height>16777215</height>
+            </size>
+           </property>
+           <property name="text">
+            <string>-</string>
+           </property>
+          </widget>
+         </item>
+         <item row="0" column="3">
+          <widget class="QPushButton" name="saveMashSteps">
+           <property name="text">
+            <string>Save</string>
+           </property>
+          </widget>
+         </item>
+         <item row="0" column="0">
+          <widget class="QPushButton" name="addMashStep">
+           <property name="maximumSize">
+            <size>
+             <width>30</width>
+             <height>16777215</height>
+            </size>
+           </property>
+           <property name="text">
+            <string>+</string>
+           </property>
+          </widget>
+         </item>
+         <item row="0" column="4">
+          <widget class="QToolButton" name="mashProfiles">
+           <property name="text">
+            <string>...</string>
+           </property>
+          </widget>
+         </item>
+         <item row="0" column="6" rowspan="2">
+          <widget class="QToolBox" name="mashTools">
+           <property name="currentIndex">
+            <number>0</number>
+           </property>
+           <widget class="QWidget" name="mashSettings">
+            <property name="geometry">
+             <rect>
+              <x>0</x>
+              <y>0</y>
+              <width>268</width>
+              <height>218</height>
+             </rect>
+            </property>
+            <attribute name="label">
+             <string>Settings</string>
+            </attribute>
+            <layout class="QGridLayout" name="gridLayout_14">
+             <item row="3" column="4">
+              <widget class="QLabel" name="grainTempUnit">
+               <property name="text">
+                <string>F</string>
+               </property>
+              </widget>
+             </item>
+             <item row="7" column="0" colspan="2">
+              <widget class="QLabel" name="deadSpaceLabel">
+               <property name="text">
+                <string>Dead Space</string>
+               </property>
+              </widget>
+             </item>
+             <item row="1" column="1" colspan="3">
+              <widget class="QComboBox" name="mashVolCombo"/>
+             </item>
+             <item row="6" column="0">
+              <widget class="QLabel" name="tempLossLabel">
+               <property name="text">
+                <string>Temp Loss</string>
+               </property>
+              </widget>
+             </item>
+             <item row="0" column="3" colspan="2">
+              <widget class="QComboBox" name="ratioUnits"/>
+             </item>
+             <item row="0" column="0">
+              <widget class="QLabel" name="ratioLabel">
+               <property name="text">
+                <string>Ratio:</string>
+               </property>
+              </widget>
+             </item>
+             <item row="6" column="4">
+              <widget class="QLabel" name="tempLossUnit">
+               <property name="text">
+                <string>F</string>
+               </property>
+              </widget>
+             </item>
+             <item row="5" column="4">
+              <widget class="QLabel" name="boilTempUnit">
+               <property name="text">
+                <string>F</string>
+               </property>
+              </widget>
+             </item>
+             <item row="7" column="4">
+              <widget class="QLabel" name="deadSpaceUnit">
+               <property name="text">
+                <string>G (US)</string>
+               </property>
+              </widget>
+             </item>
+             <item row="3" column="0">
+              <widget class="QLabel" name="grainTempLabel">
+               <property name="text">
+                <string>Grain Temp</string>
+               </property>
+              </widget>
+             </item>
+             <item row="5" column="2">
+              <widget class="QDoubleSpinBox" name="boilTempSpin">
+               <property name="maximum">
+                <double>250.000000000000000</double>
+               </property>
+              </widget>
+             </item>
+             <item row="7" column="2">
+              <widget class="QDoubleSpinBox" name="deadSpaceSpin"/>
+             </item>
+             <item row="6" column="2">
+              <widget class="QDoubleSpinBox" name="tempLossSpin">
+               <property name="maximum">
+                <double>250.000000000000000</double>
+               </property>
+              </widget>
+             </item>
+             <item row="0" column="1" colspan="2">
+              <widget class="QDoubleSpinBox" name="ratioSpin"/>
+             </item>
+             <item row="1" column="0">
+              <widget class="QLabel" name="mashVolLabel">
+               <property name="text">
+                <string>Volume Units</string>
+               </property>
+              </widget>
+             </item>
+             <item row="3" column="2">
+              <widget class="QDoubleSpinBox" name="grainTempSpin">
+               <property name="maximum">
+                <double>250.000000000000000</double>
+               </property>
+              </widget>
+             </item>
+             <item row="1" column="4">
+              <spacer name="horizontalSpacer_4">
+               <property name="orientation">
+                <enum>Qt::Horizontal</enum>
+               </property>
+               <property name="sizeHint" stdset="0">
+                <size>
+                 <width>40</width>
+                 <height>20</height>
+                </size>
+               </property>
+              </spacer>
+             </item>
+             <item row="5" column="0">
+              <widget class="QLabel" name="boilTempLabel">
+               <property name="text">
+                <string>Boil Temp</string>
+               </property>
+              </widget>
+             </item>
+             <item row="8" column="0">
+              <widget class="QRadioButton" name="mashTempC">
+               <property name="text">
+                <string>C</string>
+               </property>
+              </widget>
+             </item>
+             <item row="8" column="2">
+              <widget class="QRadioButton" name="mashTempF">
+               <property name="text">
+                <string>F</string>
+               </property>
+              </widget>
+             </item>
+            </layout>
+           </widget>
+           <widget class="QWidget" name="mashTotals">
+            <property name="geometry">
+             <rect>
+              <x>0</x>
+              <y>0</y>
+              <width>154</width>
+              <height>75</height>
+             </rect>
+            </property>
+            <attribute name="label">
+             <string>Totals</string>
+            </attribute>
+            <layout class="QGridLayout" name="gridLayout_12">
+             <item row="0" column="0">
+              <widget class="QLabel" name="totalTimeLabel">
+               <property name="text">
+                <string>Total Time</string>
+               </property>
+              </widget>
+             </item>
+             <item row="0" column="1">
+              <widget class="QLabel" name="totalTimeValue">
+               <property name="text">
+                <string>0</string>
+               </property>
+              </widget>
+             </item>
+             <item row="1" column="0">
+              <widget class="QLabel" name="totalWeightLabel">
+               <property name="text">
+                <string>Total Weight</string>
+               </property>
+              </widget>
+             </item>
+             <item row="1" column="1">
+              <widget class="QLabel" name="totalWeightValue">
+               <property name="text">
+                <string>0</string>
+               </property>
+              </widget>
+             </item>
+             <item row="1" column="2">
+              <widget class="QLabel" name="totalWeightUnit">
+               <property name="text">
+                <string>lbs</string>
+               </property>
+              </widget>
+             </item>
+             <item row="2" column="0">
+              <widget class="QLabel" name="totaVolLabel">
+               <property name="text">
+                <string>Total Volume</string>
+               </property>
+              </widget>
+             </item>
+             <item row="2" column="1">
+              <widget class="QLabel" name="totalVolValue">
+               <property name="text">
+                <string>0</string>
+               </property>
+              </widget>
+             </item>
+             <item row="2" column="2">
+              <widget class="QLabel" name="totalVolUnit">
+               <property name="text">
+                <string>G (US)</string>
+               </property>
+              </widget>
+             </item>
+            </layout>
+           </widget>
+          </widget>
+         </item>
+        </layout>
+       </widget>
+       <widget class="QWidget" name="ferment">
+        <attribute name="title">
+         <string>Ferment</string>
+        </attribute>
+        <layout class="QGridLayout" name="gridLayout_6">
+         <item row="0" column="0">
+          <widget class="QTableView" name="fermTable"/>
+         </item>
+         <item row="1" column="0">
+          <layout class="QHBoxLayout" name="horizontalLayout">
+           <item>
+            <widget class="QPushButton" name="addFermStep">
+             <property name="text">
+              <string>+</string>
+             </property>
+            </widget>
+           </item>
+           <item>
+            <widget class="QPushButton" name="delFermStep">
+             <property name="text">
+              <string>-</string>
+             </property>
+            </widget>
+           </item>
+          </layout>
+         </item>
+        </layout>
+       </widget>
+       <widget class="QWidget" name="carbonation">
+        <attribute name="title">
+         <string>Carbonation</string>
+        </attribute>
+        <layout class="QGridLayout" name="gridLayout_17">
+         <item row="0" column="0">
+          <widget class="QGroupBox" name="carbBatch">
+           <property name="title">
+            <string>Batch Details</string>
+           </property>
+           <layout class="QGridLayout" name="gridLayout_16">
+            <item row="0" column="0">
+             <widget class="QLabel" name="batchSizeLabel">
+              <property name="text">
+               <string>Batch Size</string>
+              </property>
+             </widget>
+            </item>
+            <item row="0" column="1">
+             <widget class="QLabel" name="batchSizeValue">
+              <property name="text">
+               <string>bSize</string>
+              </property>
+             </widget>
+            </item>
+            <item row="0" column="2">
+             <widget class="QLabel" name="batchSizeUnit">
+              <property name="text">
+               <string>F</string>
+              </property>
+             </widget>
+            </item>
+            <item row="1" column="0">
+             <widget class="QLabel" name="botTempLabel">
+              <property name="text">
+               <string>Bottle Temp</string>
+              </property>
+             </widget>
+            </item>
+            <item row="1" column="1">
+             <widget class="QDoubleSpinBox" name="botTempSpin"/>
+            </item>
+            <item row="1" column="2">
+             <widget class="QLabel" name="botTempUnit">
+              <property name="text">
+               <string>F</string>
+              </property>
+             </widget>
+            </item>
+            <item row="2" column="0">
+             <widget class="QLabel" name="servTempLabel">
+              <property name="text">
+               <string>Serving Temp</string>
+              </property>
+             </widget>
+            </item>
+            <item row="2" column="1">
+             <widget class="QDoubleSpinBox" name="servTempSpin"/>
+            </item>
+            <item row="2" column="2">
+             <widget class="QLabel" name="servTempUnit">
+              <property name="text">
+               <string>F</string>
+              </property>
+             </widget>
+            </item>
+            <item row="3" column="0">
+             <widget class="QLabel" name="targetCO2Label">
+              <property name="text">
+               <string>Target CO2</string>
+              </property>
+             </widget>
+            </item>
+            <item row="3" column="1">
+             <widget class="QDoubleSpinBox" name="targetCO2Spin"/>
+            </item>
+            <item row="4" column="0">
+             <widget class="QLabel" name="styleCO2Label">
+              <property name="text">
+               <string>Style CO2</string>
+              </property>
+             </widget>
+            </item>
+            <item row="5" column="0">
+             <widget class="QLabel" name="dissCO2Label">
+              <property name="text">
+               <string>Dissovled CO2</string>
+              </property>
+             </widget>
+            </item>
+            <item row="3" column="2">
+             <spacer name="horizontalSpacer_8">
+              <property name="orientation">
+               <enum>Qt::Horizontal</enum>
+              </property>
+              <property name="sizeHint" stdset="0">
+               <size>
+                <width>40</width>
+                <height>20</height>
+               </size>
+              </property>
+             </spacer>
+            </item>
+            <item row="4" column="1">
+             <widget class="QLabel" name="styleCO2Text">
+              <property name="text">
+               <string>TextLabel</string>
+              </property>
+             </widget>
+            </item>
+            <item row="5" column="1">
+             <widget class="QLabel" name="dissCO2Text">
+              <property name="text">
+               <string>TextLabel</string>
+              </property>
+             </widget>
+            </item>
+           </layout>
+          </widget>
+         </item>
+         <item row="0" column="1">
+          <widget class="QFrame" name="primeFrame">
+           <property name="frameShape">
+            <enum>QFrame::StyledPanel</enum>
+           </property>
+           <property name="frameShadow">
+            <enum>QFrame::Raised</enum>
+           </property>
+           <layout class="QFormLayout" name="formLayout">
+            <item row="0" column="0">
+             <widget class="QLabel" name="primeLabel">
+              <property name="text">
+               <string>Prime</string>
+              </property>
+             </widget>
+            </item>
+            <item row="1" column="0" colspan="2">
+             <widget class="QComboBox" name="primeSugarCombo"/>
+            </item>
+            <item row="2" column="0">
+             <widget class="QLCDNumber" name="primeValue">
+              <property name="enabled">
+               <bool>true</bool>
+              </property>
+              <property name="segmentStyle">
+               <enum>QLCDNumber::Flat</enum>
+              </property>
+             </widget>
+            </item>
+            <item row="2" column="1">
+             <widget class="QLabel" name="primeUnit">
+              <property name="text">
+               <string>primeUnit</string>
+              </property>
+             </widget>
+            </item>
+            <item row="3" column="0">
+             <spacer name="verticalSpacer">
+              <property name="orientation">
+               <enum>Qt::Vertical</enum>
+              </property>
+              <property name="sizeHint" stdset="0">
+               <size>
+                <width>20</width>
+                <height>40</height>
+               </size>
+              </property>
+             </spacer>
+            </item>
+           </layout>
+          </widget>
+         </item>
+         <item row="0" column="2">
+          <widget class="QFrame" name="forceCarbFrame">
+           <property name="frameShape">
+            <enum>QFrame::StyledPanel</enum>
+           </property>
+           <property name="frameShadow">
+            <enum>QFrame::Raised</enum>
+           </property>
+           <layout class="QGridLayout" name="gridLayout_7">
+            <item row="3" column="0">
+             <widget class="QLabel" name="faucHeightLabel">
+              <property name="text">
+               <string>Faucet Height</string>
+              </property>
+             </widget>
+            </item>
+            <item row="6" column="2">
+             <widget class="QLabel" name="lineVolUnit">
+              <property name="text">
+               <string>ml</string>
+              </property>
+             </widget>
+            </item>
+            <item row="2" column="1" colspan="2">
+             <widget class="QComboBox" name="tubingIDCombo"/>
+            </item>
+            <item row="4" column="2">
+             <widget class="QLabel" name="tubingLenUnit">
+              <property name="text">
+               <string>ft</string>
+              </property>
+             </widget>
+            </item>
+            <item row="1" column="0">
+             <widget class="QLabel" name="kegPressureLabel">
+              <property name="text">
+               <string>Keg Pressure</string>
+              </property>
+             </widget>
+            </item>
+            <item row="4" column="0">
+             <widget class="QLabel" name="tubingLenLabel">
+              <property name="text">
+               <string>Tubing Length</string>
+              </property>
+             </widget>
+            </item>
+            <item row="1" column="2">
+             <widget class="QLabel" name="kegPressureUnit">
+              <property name="text">
+               <string>PSI</string>
+              </property>
+             </widget>
+            </item>
+            <item row="3" column="2">
+             <widget class="QLabel" name="faucHeightUnit">
+              <property name="text">
+               <string>ft</string>
+              </property>
+             </widget>
+            </item>
+            <item row="3" column="1">
+             <widget class="QDoubleSpinBox" name="faucHeightSpin"/>
+            </item>
+            <item row="2" column="0">
+             <widget class="QLabel" name="tubingIDLabel">
+              <property name="text">
+               <string>Tubing ID</string>
+              </property>
+             </widget>
+            </item>
+            <item row="6" column="0">
+             <widget class="QLabel" name="lineVolLabel">
+              <property name="text">
+               <string>Line Volume</string>
+              </property>
+             </widget>
+            </item>
+            <item row="1" column="1">
+             <widget class="QLCDNumber" name="keyPressureValue">
+              <property name="segmentStyle">
+               <enum>QLCDNumber::Filled</enum>
+              </property>
+             </widget>
+            </item>
+            <item row="0" column="0" colspan="3">
+             <widget class="QCheckBox" name="forceCarbCheck">
+              <property name="text">
+               <string>Force Carbonation</string>
+              </property>
+             </widget>
+            </item>
+            <item row="4" column="1">
+             <widget class="QLCDNumber" name="tubeLengthNumber"/>
+            </item>
+            <item row="6" column="1">
+             <widget class="QLCDNumber" name="lineVolNumber">
+              <property name="enabled">
+               <bool>true</bool>
+              </property>
+              <property name="smallDecimalPoint">
+               <bool>false</bool>
+              </property>
+              <property name="segmentStyle">
+               <enum>QLCDNumber::Filled</enum>
+              </property>
+             </widget>
+            </item>
+           </layout>
+          </widget>
+         </item>
+        </layout>
+       </widget>
+       <widget class="QWidget" name="water">
+        <attribute name="title">
+         <string>Water</string>
+        </attribute>
+        <layout class="QGridLayout" name="gridLayout_19">
+         <item row="0" column="0">
+          <widget class="QGroupBox" name="waterUseBox">
+           <property name="title">
+            <string>Water Use</string>
+           </property>
+           <widget class="QLabel" name="waterTotalLabel">
+            <property name="geometry">
+             <rect>
+              <x>37</x>
+              <y>33</y>
+              <width>57</width>
+              <height>15</height>
+             </rect>
+            </property>
+            <property name="text">
+             <string>Total</string>
+            </property>
+           </widget>
+           <widget class="QLCDNumber" name="waterTotalLCD">
+            <property name="geometry">
+             <rect>
+              <x>80</x>
+              <y>30</y>
+              <width>64</width>
+              <height>23</height>
+             </rect>
+            </property>
+            <property name="segmentStyle">
+             <enum>QLCDNumber::Flat</enum>
+            </property>
+           </widget>
+           <widget class="QLabel" name="waterTotalUnits">
+            <property name="geometry">
+             <rect>
+              <x>157</x>
+              <y>34</y>
+              <width>57</width>
+              <height>15</height>
+             </rect>
+            </property>
+            <property name="text">
+             <string>totalUnit</string>
+            </property>
+           </widget>
+           <widget class="QLabel" name="waterMashLabel">
+            <property name="geometry">
+             <rect>
+              <x>37</x>
+              <y>63</y>
+              <width>57</width>
+              <height>15</height>
+             </rect>
+            </property>
+            <property name="text">
+             <string>Mash</string>
+            </property>
+           </widget>
+           <widget class="QLabel" name="waterMashUnits">
+            <property name="geometry">
+             <rect>
+              <x>157</x>
+              <y>64</y>
+              <width>57</width>
+              <height>15</height>
+             </rect>
+            </property>
+            <property name="text">
+             <string>mashUnit</string>
+            </property>
+           </widget>
+           <widget class="QLCDNumber" name="waterMashLCD">
+            <property name="geometry">
+             <rect>
+              <x>80</x>
+              <y>60</y>
+              <width>64</width>
+              <height>23</height>
+             </rect>
+            </property>
+            <property name="segmentStyle">
+             <enum>QLCDNumber::Flat</enum>
+            </property>
+           </widget>
+           <widget class="QLCDNumber" name="waterAbsorbedLCD">
+            <property name="geometry">
+             <rect>
+              <x>80</x>
+              <y>87</y>
+              <width>64</width>
+              <height>23</height>
+             </rect>
+            </property>
+            <property name="segmentStyle">
+             <enum>QLCDNumber::Flat</enum>
+            </property>
+           </widget>
+           <widget class="QLabel" name="waterAbsorbedUnits">
+            <property name="geometry">
+             <rect>
+              <x>157</x>
+              <y>91</y>
+              <width>57</width>
+              <height>15</height>
+             </rect>
+            </property>
+            <property name="text">
+             <string>mashUnit</string>
+            </property>
+           </widget>
+           <widget class="QLabel" name="waterAbsorbedLabel">
+            <property name="geometry">
+             <rect>
+              <x>10</x>
+              <y>90</y>
+              <width>57</width>
+              <height>15</height>
+             </rect>
+            </property>
+            <property name="text">
+             <string>Absorbed</string>
+            </property>
+           </widget>
+           <widget class="QLCDNumber" name="waterSpargeLCD">
+            <property name="geometry">
+             <rect>
+              <x>80</x>
+              <y>117</y>
+              <width>64</width>
+              <height>23</height>
+             </rect>
+            </property>
+            <property name="segmentStyle">
+             <enum>QLCDNumber::Flat</enum>
+            </property>
+           </widget>
+           <widget class="QLabel" name="waterSpargeUnits">
+            <property name="geometry">
+             <rect>
+              <x>157</x>
+              <y>121</y>
+              <width>57</width>
+              <height>15</height>
+             </rect>
+            </property>
+            <property name="text">
+             <string>mashUnit</string>
+            </property>
+           </widget>
+           <widget class="QLabel" name="waterSpargeLabel">
+            <property name="geometry">
+             <rect>
+              <x>26</x>
+              <y>120</y>
+              <width>57</width>
+              <height>15</height>
+             </rect>
+            </property>
+            <property name="text">
+             <string>Sparge</string>
+            </property>
+           </widget>
+           <widget class="QLabel" name="waterColLabel">
+            <property name="geometry">
+             <rect>
+              <x>10</x>
+              <y>150</y>
+              <width>61</width>
+              <height>16</height>
+             </rect>
+            </property>
+            <property name="text">
+             <string>To Collect</string>
+            </property>
+           </widget>
+           <widget class="QDoubleSpinBox" name="waterColSpin">
+            <property name="geometry">
+             <rect>
+              <x>80</x>
+              <y>145</y>
+              <width>66</width>
+              <height>24</height>
+             </rect>
+            </property>
+           </widget>
+           <widget class="QLabel" name="waterColUnit">
+            <property name="geometry">
+             <rect>
+              <x>157</x>
+              <y>150</y>
+              <width>57</width>
+              <height>15</height>
+             </rect>
+            </property>
+            <property name="text">
+             <string>mashUnit</string>
+            </property>
+           </widget>
+           <widget class="QDoubleSpinBox" name="waterPostSpin">
+            <property name="geometry">
+             <rect>
+              <x>80</x>
+              <y>175</y>
+              <width>66</width>
+              <height>24</height>
+             </rect>
+            </property>
+           </widget>
+           <widget class="QLabel" name="waterPostUnit">
+            <property name="geometry">
+             <rect>
+              <x>157</x>
+              <y>180</y>
+              <width>57</width>
+              <height>15</height>
+             </rect>
+            </property>
+            <property name="text">
+             <string>mashUnit</string>
+            </property>
+           </widget>
+           <widget class="QLabel" name="waterPostLabel">
+            <property name="geometry">
+             <rect>
+              <x>10</x>
+              <y>180</y>
+              <width>61</width>
+              <height>16</height>
+             </rect>
+            </property>
+            <property name="text">
+             <string>Post Boil</string>
+            </property>
+           </widget>
+           <widget class="QDoubleSpinBox" name="waterFinalSpin">
+            <property name="geometry">
+             <rect>
+              <x>80</x>
+              <y>203</y>
+              <width>66</width>
+              <height>24</height>
+             </rect>
+            </property>
+           </widget>
+           <widget class="QLabel" name="waterFinalUnit">
+            <property name="geometry">
+             <rect>
+              <x>157</x>
+              <y>208</y>
+              <width>57</width>
+              <height>15</height>
+             </rect>
+            </property>
+            <property name="text">
+             <string>mashUnit</string>
+            </property>
+           </widget>
+           <widget class="QLabel" name="waterFinalLabel">
+            <property name="geometry">
+             <rect>
+              <x>11</x>
+              <y>208</y>
+              <width>61</width>
+              <height>16</height>
+             </rect>
+            </property>
+            <property name="text">
+             <string>Final Vol</string>
+            </property>
+           </widget>
+          </widget>
+         </item>
+         <item row="0" column="1">
+          <widget class="QGroupBox" name="waterLossesBox">
+           <property name="title">
+            <string>Losses</string>
+           </property>
+           <layout class="QGridLayout" name="gridLayout_18">
+            <item row="0" column="0">
+             <widget class="QLabel" name="waterChillLabel">
+              <property name="text">
+               <string>Chill Shrinkage</string>
+              </property>
+             </widget>
+            </item>
+            <item row="0" column="1">
+             <widget class="QLabel" name="waterChillValue">
+              <property name="text">
+               <string>TextLabel</string>
+              </property>
+             </widget>
+            </item>
+            <item row="0" column="2">
+             <widget class="QLabel" name="waterChillUnit">
+              <property name="text">
+               <string>Chill Shrinkage</string>
+              </property>
+             </widget>
+            </item>
+            <item row="1" column="0">
+             <widget class="QLabel" name="waterKetLabel">
+              <property name="text">
+               <string>Kettle Losses</string>
+              </property>
+             </widget>
+            </item>
+            <item row="1" column="1">
+             <widget class="QDoubleSpinBox" name="waterKetSpin"/>
+            </item>
+            <item row="1" column="2">
+             <widget class="QLabel" name="waterKetUnit">
+              <property name="text">
+               <string>kShrink</string>
+              </property>
+             </widget>
+            </item>
+            <item row="2" column="0">
+             <widget class="QLabel" name="waterTrubLabel">
+              <property name="text">
+               <string>Trub Losses</string>
+              </property>
+             </widget>
+            </item>
+            <item row="2" column="1">
+             <widget class="QDoubleSpinBox" name="waterTrubSpin"/>
+            </item>
+            <item row="2" column="2">
+             <widget class="QLabel" name="waterTrubUnit">
+              <property name="text">
+               <string>tShrink</string>
+              </property>
+             </widget>
+            </item>
+            <item row="3" column="0">
+             <widget class="QLabel" name="waterMiscLabel">
+              <property name="text">
+               <string>Misc Losses</string>
+              </property>
+             </widget>
+            </item>
+            <item row="3" column="1">
+             <widget class="QDoubleSpinBox" name="waterMiscSpin"/>
+            </item>
+            <item row="3" column="2">
+             <widget class="QLabel" name="waterMiscUnit">
+              <property name="text">
+               <string>mShrink</string>
+              </property>
+             </widget>
+            </item>
+           </layout>
+          </widget>
+         </item>
+        </layout>
+       </widget>
+       <widget class="QWidget" name="cost">
+        <attribute name="title">
+         <string>Cost</string>
+        </attribute>
+        <widget class="QGroupBox" name="recipeCostBox">
+         <property name="geometry">
+          <rect>
+           <x>30</x>
+           <y>10</y>
+           <width>149</width>
+           <height>189</height>
+          </rect>
+         </property>
+         <property name="title">
+          <string>Recipe Cost</string>
+         </property>
+         <layout class="QGridLayout" name="gridLayout_8">
+          <item row="0" column="0">
+           <widget class="QLabel" name="costGrainLabel">
+            <property name="text">
+             <string>Grains</string>
+            </property>
+           </widget>
+          </item>
+          <item row="0" column="1">
+           <widget class="QLabel" name="costGrainValue">
+            <property name="text">
+             <string>gCost</string>
+            </property>
+           </widget>
+          </item>
+          <item row="1" column="0">
+           <widget class="QLabel" name="costHopsLabel">
+            <property name="text">
+             <string>Hops</string>
+            </property>
+           </widget>
+          </item>
+          <item row="1" column="1">
+           <widget class="QLabel" name="costHopsValue">
+            <property name="text">
+             <string>hCost</string>
+            </property>
+           </widget>
+          </item>
+          <item row="2" column="0">
+           <widget class="QLabel" name="costYeastLabel">
+            <property name="text">
+             <string>Yeast</string>
+            </property>
+           </widget>
+          </item>
+          <item row="2" column="1">
+           <widget class="QDoubleSpinBox" name="costYeastSpin"/>
+          </item>
+          <item row="3" column="0">
+           <widget class="QLabel" name="costMiscLabel">
+            <property name="text">
+             <string>Misc Ing.</string>
+            </property>
+           </widget>
+          </item>
+          <item row="3" column="1">
+           <widget class="QLabel" name="costMiscValue">
+            <property name="text">
+             <string>mCost</string>
+            </property>
+           </widget>
+          </item>
+          <item row="4" column="0">
+           <widget class="QLabel" name="costOtherLabel">
+            <property name="text">
+             <string>Other</string>
+            </property>
+           </widget>
+          </item>
+          <item row="4" column="1">
+           <widget class="QDoubleSpinBox" name="costOtherSpin"/>
+          </item>
+          <item row="5" column="0" colspan="2">
+           <widget class="Line" name="line">
+            <property name="orientation">
+             <enum>Qt::Horizontal</enum>
+            </property>
+           </widget>
+          </item>
+          <item row="6" column="0">
+           <widget class="QLabel" name="costTotalLabel">
+            <property name="text">
+             <string>Total</string>
+            </property>
+           </widget>
+          </item>
+          <item row="6" column="1">
+           <widget class="QLabel" name="costTotalValue">
+            <property name="text">
+             <string>mCost</string>
+            </property>
+           </widget>
+          </item>
+         </layout>
+        </widget>
+        <widget class="QGroupBox" name="bottleCostBox">
+         <property name="geometry">
+          <rect>
+           <x>230</x>
+           <y>10</y>
+           <width>316</width>
+           <height>128</height>
+          </rect>
+         </property>
+         <property name="title">
+          <string>Bottle Cost</string>
+         </property>
+         <layout class="QGridLayout" name="gridLayout_9">
+          <item row="0" column="0">
+           <widget class="QLabel" name="bottleSizeLabel">
+            <property name="text">
+             <string>Bottle Size</string>
+            </property>
+           </widget>
+          </item>
+          <item row="1" column="0">
+           <widget class="QLabel" name="finalVolLabel">
+            <property name="text">
+             <string>Final Volume</string>
+            </property>
+           </widget>
+          </item>
+          <item row="1" column="1">
+           <widget class="QLabel" name="finalVolValue">
+            <property name="text">
+             <string>volValue</string>
+            </property>
+           </widget>
+          </item>
+          <item row="2" column="0">
+           <widget class="QLabel" name="bottleCountLabel">
+            <property name="text">
+             <string># of Bottles</string>
+            </property>
+           </widget>
+          </item>
+          <item row="2" column="1">
+           <widget class="QLabel" name="bottleCountValue">
+            <property name="text">
+             <string>bottValue</string>
+            </property>
+           </widget>
+          </item>
+          <item row="3" column="0">
+           <widget class="QLabel" name="bottleCostLabel">
+            <property name="text">
+             <string>Cost</string>
+            </property>
+           </widget>
+          </item>
+          <item row="3" column="1">
+           <widget class="QLabel" name="bottleCostValue">
+            <property name="text">
+             <string>Cost</string>
+            </property>
+           </widget>
+          </item>
+          <item row="1" column="2">
+           <widget class="QLabel" name="finalVolUnit">
+            <property name="text">
+             <string>volUnit</string>
+            </property>
+           </widget>
+          </item>
+          <item row="0" column="2" colspan="2">
+           <widget class="QComboBox" name="bottleSizeUnit"/>
+          </item>
+          <item row="0" column="1">
+           <widget class="QSpinBox" name="bottleSizeSpin"/>
+          </item>
+         </layout>
+        </widget>
+       </widget>
+       <widget class="QWidget" name="settings">
+        <attribute name="title">
+         <string>Settings</string>
+        </attribute>
+        <layout class="QGridLayout" name="gridLayout_13">
+         <item row="0" column="0">
+          <widget class="QGroupBox" name="mashSettingsBox">
+           <property name="title">
+            <string>Mash Settings</string>
+           </property>
+           <layout class="QGridLayout" name="gridLayout_10">
+            <item row="0" column="0">
+             <widget class="QLabel" name="thinDecoctLabel">
+              <property name="text">
+               <string>Thin Decoction</string>
+              </property>
+             </widget>
+            </item>
+            <item row="0" column="1">
+             <widget class="QDoubleSpinBox" name="thinDecoctSpin"/>
+            </item>
+            <item row="0" column="2">
+             <widget class="QLabel" name="thinDecoctRatio">
+              <property name="text">
+               <string>dRatio</string>
+              </property>
+             </widget>
+            </item>
+            <item row="1" column="0">
+             <widget class="QLabel" name="thickDecoctLabel">
+              <property name="text">
+               <string>Thick Decoction</string>
+              </property>
+             </widget>
+            </item>
+            <item row="1" column="1">
+             <widget class="QDoubleSpinBox" name="thickDecoctSpin"/>
+            </item>
+            <item row="1" column="2">
+             <widget class="QLabel" name="thickDecoctRatio">
+              <property name="text">
+               <string>dRatio</string>
+              </property>
+             </widget>
+            </item>
+            <item row="2" column="0">
+             <widget class="QLabel" name="mashoutTempLabel">
+              <property name="text">
+               <string>Mashout Temp</string>
+              </property>
+             </widget>
+            </item>
+            <item row="2" column="1">
+             <widget class="QSpinBox" name="mashoutTempValue">
+              <property name="maximum">
+               <number>232</number>
+              </property>
+             </widget>
+            </item>
+            <item row="2" column="2">
+             <widget class="QLabel" name="mashoutTempUnit">
+              <property name="text">
+               <string>mTemp</string>
+              </property>
+             </widget>
+            </item>
+            <item row="3" column="0">
+             <widget class="QLabel" name="spargeTempLabel">
+              <property name="text">
+               <string>Sparge Temp</string>
+              </property>
+             </widget>
+            </item>
+            <item row="3" column="1">
+             <widget class="QSpinBox" name="spargeTempValue">
+              <property name="maximum">
+               <number>232</number>
+              </property>
+             </widget>
+            </item>
+            <item row="3" column="2">
+             <widget class="QLabel" name="spargeTempUnit">
+              <property name="text">
+               <string>mTemp</string>
+              </property>
+             </widget>
+            </item>
+           </layout>
+          </widget>
+         </item>
+         <item row="0" column="1">
+          <widget class="QGroupBox" name="otherSettingsBox">
+           <property name="title">
+            <string>Other</string>
+           </property>
+           <layout class="QGridLayout" name="gridLayout_11">
+            <item row="0" column="0">
+             <widget class="QLabel" name="addIBULabel">
+              <property name="text">
+               <string>Pellet Hops + IBU</string>
+              </property>
+             </widget>
+            </item>
+            <item row="0" column="2">
+             <widget class="QLabel" name="addIBUUnit">
+              <property name="text">
+               <string>%</string>
+              </property>
+             </widget>
+            </item>
+            <item row="0" column="1">
+             <widget class="QDoubleSpinBox" name="addIBUValue"/>
+            </item>
+           </layout>
+          </widget>
+         </item>
+        </layout>
+       </widget>
+      </widget>
+      <widget class="QFrame" name="frame">
+       <property name="frameShape">
+        <enum>QFrame::StyledPanel</enum>
+       </property>
+       <property name="frameShadow">
+        <enum>QFrame::Raised</enum>
+       </property>
+       <layout class="QGridLayout" name="gridLayout_25">
+        <item row="1" column="1">
+         <widget class="QPushButton" name="deleteMalt">
+          <property name="text">
+           <string>-</string>
+          </property>
+         </widget>
+        </item>
+        <item row="1" column="0">
+         <widget class="QPushButton" name="addMalt">
+          <property name="text">
+           <string>+</string>
+          </property>
+         </widget>
+        </item>
+        <item row="1" column="2">
+         <spacer name="horizontalSpacer">
+          <property name="orientation">
+           <enum>Qt::Horizontal</enum>
+          </property>
+          <property name="sizeHint" stdset="0">
+           <size>
+            <width>546</width>
+            <height>20</height>
+           </size>
+          </property>
+         </spacer>
+        </item>
+        <item row="0" column="0" colspan="3">
+         <widget class="QTableView" name="fermentablesList">
+          <property name="editTriggers">
+           <set>QAbstractItemView::DoubleClicked|QAbstractItemView::EditKeyPressed|QAbstractItemView::SelectedClicked</set>
+          </property>
+          <property name="alternatingRowColors">
+           <bool>true</bool>
+          </property>
+         </widget>
+        </item>
+       </layout>
+      </widget>
+      <widget class="QFrame" name="frame_2">
+       <property name="frameShape">
+        <enum>QFrame::StyledPanel</enum>
+       </property>
+       <property name="frameShadow">
+        <enum>QFrame::Raised</enum>
+       </property>
+       <layout class="QGridLayout" name="gridLayout_26">
+        <item row="0" column="0" colspan="3">
+         <widget class="QTableView" name="hopsList">
+          <property name="editTriggers">
+           <set>QAbstractItemView::DoubleClicked|QAbstractItemView::EditKeyPressed|QAbstractItemView::SelectedClicked</set>
+          </property>
+          <property name="alternatingRowColors">
+           <bool>true</bool>
+          </property>
+         </widget>
+        </item>
+        <item row="1" column="0">
+         <widget class="QPushButton" name="addHop">
+          <property name="text">
+           <string>+</string>
+          </property>
+         </widget>
+        </item>
+        <item row="1" column="1">
+         <widget class="QPushButton" name="deleteHop">
+          <property name="text">
+           <string>-</string>
+          </property>
+         </widget>
+        </item>
+        <item row="1" column="2">
+         <spacer name="horizontalSpacer_3">
+          <property name="orientation">
+           <enum>Qt::Horizontal</enum>
+          </property>
+          <property name="sizeHint" stdset="0">
+           <size>
+            <width>548</width>
+            <height>20</height>
+           </size>
+          </property>
+         </spacer>
+        </item>
+       </layout>
+      </widget>
+     </widget>
+    </item>
+   </layout>
+  </widget>
+  <widget class="QMenuBar" name="menuBar">
+   <property name="geometry">
+    <rect>
+     <x>0</x>
+     <y>0</y>
+     <width>759</width>
+     <height>20</height>
+    </rect>
+   </property>
+   <widget class="QMenu" name="menuStrangeBrew">
+    <property name="title">
+     <string>StrangeBrew</string>
+    </property>
+    <widget class="QMenu" name="menuCloud_Recipes">
+     <property name="title">
+      <string>Cloud Recipes</string>
+     </property>
+     <addaction name="actionBrowse"/>
+     <addaction name="actionUpload"/>
+    </widget>
+    <addaction name="actionOpen"/>
+    <addaction name="menuCloud_Recipes"/>
+    <addaction name="actionNew"/>
+    <addaction name="actionSave"/>
+    <addaction name="actionSave_As"/>
+    <addaction name="actionExport"/>
+    <addaction name="actionCopy_to_Clipboard"/>
+    <addaction name="actionPrint"/>
+    <addaction name="separator"/>
+    <addaction name="actionExit"/>
+   </widget>
+   <widget class="QMenu" name="menuEdit">
+    <property name="title">
+     <string>Edit</string>
+    </property>
+    <addaction name="actionPreferences"/>
+    <addaction name="separator"/>
+    <addaction name="actionNew_Fermentable"/>
+    <addaction name="actionNew_Hop"/>
+    <addaction name="actionNew_Yeast"/>
+    <addaction name="actionNew_Misc"/>
+    <addaction name="actionNew_Prime_Sugar"/>
+    <addaction name="separator"/>
+    <addaction name="actionPantry"/>
+   </widget>
+   <widget class="QMenu" name="menuTools">
+    <property name="title">
+     <string>Tools</string>
+    </property>
+    <addaction name="actionResize_Convert"/>
+    <addaction name="actionMalt_Percent"/>
+    <addaction name="actionRefractometer"/>
+    <addaction name="actionExtract_Tool"/>
+    <addaction name="actionHydrometer"/>
+    <addaction name="actionConversion"/>
+   </widget>
+   <addaction name="menuStrangeBrew"/>
+   <addaction name="menuEdit"/>
+   <addaction name="menuTools"/>
+  </widget>
+  <widget class="QToolBar" name="mainToolBar">
+   <attribute name="toolBarArea">
+    <enum>TopToolBarArea</enum>
+   </attribute>
+   <attribute name="toolBarBreak">
+    <bool>false</bool>
+   </attribute>
+   <addaction name="separator"/>
+  </widget>
+  <widget class="QStatusBar" name="statusBar"/>
+  <action name="actionOpen">
+   <property name="icon">
+    <iconset>
+     <normalon>:/menu/open</normalon>
+    </iconset>
+   </property>
+   <property name="text">
+    <string>Open</string>
+   </property>
+   <property name="toolTip">
+    <string>Open Recipe File</string>
+   </property>
+   <property name="shortcut">
+    <string>Ctrl+O</string>
+   </property>
+  </action>
+  <action name="actionNew">
+   <property name="icon">
+    <iconset>
+     <normalon>:/menu/new</normalon>
+    </iconset>
+   </property>
+   <property name="text">
+    <string>New</string>
+   </property>
+   <property name="shortcut">
+    <string>Ctrl+N</string>
+   </property>
+  </action>
+  <action name="actionSave">
+   <property name="icon">
+    <iconset>
+     <normalon>:/menu/save</normalon>
+    </iconset>
+   </property>
+   <property name="text">
+    <string>Save</string>
+   </property>
+   <property name="shortcut">
+    <string>Ctrl+S</string>
+   </property>
+  </action>
+  <action name="actionSave_As">
+   <property name="icon">
+    <iconset>
+     <normalon>:/menu/saveas</normalon>
+    </iconset>
+   </property>
+   <property name="text">
+    <string>Save As</string>
+   </property>
+  </action>
+  <action name="actionExport">
+   <property name="icon">
+    <iconset>
+     <normalon>:/menu/export</normalon>
+    </iconset>
+   </property>
+   <property name="text">
+    <string>Export</string>
+   </property>
+  </action>
+  <action name="actionPrint">
+   <property name="icon">
+    <iconset>
+     <normalon>:/menu/print</normalon>
+    </iconset>
+   </property>
+   <property name="text">
+    <string>Print</string>
+   </property>
+   <property name="shortcut">
+    <string>Ctrl+P</string>
+   </property>
+  </action>
+  <action name="actionExit">
+   <property name="text">
+    <string>Exit</string>
+   </property>
+   <property name="shortcut">
+    <string>Ctrl+Q</string>
+   </property>
+  </action>
+  <action name="actionPreferences">
+   <property name="text">
+    <string>Preferences</string>
+   </property>
+  </action>
+  <action name="actionCopy_to_Clipboard">
+   <property name="text">
+    <string>Copy to Clipboard</string>
+   </property>
+  </action>
+  <action name="actionNew_Fermentable">
+   <property name="text">
+    <string>New Fermentable</string>
+   </property>
+  </action>
+  <action name="actionNew_Hop">
+   <property name="text">
+    <string>New Hop</string>
+   </property>
+  </action>
+  <action name="actionNew_Yeast">
+   <property name="text">
+    <string>New Yeast</string>
+   </property>
+  </action>
+  <action name="actionNew_Misc">
+   <property name="text">
+    <string>New Misc</string>
+   </property>
+  </action>
+  <action name="actionNew_Prime_Sugar">
+   <property name="text">
+    <string>New Prime Sugar</string>
+   </property>
+  </action>
+  <action name="actionPantry">
+   <property name="text">
+    <string>Pantry</string>
+   </property>
+  </action>
+  <action name="actionResize_Convert">
+   <property name="text">
+    <string>Resize/Convert</string>
+   </property>
+   <property name="shortcut">
+    <string>Ctrl+R</string>
+   </property>
+  </action>
+  <action name="actionRefractometer">
+   <property name="text">
+    <string>Refractometer</string>
+   </property>
+  </action>
+  <action name="actionMalt_Percent">
+   <property name="text">
+    <string>Malt Percent</string>
+   </property>
+   <property name="shortcut">
+    <string>Ctrl+M</string>
+   </property>
+  </action>
+  <action name="actionExtract_Tool">
+   <property name="text">
+    <string>Extract Potential</string>
+   </property>
+  </action>
+  <action name="actionHydrometer">
+   <property name="text">
+    <string>Hydrometer </string>
+   </property>
+  </action>
+  <action name="actionConversion">
+   <property name="text">
+    <string>Conversion</string>
+   </property>
+  </action>
+  <action name="actionBrowse">
+   <property name="text">
+    <string>Browse</string>
+   </property>
+  </action>
+  <action name="actionUpload">
+   <property name="text">
+    <string>Upload</string>
+   </property>
+  </action>
+ </widget>
+ <layoutdefault spacing="6" margin="11"/>
+ <resources>
+  <include location="SB_Images.qrc"/>
+ </resources>
+ <connections/>
+</ui>

@@ -1,0 +1,1016 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<ui version="4.0">
+ <class>Preferences</class>
+ <widget class="QDialog" name="Preferences">
+  <property name="geometry">
+   <rect>
+    <x>0</x>
+    <y>0</y>
+    <width>557</width>
+    <height>639</height>
+   </rect>
+  </property>
+  <property name="windowTitle">
+   <string>Preferences</string>
+  </property>
+  <property name="windowIcon">
+   <iconset resource="SB_Images.qrc">
+    <normaloff>:/menu/brew_png</normaloff>:/menu/brew_png</iconset>
+  </property>
+  <widget class="QDialogButtonBox" name="buttonBox">
+   <property name="geometry">
+    <rect>
+     <x>180</x>
+     <y>550</y>
+     <width>341</width>
+     <height>32</height>
+    </rect>
+   </property>
+   <property name="orientation">
+    <enum>Qt::Horizontal</enum>
+   </property>
+   <property name="standardButtons">
+    <set>QDialogButtonBox::Cancel|QDialogButtonBox::Ok</set>
+   </property>
+  </widget>
+  <widget class="QTabWidget" name="preferencesTabs">
+   <property name="geometry">
+    <rect>
+     <x>10</x>
+     <y>10</y>
+     <width>541</width>
+     <height>520</height>
+    </rect>
+   </property>
+   <property name="currentIndex">
+    <number>5</number>
+   </property>
+   <widget class="QWidget" name="calcTab">
+    <attribute name="title">
+     <string>Calculations</string>
+    </attribute>
+    <layout class="QGridLayout" name="gridLayout_8">
+     <item row="0" column="0" rowspan="2">
+      <widget class="QGroupBox" name="ibuCalcBox">
+       <property name="title">
+        <string>IBU Calc Method</string>
+       </property>
+       <layout class="QGridLayout" name="gridLayout_2">
+        <item row="0" column="0">
+         <widget class="QRadioButton" name="tinsethRadio">
+          <property name="text">
+           <string>Tinseth</string>
+          </property>
+          <attribute name="buttonGroup">
+           <string notr="true">ibuCalcGroup</string>
+          </attribute>
+         </widget>
+        </item>
+        <item row="1" column="0">
+         <widget class="QRadioButton" name="ragerRadio">
+          <property name="text">
+           <string>Rager</string>
+          </property>
+          <attribute name="buttonGroup">
+           <string notr="true">ibuCalcGroup</string>
+          </attribute>
+         </widget>
+        </item>
+        <item row="2" column="0">
+         <widget class="QRadioButton" name="garetzRadio">
+          <property name="text">
+           <string>Garetz</string>
+          </property>
+          <attribute name="buttonGroup">
+           <string notr="true">ibuCalcGroup</string>
+          </attribute>
+         </widget>
+        </item>
+       </layout>
+      </widget>
+     </item>
+     <item row="0" column="1" colspan="2">
+      <widget class="QGroupBox" name="hopsGroup">
+       <property name="title">
+        <string>Hops</string>
+       </property>
+       <layout class="QGridLayout" name="gridLayout">
+        <item row="0" column="0">
+         <widget class="QLabel" name="pelletHopsLabel">
+          <property name="text">
+           <string>Pellet Hops +%</string>
+          </property>
+         </widget>
+        </item>
+        <item row="0" column="1" colspan="2">
+         <widget class="QDoubleSpinBox" name="pelletHopsSpin"/>
+        </item>
+        <item row="1" column="0" colspan="2">
+         <widget class="QLabel" name="tinsethLabel">
+          <property name="text">
+           <string>Tinseth Utilization Factor</string>
+          </property>
+         </widget>
+        </item>
+        <item row="1" column="2">
+         <widget class="QDoubleSpinBox" name="tinsethSpin"/>
+        </item>
+       </layout>
+      </widget>
+     </item>
+     <item row="1" column="1" rowspan="3" colspan="2">
+      <widget class="QGroupBox" name="hopTimeBox">
+       <property name="title">
+        <string>Hop Times</string>
+       </property>
+       <layout class="QGridLayout" name="gridLayout_6">
+        <item row="0" column="1">
+         <widget class="QSpinBox" name="drySpin"/>
+        </item>
+        <item row="1" column="0">
+         <widget class="QLabel" name="FWHlabel">
+          <property name="text">
+           <string>FWH,  boil minus min</string>
+          </property>
+         </widget>
+        </item>
+        <item row="1" column="1">
+         <widget class="QSpinBox" name="FWHSpin"/>
+        </item>
+        <item row="2" column="1">
+         <widget class="QSpinBox" name="mashSpin"/>
+        </item>
+        <item row="2" column="0">
+         <widget class="QLabel" name="mashLabel">
+          <property name="text">
+           <string>Mash, min</string>
+          </property>
+         </widget>
+        </item>
+        <item row="0" column="0">
+         <widget class="QLabel" name="dryLabel">
+          <property name="text">
+           <string>Dry, min</string>
+          </property>
+         </widget>
+        </item>
+       </layout>
+      </widget>
+     </item>
+     <item row="2" column="0">
+      <widget class="QGroupBox" name="alcoholBox">
+       <property name="title">
+        <string>Alcohol Calc</string>
+       </property>
+       <layout class="QGridLayout" name="gridLayout_3">
+        <item row="0" column="0">
+         <widget class="QRadioButton" name="alcVolRadio">
+          <property name="text">
+           <string>Volume</string>
+          </property>
+          <attribute name="buttonGroup">
+           <string notr="true">alcCalcGroup</string>
+          </attribute>
+         </widget>
+        </item>
+        <item row="1" column="0">
+         <widget class="QRadioButton" name="alcWeightRadio">
+          <property name="text">
+           <string>Weight</string>
+          </property>
+          <attribute name="buttonGroup">
+           <string notr="true">alcCalcGroup</string>
+          </attribute>
+         </widget>
+        </item>
+       </layout>
+      </widget>
+     </item>
+     <item row="3" column="0" rowspan="2">
+      <widget class="QGroupBox" name="colourMethBox">
+       <property name="title">
+        <string>Colour Method</string>
+       </property>
+       <layout class="QGridLayout" name="gridLayout_4">
+        <item row="0" column="0">
+         <widget class="QRadioButton" name="ebcRadio">
+          <property name="text">
+           <string>EBC</string>
+          </property>
+          <attribute name="buttonGroup">
+           <string notr="true">colourGroup</string>
+          </attribute>
+         </widget>
+        </item>
+        <item row="1" column="0">
+         <widget class="QRadioButton" name="srmRadio">
+          <property name="text">
+           <string>SRM</string>
+          </property>
+          <attribute name="buttonGroup">
+           <string notr="true">colourGroup</string>
+          </attribute>
+         </widget>
+        </item>
+       </layout>
+      </widget>
+     </item>
+     <item row="4" column="2" rowspan="2">
+      <widget class="QGroupBox" name="waterUseBox">
+       <property name="title">
+        <string>Water Usage</string>
+       </property>
+       <layout class="QGridLayout" name="gridLayout_7">
+        <item row="0" column="0">
+         <widget class="QLabel" name="kettLossLabel">
+          <property name="text">
+           <string>Left in Kettle</string>
+          </property>
+         </widget>
+        </item>
+        <item row="1" column="0">
+         <widget class="QLabel" name="miscLossLabel">
+          <property name="text">
+           <string>Misc Losses</string>
+          </property>
+         </widget>
+        </item>
+        <item row="2" column="0">
+         <widget class="QLabel" name="trubLossLabel">
+          <property name="text">
+           <string>Lost In Trub</string>
+          </property>
+         </widget>
+        </item>
+        <item row="0" column="1">
+         <widget class="QDoubleSpinBox" name="kettLossSpin"/>
+        </item>
+        <item row="1" column="1">
+         <widget class="QDoubleSpinBox" name="miscLossSpin"/>
+        </item>
+        <item row="2" column="1">
+         <widget class="QDoubleSpinBox" name="trubLossSpin"/>
+        </item>
+       </layout>
+      </widget>
+     </item>
+     <item row="5" column="0" colspan="2">
+      <widget class="QGroupBox" name="evapBox">
+       <property name="title">
+        <string>Evaporation</string>
+       </property>
+       <layout class="QGridLayout" name="gridLayout_5">
+        <item row="0" column="0" colspan="2">
+         <widget class="QRadioButton" name="evapConsRadio">
+          <property name="text">
+           <string>Constant</string>
+          </property>
+          <attribute name="buttonGroup">
+           <string notr="true">evapGroup</string>
+          </attribute>
+         </widget>
+        </item>
+        <item row="1" column="0" colspan="2">
+         <widget class="QRadioButton" name="evapPercRadio">
+          <property name="text">
+           <string>Percent</string>
+          </property>
+          <attribute name="buttonGroup">
+           <string notr="true">evapGroup</string>
+          </attribute>
+         </widget>
+        </item>
+        <item row="2" column="0">
+         <widget class="QDoubleSpinBox" name="evapRateSpin"/>
+        </item>
+        <item row="2" column="1">
+         <widget class="QLabel" name="evapRateLabel">
+          <property name="text">
+           <string>TextLabel</string>
+          </property>
+         </widget>
+        </item>
+       </layout>
+      </widget>
+     </item>
+    </layout>
+   </widget>
+   <widget class="QWidget" name="costTab">
+    <attribute name="title">
+     <string>Cost &amp; Carb</string>
+    </attribute>
+    <layout class="QGridLayout" name="gridLayout_11">
+     <item row="0" column="0">
+      <widget class="QGroupBox" name="costGroup">
+       <property name="title">
+        <string>Cost</string>
+       </property>
+       <layout class="QGridLayout" name="gridLayout_9">
+        <item row="0" column="0">
+         <widget class="QLabel" name="otherLabel">
+          <property name="text">
+           <string>Other</string>
+          </property>
+         </widget>
+        </item>
+        <item row="0" column="1">
+         <widget class="QDoubleSpinBox" name="otherCostSpin"/>
+        </item>
+        <item row="1" column="0">
+         <widget class="QLabel" name="bottleLabel">
+          <property name="text">
+           <string>Bottle Size</string>
+          </property>
+         </widget>
+        </item>
+        <item row="1" column="1">
+         <widget class="QDoubleSpinBox" name="bottleSizeSpin"/>
+        </item>
+        <item row="1" column="2">
+         <widget class="QComboBox" name="bottleUnitCombo"/>
+        </item>
+       </layout>
+      </widget>
+     </item>
+     <item row="1" column="0">
+      <widget class="QGroupBox" name="groupBox">
+       <property name="title">
+        <string>Carbonation</string>
+       </property>
+       <layout class="QGridLayout" name="gridLayout_10">
+        <item row="0" column="0">
+         <widget class="QLabel" name="primSugarLabel">
+          <property name="text">
+           <string>Prime Sugar</string>
+          </property>
+         </widget>
+        </item>
+        <item row="0" column="1">
+         <widget class="QComboBox" name="primeSugarCombo"/>
+        </item>
+        <item row="0" column="2">
+         <widget class="QLabel" name="sugarUnitsLabel">
+          <property name="text">
+           <string>Sugar Units</string>
+          </property>
+         </widget>
+        </item>
+        <item row="0" column="3">
+         <widget class="QComboBox" name="sugarUnitsCombo"/>
+        </item>
+        <item row="1" column="0">
+         <widget class="QLabel" name="servTempLabel">
+          <property name="text">
+           <string>Serving Temp</string>
+          </property>
+         </widget>
+        </item>
+        <item row="1" column="1">
+         <widget class="QSpinBox" name="servTempSpin">
+          <property name="maximum">
+           <number>212</number>
+          </property>
+         </widget>
+        </item>
+        <item row="1" column="2">
+         <widget class="QLabel" name="carbTempLabel">
+          <property name="text">
+           <string>Carb Temp Units</string>
+          </property>
+         </widget>
+        </item>
+        <item row="1" column="3">
+         <widget class="QRadioButton" name="carbUnitF">
+          <property name="text">
+           <string>F</string>
+          </property>
+          <attribute name="buttonGroup">
+           <string notr="true">carbTempGroup</string>
+          </attribute>
+         </widget>
+        </item>
+        <item row="1" column="4">
+         <widget class="QRadioButton" name="carbUnitC">
+          <property name="text">
+           <string>C</string>
+          </property>
+          <attribute name="buttonGroup">
+           <string notr="true">carbTempGroup</string>
+          </attribute>
+         </widget>
+        </item>
+        <item row="2" column="0">
+         <widget class="QLabel" name="bottleTempLabel">
+          <property name="text">
+           <string>Bottle Temp</string>
+          </property>
+         </widget>
+        </item>
+        <item row="2" column="1">
+         <widget class="QSpinBox" name="bottleTempSpin">
+          <property name="maximum">
+           <number>212</number>
+          </property>
+         </widget>
+        </item>
+        <item row="2" column="2">
+         <widget class="QLabel" name="targetCO2Label">
+          <property name="text">
+           <string>Target CO2</string>
+          </property>
+         </widget>
+        </item>
+        <item row="2" column="3">
+         <widget class="QDoubleSpinBox" name="targetCO2Spin"/>
+        </item>
+        <item row="3" column="0">
+         <widget class="QLabel" name="faucHeightLabel">
+          <property name="text">
+           <string>Height to Faucet</string>
+          </property>
+         </widget>
+        </item>
+        <item row="3" column="2">
+         <widget class="QLabel" name="tubingIDLabel">
+          <property name="text">
+           <string>Tubing ID</string>
+          </property>
+         </widget>
+        </item>
+        <item row="3" column="3">
+         <widget class="QComboBox" name="tubingIDCombo"/>
+        </item>
+        <item row="4" column="0">
+         <widget class="QCheckBox" name="keggedCheck">
+          <property name="text">
+           <string>Kegged</string>
+          </property>
+         </widget>
+        </item>
+        <item row="3" column="1">
+         <widget class="QDoubleSpinBox" name="faucHeightSpin"/>
+        </item>
+       </layout>
+      </widget>
+     </item>
+    </layout>
+   </widget>
+   <widget class="QWidget" name="brewerTab">
+    <attribute name="title">
+     <string>Brewer</string>
+    </attribute>
+    <layout class="QGridLayout" name="gridLayout_21">
+     <item row="0" column="0">
+      <widget class="QGroupBox" name="brewerGroup">
+       <property name="title">
+        <string>Brewer</string>
+       </property>
+       <layout class="QGridLayout" name="gridLayout_12">
+        <item row="0" column="0" colspan="2">
+         <widget class="QLabel" name="nameLabel">
+          <property name="text">
+           <string>Name</string>
+          </property>
+         </widget>
+        </item>
+        <item row="0" column="2" colspan="2">
+         <widget class="QLineEdit" name="nameEdit"/>
+        </item>
+        <item row="0" column="4">
+         <widget class="QLabel" name="phoneLabel">
+          <property name="text">
+           <string>Phone</string>
+          </property>
+         </widget>
+        </item>
+        <item row="0" column="5">
+         <widget class="QLineEdit" name="phoneEdit"/>
+        </item>
+        <item row="1" column="0">
+         <widget class="QLabel" name="clubLabel">
+          <property name="text">
+           <string>Club</string>
+          </property>
+         </widget>
+        </item>
+        <item row="1" column="1" colspan="3">
+         <widget class="QLineEdit" name="clubEdit"/>
+        </item>
+        <item row="1" column="4">
+         <widget class="QLabel" name="emailLabel">
+          <property name="text">
+           <string>Email</string>
+          </property>
+         </widget>
+        </item>
+        <item row="1" column="5">
+         <widget class="QLineEdit" name="emailEdit"/>
+        </item>
+        <item row="2" column="0" colspan="3">
+         <widget class="QLabel" name="RecipeLabel">
+          <property name="text">
+           <string>Recipe Directory</string>
+          </property>
+         </widget>
+        </item>
+        <item row="2" column="3" colspan="2">
+         <widget class="QPushButton" name="pushButton">
+          <property name="text">
+           <string>Select</string>
+          </property>
+         </widget>
+        </item>
+        <item row="3" column="0" colspan="5">
+         <widget class="QLineEdit" name="recipeDirEdit">
+          <property name="enabled">
+           <bool>false</bool>
+          </property>
+         </widget>
+        </item>
+       </layout>
+      </widget>
+     </item>
+     <item row="1" column="0">
+      <widget class="QGroupBox" name="brewHouseGroup">
+       <property name="title">
+        <string>Brew House</string>
+       </property>
+       <layout class="QGridLayout" name="gridLayout_20">
+        <item row="0" column="0">
+         <widget class="QLabel" name="efficiencyLabel">
+          <property name="text">
+           <string>Efficiency</string>
+          </property>
+         </widget>
+        </item>
+        <item row="0" column="1">
+         <widget class="QSpinBox" name="efficiencySpin"/>
+        </item>
+        <item row="1" column="0">
+         <widget class="QLabel" name="attenuationLabel">
+          <property name="text">
+           <string>Attenuation</string>
+          </property>
+         </widget>
+        </item>
+        <item row="1" column="1">
+         <widget class="QSpinBox" name="attenuationSpin"/>
+        </item>
+       </layout>
+      </widget>
+     </item>
+    </layout>
+   </widget>
+   <widget class="QWidget" name="styleTab">
+    <attribute name="title">
+     <string>Style</string>
+    </attribute>
+    <layout class="QGridLayout" name="gridLayout_14">
+     <item row="0" column="0">
+      <widget class="QGroupBox" name="bjcpGroup">
+       <property name="title">
+        <string>BJCP Year</string>
+       </property>
+       <layout class="QGridLayout" name="gridLayout_13">
+        <item row="0" column="0">
+         <widget class="QComboBox" name="bjcpYearCombo"/>
+        </item>
+       </layout>
+      </widget>
+     </item>
+    </layout>
+   </widget>
+   <widget class="QWidget" name="appearanceTab">
+    <attribute name="title">
+     <string>Appearance</string>
+    </attribute>
+    <widget class="QGroupBox" name="colourBox">
+     <property name="geometry">
+      <rect>
+       <x>20</x>
+       <y>10</y>
+       <width>471</width>
+       <height>291</height>
+      </rect>
+     </property>
+     <property name="title">
+      <string>Colour Swatch</string>
+     </property>
+     <layout class="QGridLayout" name="gridLayout_15">
+      <item row="0" column="0" colspan="3">
+       <widget class="QRadioButton" name="method1Radio">
+        <property name="text">
+         <string>Method 1</string>
+        </property>
+        <attribute name="buttonGroup">
+         <string notr="true">colourMethGroup</string>
+        </attribute>
+       </widget>
+      </item>
+      <item row="0" column="3" colspan="3">
+       <widget class="QRadioButton" name="method2Radio">
+        <property name="text">
+         <string>Method 2</string>
+        </property>
+        <attribute name="buttonGroup">
+         <string notr="true">colourMethGroup</string>
+        </attribute>
+       </widget>
+      </item>
+      <item row="1" column="0" colspan="2">
+       <widget class="QLabel" name="redLabel">
+        <property name="text">
+         <string>Red</string>
+        </property>
+       </widget>
+      </item>
+      <item row="1" column="2">
+       <widget class="QSpinBox" name="redSpin"/>
+      </item>
+      <item row="1" column="3">
+       <widget class="QLabel" name="greenLabel">
+        <property name="text">
+         <string>Green</string>
+        </property>
+       </widget>
+      </item>
+      <item row="1" column="4" colspan="2">
+       <widget class="QSpinBox" name="greenSpin"/>
+      </item>
+      <item row="2" column="0">
+       <widget class="QLabel" name="blueLabel">
+        <property name="text">
+         <string>Blue</string>
+        </property>
+       </widget>
+      </item>
+      <item row="2" column="1" colspan="2">
+       <widget class="QSpinBox" name="blueSpin"/>
+      </item>
+      <item row="2" column="3">
+       <widget class="QLabel" name="alphaLabel">
+        <property name="text">
+         <string>Alpha</string>
+        </property>
+       </widget>
+      </item>
+      <item row="2" column="4" colspan="2">
+       <widget class="QSpinBox" name="alphaSpin"/>
+      </item>
+      <item row="3" column="0">
+       <widget class="QLabel" name="label">
+        <property name="text">
+         <string>Straw (2)</string>
+        </property>
+       </widget>
+      </item>
+      <item row="3" column="2">
+       <widget class="QLabel" name="label_2">
+        <property name="text">
+         <string>Pale (4)</string>
+        </property>
+       </widget>
+      </item>
+      <item row="3" column="3" colspan="2">
+       <widget class="QLabel" name="label_3">
+        <property name="text">
+         <string>Amber (8)</string>
+        </property>
+       </widget>
+      </item>
+      <item row="3" column="5">
+       <widget class="QLabel" name="label_4">
+        <property name="text">
+         <string>Copper (15)</string>
+        </property>
+       </widget>
+      </item>
+      <item row="3" column="6">
+       <widget class="QLabel" name="label_5">
+        <property name="text">
+         <string>Brown (20)</string>
+        </property>
+       </widget>
+      </item>
+      <item row="3" column="7">
+       <widget class="QLabel" name="label_6">
+        <property name="text">
+         <string>Black (30</string>
+        </property>
+       </widget>
+      </item>
+      <item row="4" column="0">
+       <widget class="QFrame" name="strawFrame">
+        <property name="frameShape">
+         <enum>QFrame::StyledPanel</enum>
+        </property>
+        <property name="frameShadow">
+         <enum>QFrame::Raised</enum>
+        </property>
+       </widget>
+      </item>
+      <item row="4" column="1" colspan="2">
+       <widget class="QFrame" name="paleFrame">
+        <property name="frameShape">
+         <enum>QFrame::StyledPanel</enum>
+        </property>
+        <property name="frameShadow">
+         <enum>QFrame::Raised</enum>
+        </property>
+       </widget>
+      </item>
+      <item row="4" column="3" colspan="2">
+       <widget class="QFrame" name="amberFrame">
+        <property name="frameShape">
+         <enum>QFrame::StyledPanel</enum>
+        </property>
+        <property name="frameShadow">
+         <enum>QFrame::Raised</enum>
+        </property>
+       </widget>
+      </item>
+      <item row="4" column="5">
+       <widget class="QFrame" name="copperFrame">
+        <property name="frameShape">
+         <enum>QFrame::StyledPanel</enum>
+        </property>
+        <property name="frameShadow">
+         <enum>QFrame::Raised</enum>
+        </property>
+       </widget>
+      </item>
+      <item row="4" column="6">
+       <widget class="QFrame" name="brownFrame">
+        <property name="frameShape">
+         <enum>QFrame::StyledPanel</enum>
+        </property>
+        <property name="frameShadow">
+         <enum>QFrame::Raised</enum>
+        </property>
+       </widget>
+      </item>
+      <item row="4" column="7">
+       <widget class="QFrame" name="blackFrame">
+        <property name="frameShape">
+         <enum>QFrame::StyledPanel</enum>
+        </property>
+        <property name="frameShadow">
+         <enum>QFrame::Raised</enum>
+        </property>
+       </widget>
+      </item>
+     </layout>
+    </widget>
+   </widget>
+   <widget class="QWidget" name="newRecipeTab">
+    <attribute name="title">
+     <string>New Recipe</string>
+    </attribute>
+    <layout class="QGridLayout" name="gridLayout_19">
+     <item row="0" column="0">
+      <widget class="QGroupBox" name="sizeFrame">
+       <property name="title">
+        <string>Units</string>
+       </property>
+       <layout class="QGridLayout" name="gridLayout_16">
+        <item row="0" column="0">
+         <widget class="QLabel" name="maltUnitsLabel">
+          <property name="text">
+           <string>Malt Units</string>
+          </property>
+         </widget>
+        </item>
+        <item row="0" column="1">
+         <widget class="QComboBox" name="maltUnitCombo"/>
+        </item>
+        <item row="1" column="0">
+         <widget class="QLabel" name="hopUnitsTime">
+          <property name="text">
+           <string>Hop Units</string>
+          </property>
+         </widget>
+        </item>
+        <item row="1" column="1">
+         <widget class="QComboBox" name="hopUnitsCombo"/>
+        </item>
+        <item row="2" column="0">
+         <widget class="QLabel" name="volumeLabel">
+          <property name="text">
+           <string>Volume Units</string>
+          </property>
+         </widget>
+        </item>
+        <item row="2" column="1">
+         <widget class="QComboBox" name="volumeCombo"/>
+        </item>
+        <item row="3" column="0">
+         <widget class="QLabel" name="batchSizeLabel">
+          <property name="text">
+           <string>Batch Size</string>
+          </property>
+         </widget>
+        </item>
+        <item row="3" column="1">
+         <widget class="QDoubleSpinBox" name="batchSizeSpin">
+          <property name="singleStep">
+           <double>0.100000000000000</double>
+          </property>
+         </widget>
+        </item>
+        <item row="4" column="0">
+         <widget class="QLabel" name="boilTimeLabel">
+          <property name="text">
+           <string>Boil Time</string>
+          </property>
+         </widget>
+        </item>
+        <item row="4" column="1">
+         <widget class="QSpinBox" name="boilTimeSpin"/>
+        </item>
+       </layout>
+      </widget>
+     </item>
+     <item row="2" column="0">
+      <widget class="QGroupBox" name="miscGroup">
+       <property name="title">
+        <string>Misc</string>
+       </property>
+       <layout class="QGridLayout" name="gridLayout_18">
+        <item row="0" column="0">
+         <widget class="QLabel" name="hopTypeLabel">
+          <property name="text">
+           <string>Hop Type</string>
+          </property>
+         </widget>
+        </item>
+        <item row="0" column="1">
+         <widget class="QComboBox" name="hopTypeCombo"/>
+        </item>
+        <item row="1" column="0">
+         <widget class="QLabel" name="waterProfileLabel">
+          <property name="text">
+           <string>Water Profile</string>
+          </property>
+         </widget>
+        </item>
+        <item row="1" column="1">
+         <widget class="QComboBox" name="waterProfileCombo"/>
+        </item>
+       </layout>
+      </widget>
+     </item>
+     <item row="1" column="0">
+      <widget class="QGroupBox" name="mashGroup">
+       <property name="title">
+        <string>Mash</string>
+       </property>
+       <layout class="QGridLayout" name="gridLayout_17">
+        <item row="0" column="0">
+         <widget class="QLabel" name="mashVolLabel">
+          <property name="text">
+           <string>Volume Units</string>
+          </property>
+         </widget>
+        </item>
+        <item row="0" column="1">
+         <widget class="QComboBox" name="mashVolCombo"/>
+        </item>
+        <item row="1" column="0">
+         <widget class="QLabel" name="mashTempLabel">
+          <property name="text">
+           <string>Temp Units</string>
+          </property>
+         </widget>
+        </item>
+        <item row="1" column="1">
+         <widget class="QRadioButton" name="mashTempF">
+          <property name="text">
+           <string>F</string>
+          </property>
+         </widget>
+        </item>
+        <item row="1" column="2">
+         <widget class="QRadioButton" name="mashTempC">
+          <property name="text">
+           <string>C</string>
+          </property>
+         </widget>
+        </item>
+        <item row="2" column="0">
+         <widget class="QLabel" name="boilTempLabel">
+          <property name="text">
+           <string>Boil Temp</string>
+          </property>
+         </widget>
+        </item>
+        <item row="2" column="1">
+         <widget class="QSpinBox" name="boilTempSpin">
+          <property name="maximum">
+           <number>222</number>
+          </property>
+         </widget>
+        </item>
+        <item row="3" column="0">
+         <widget class="QLabel" name="mashRatioLabel">
+          <property name="text">
+           <string>Ratio</string>
+          </property>
+         </widget>
+        </item>
+        <item row="3" column="1">
+         <widget class="QDoubleSpinBox" name="mashRatioSpin">
+          <property name="singleStep">
+           <double>0.010000000000000</double>
+          </property>
+         </widget>
+        </item>
+        <item row="4" column="0">
+         <widget class="QLabel" name="deadSpaceLbl">
+          <property name="text">
+           <string>Dead Space</string>
+          </property>
+         </widget>
+        </item>
+        <item row="4" column="1">
+         <widget class="QDoubleSpinBox" name="deadSpaceSpin">
+          <property name="singleStep">
+           <double>0.100000000000000</double>
+          </property>
+         </widget>
+        </item>
+        <item row="3" column="2">
+         <widget class="QComboBox" name="mashRatioCombo"/>
+        </item>
+        <item row="4" column="2">
+         <widget class="QLabel" name="deadSpaceUnit">
+          <property name="text">
+           <string>TextLabel</string>
+          </property>
+         </widget>
+        </item>
+       </layout>
+       <zorder>boilTempSpin</zorder>
+       <zorder>mashVolLabel</zorder>
+       <zorder>mashVolCombo</zorder>
+       <zorder>mashTempLabel</zorder>
+       <zorder>mashTempF</zorder>
+       <zorder>mashTempC</zorder>
+       <zorder>boilTempLabel</zorder>
+       <zorder>mashRatioLabel</zorder>
+       <zorder>mashRatioSpin</zorder>
+       <zorder>deadSpaceLbl</zorder>
+       <zorder>deadSpaceSpin</zorder>
+       <zorder>mashRatioCombo</zorder>
+       <zorder>deadSpaceUnit</zorder>
+      </widget>
+     </item>
+    </layout>
+   </widget>
+  </widget>
+ </widget>
+ <resources>
+  <include location="SB_Images.qrc"/>
+ </resources>
+ <connections>
+  <connection>
+   <sender>buttonBox</sender>
+   <signal>accepted()</signal>
+   <receiver>Preferences</receiver>
+   <slot>accept()</slot>
+   <hints>
+    <hint type="sourcelabel">
+     <x>248</x>
+     <y>254</y>
+    </hint>
+    <hint type="destinationlabel">
+     <x>157</x>
+     <y>274</y>
+    </hint>
+   </hints>
+  </connection>
+  <connection>
+   <sender>buttonBox</sender>
+   <signal>rejected()</signal>
+   <receiver>Preferences</receiver>
+   <slot>reject()</slot>
+   <hints>
+    <hint type="sourcelabel">
+     <x>316</x>
+     <y>260</y>
+    </hint>
+    <hint type="destinationlabel">
+     <x>286</x>
+     <y>274</y>
+    </hint>
+   </hints>
+  </connection>
+ </connections>
+ <buttongroups>
+  <buttongroup name="carbTempGroup"/>
+  <buttongroup name="evapGroup"/>
+  <buttongroup name="colourGroup"/>
+  <buttongroup name="colourMethGroup"/>
+  <buttongroup name="ibuCalcGroup"/>
+  <buttongroup name="alcCalcGroup"/>
+ </buttongroups>
+</ui>

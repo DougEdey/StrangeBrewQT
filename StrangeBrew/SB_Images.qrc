@@ -1,0 +1,16 @@
+<RCC>
+    <qresource prefix="/menu">
+        <file alias="brew_icon">images/brew.ico</file>
+        <file alias="copy">images/copy.gif</file>
+        <file alias="export">images/export.gif</file>
+        <file alias="find">images/find.gif</file>
+        <file alias="import">images/import.gif</file>
+        <file alias="new">images/new.gif</file>
+        <file alias="open">images/open.gif</file>
+        <file alias="print">images/print.gif</file>
+        <file alias="save">images/save.gif</file>
+        <file alias="saveas">images/saveas.gif</file>
+        <file alias="sb2">images/sb2.gif</file>
+        <file alias="brew_png">images/brew.png</file>
+    </qresource>
+</RCC>

@@ -1,0 +1,389 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<ui version="4.0">
+ <class>ConversionTool</class>
+ <widget class="QDialog" name="ConversionTool">
+  <property name="geometry">
+   <rect>
+    <x>0</x>
+    <y>0</y>
+    <width>400</width>
+    <height>385</height>
+   </rect>
+  </property>
+  <property name="windowTitle">
+   <string>Dialog</string>
+  </property>
+  <layout class="QGridLayout" name="gridLayout">
+   <item row="2" column="0">
+    <widget class="QDialogButtonBox" name="buttonBox">
+     <property name="orientation">
+      <enum>Qt::Horizontal</enum>
+     </property>
+     <property name="standardButtons">
+      <set>QDialogButtonBox::Cancel|QDialogButtonBox::Ok</set>
+     </property>
+    </widget>
+   </item>
+   <item row="1" column="0">
+    <widget class="QTabWidget" name="tabWidget">
+     <property name="currentIndex">
+      <number>3</number>
+     </property>
+     <widget class="QWidget" name="gravity">
+      <attribute name="title">
+       <string>Gravity</string>
+      </attribute>
+      <layout class="QGridLayout" name="gridLayout_3">
+       <item row="2" column="0">
+        <widget class="QLabel" name="platoLabel">
+         <property name="text">
+          <string>Plato</string>
+         </property>
+        </widget>
+       </item>
+       <item row="2" column="1">
+        <widget class="QDoubleSpinBox" name="platoSpin"/>
+       </item>
+       <item row="3" column="0">
+        <widget class="QLabel" name="brixLabel">
+         <property name="text">
+          <string>Brix</string>
+         </property>
+        </widget>
+       </item>
+       <item row="3" column="1">
+        <widget class="QDoubleSpinBox" name="brixSpin"/>
+       </item>
+       <item row="1" column="0">
+        <widget class="QLabel" name="gravLabel">
+         <property name="text">
+          <string>Specific Gravity</string>
+         </property>
+        </widget>
+       </item>
+       <item row="1" column="1">
+        <widget class="QDoubleSpinBox" name="gravSpin">
+         <property name="decimals">
+          <number>3</number>
+         </property>
+         <property name="singleStep">
+          <double>0.001000000000000</double>
+         </property>
+        </widget>
+       </item>
+      </layout>
+     </widget>
+     <widget class="QWidget" name="volume">
+      <attribute name="title">
+       <string>Volume</string>
+      </attribute>
+      <layout class="QGridLayout" name="gridLayout_5">
+       <item row="3" column="1">
+        <widget class="QDoubleSpinBox" name="gallonUSSpin">
+         <property name="maximum">
+          <double>1000.000000000000000</double>
+         </property>
+        </widget>
+       </item>
+       <item row="4" column="0">
+        <widget class="QLabel" name="litresLabel">
+         <property name="text">
+          <string>Litres</string>
+         </property>
+        </widget>
+       </item>
+       <item row="5" column="0">
+        <widget class="QLabel" name="quartUSLabel">
+         <property name="text">
+          <string>Quart US</string>
+         </property>
+        </widget>
+       </item>
+       <item row="5" column="1">
+        <widget class="QDoubleSpinBox" name="quartSpin">
+         <property name="singleStep">
+          <double>1000.000000000000000</double>
+         </property>
+        </widget>
+       </item>
+       <item row="6" column="0">
+        <widget class="QLabel" name="pintLabel">
+         <property name="text">
+          <string>Pint US</string>
+         </property>
+        </widget>
+       </item>
+       <item row="6" column="1">
+        <widget class="QDoubleSpinBox" name="pintUSSpin">
+         <property name="singleStep">
+          <double>1000.000000000000000</double>
+         </property>
+        </widget>
+       </item>
+       <item row="1" column="1">
+        <widget class="QDoubleSpinBox" name="barrelUSSpin"/>
+       </item>
+       <item row="2" column="1">
+        <widget class="QDoubleSpinBox" name="gallonImpSpin">
+         <property name="maximum">
+          <double>1000.000000000000000</double>
+         </property>
+        </widget>
+       </item>
+       <item row="3" column="0">
+        <widget class="QLabel" name="gallonsUSLabel">
+         <property name="text">
+          <string>Gallons US</string>
+         </property>
+        </widget>
+       </item>
+       <item row="2" column="0">
+        <widget class="QLabel" name="gallonUSLabel">
+         <property name="text">
+          <string>Gallons IMP</string>
+         </property>
+        </widget>
+       </item>
+       <item row="1" column="0">
+        <widget class="QLabel" name="barrelUSLabel">
+         <property name="text">
+          <string>Barrel US</string>
+         </property>
+        </widget>
+       </item>
+       <item row="0" column="1">
+        <widget class="QDoubleSpinBox" name="barrelImpSpin"/>
+       </item>
+       <item row="4" column="1">
+        <widget class="QDoubleSpinBox" name="litersSpin">
+         <property name="maximum">
+          <double>1000.000000000000000</double>
+         </property>
+        </widget>
+       </item>
+       <item row="0" column="0">
+        <widget class="QLabel" name="barrelImpLabel">
+         <property name="text">
+          <string>Barrel IMP</string>
+         </property>
+        </widget>
+       </item>
+      </layout>
+     </widget>
+     <widget class="QWidget" name="weight">
+      <attribute name="title">
+       <string>Weight</string>
+      </attribute>
+      <layout class="QGridLayout" name="gridLayout_2">
+       <item row="0" column="0">
+        <widget class="QLabel" name="tonneLabel">
+         <property name="text">
+          <string>Tonne SI</string>
+         </property>
+        </widget>
+       </item>
+       <item row="0" column="1">
+        <widget class="QDoubleSpinBox" name="tonneSpin"/>
+       </item>
+       <item row="7" column="0">
+        <widget class="QLabel" name="poundLabel">
+         <property name="text">
+          <string>Pounds</string>
+         </property>
+        </widget>
+       </item>
+       <item row="5" column="1">
+        <widget class="QDoubleSpinBox" name="kiloSpin"/>
+       </item>
+       <item row="5" column="0">
+        <widget class="QLabel" name="kiloLabel">
+         <property name="text">
+          <string>Kilograms</string>
+         </property>
+        </widget>
+       </item>
+       <item row="7" column="1">
+        <widget class="QDoubleSpinBox" name="poundSpin">
+         <property name="maximum">
+          <double>100000000.000000000000000</double>
+         </property>
+        </widget>
+       </item>
+       <item row="8" column="1">
+        <widget class="QDoubleSpinBox" name="ounceSpin">
+         <property name="maximum">
+          <double>100000000.000000000000000</double>
+         </property>
+        </widget>
+       </item>
+       <item row="8" column="0">
+        <widget class="QLabel" name="ounceLabel">
+         <property name="text">
+          <string>Ounces</string>
+         </property>
+        </widget>
+       </item>
+       <item row="9" column="1">
+        <widget class="QDoubleSpinBox" name="gramSpin">
+         <property name="maximum">
+          <double>100000000.000000000000000</double>
+         </property>
+        </widget>
+       </item>
+       <item row="9" column="0">
+        <widget class="QLabel" name="gramLabel">
+         <property name="text">
+          <string>Grams</string>
+         </property>
+        </widget>
+       </item>
+       <item row="4" column="1">
+        <widget class="QDoubleSpinBox" name="tonSpin"/>
+       </item>
+       <item row="4" column="0">
+        <widget class="QLabel" name="tonLabel">
+         <property name="text">
+          <string>Ton S</string>
+         </property>
+        </widget>
+       </item>
+      </layout>
+     </widget>
+     <widget class="QWidget" name="pressure">
+      <attribute name="title">
+       <string>Pressure</string>
+      </attribute>
+      <layout class="QGridLayout" name="gridLayout_4">
+       <item row="8" column="0">
+        <widget class="QLabel" name="atmoLabel">
+         <property name="text">
+          <string>Atmospheres</string>
+         </property>
+        </widget>
+       </item>
+       <item row="8" column="1">
+        <widget class="QDoubleSpinBox" name="atmoSpin"/>
+       </item>
+       <item row="0" column="0">
+        <widget class="QLabel" name="psiLabel">
+         <property name="text">
+          <string>Pounds Per Square Inch</string>
+         </property>
+        </widget>
+       </item>
+       <item row="2" column="0">
+        <widget class="QLabel" name="kpLabel">
+         <property name="text">
+          <string>KiloPascals</string>
+         </property>
+        </widget>
+       </item>
+       <item row="0" column="1">
+        <widget class="QDoubleSpinBox" name="psiSpin"/>
+       </item>
+       <item row="5" column="0">
+        <widget class="QLabel" name="barLabel">
+         <property name="text">
+          <string>Bar</string>
+         </property>
+        </widget>
+       </item>
+       <item row="5" column="1">
+        <widget class="QDoubleSpinBox" name="barSpin"/>
+       </item>
+       <item row="2" column="1">
+        <widget class="QDoubleSpinBox" name="kpSpin"/>
+       </item>
+      </layout>
+     </widget>
+     <widget class="QWidget" name="temperature">
+      <attribute name="title">
+       <string>Temperature</string>
+      </attribute>
+      <widget class="QLabel" name="cLabel">
+       <property name="geometry">
+        <rect>
+         <x>60</x>
+         <y>70</y>
+         <width>57</width>
+         <height>15</height>
+        </rect>
+       </property>
+       <property name="text">
+        <string>Celsius</string>
+       </property>
+      </widget>
+      <widget class="QLabel" name="fLabel">
+       <property name="geometry">
+        <rect>
+         <x>60</x>
+         <y>100</y>
+         <width>57</width>
+         <height>15</height>
+        </rect>
+       </property>
+       <property name="text">
+        <string>Fahrenheit</string>
+       </property>
+      </widget>
+      <widget class="QDoubleSpinBox" name="celsiusSpin">
+       <property name="geometry">
+        <rect>
+         <x>150</x>
+         <y>60</y>
+         <width>66</width>
+         <height>24</height>
+        </rect>
+       </property>
+      </widget>
+      <widget class="QDoubleSpinBox" name="fahrenheitSpin">
+       <property name="geometry">
+        <rect>
+         <x>150</x>
+         <y>90</y>
+         <width>66</width>
+         <height>24</height>
+        </rect>
+       </property>
+      </widget>
+     </widget>
+    </widget>
+   </item>
+  </layout>
+ </widget>
+ <resources/>
+ <connections>
+  <connection>
+   <sender>buttonBox</sender>
+   <signal>accepted()</signal>
+   <receiver>ConversionTool</receiver>
+   <slot>accept()</slot>
+   <hints>
+    <hint type="sourcelabel">
+     <x>248</x>
+     <y>254</y>
+    </hint>
+    <hint type="destinationlabel">
+     <x>157</x>
+     <y>274</y>
+    </hint>
+   </hints>
+  </connection>
+  <connection>
+   <sender>buttonBox</sender>
+   <signal>rejected()</signal>
+   <receiver>ConversionTool</receiver>
+   <slot>reject()</slot>
+   <hints>
+    <hint type="sourcelabel">
+     <x>316</x>
+     <y>260</y>
+    </hint>
+    <hint type="destinationlabel">
+     <x>286</x>
+     <y>274</y>
+    </hint>
+   </hints>
+  </connection>
+ </connections>
+</ui>
