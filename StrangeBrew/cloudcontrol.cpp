@@ -7,7 +7,7 @@ CloudControl::CloudControl(QObject *parent) : QObject(parent)
 
 QString CloudControl::getBaseURL() {
     QSettings opts("Doug Edey", "StrangeBrew");
-    QString baseURL = opts.value("Cloud/URL").toString();
+    QString baseURL = opts.value("Cloud/URL", "strangebrewcloud.appspot.com").toString();
     if (baseURL.startsWith("strangebrew://")) {
         baseURL.replace("strangebrew://", "http://");
     }

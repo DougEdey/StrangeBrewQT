@@ -1,12 +1,21 @@
 #include "strangebrew.h"
 
-
 StrangeBrew::StrangeBrew(QWidget *parent) :
     //preferences(),
     QMainWindow(parent),
     ui(new Ui::StrangeBrew)
 {
     ui->setupUi(this);
+    qDebug() << CONVERTER_weightUnits.size();
+    QUANTITY_volUnits = Quantity::initVolUnits();
+    QUANTITY_weightUnits = Quantity::initWeightUnits();
+    QUANTITY_pressureUnits = Quantity::initPressureUnits();
+    CONVERTER_weightUnits = Converter::initWeights();
+    CONVERTER_weightUnitsFull = Converter::initWeights("full");
+    CONVERTER_weightUnitsAbrv = Converter::initWeights("abrv");
+
+
+
     ui->boilVolumeUnitsCombo->blockSignals(true);
     QCoreApplication::setApplicationName("StrangeBrew");
     QCoreApplication::setOrganizationDomain("http://github.com/DougEdey/StrangeBrew");
@@ -14,9 +23,18 @@ StrangeBrew::StrangeBrew(QWidget *parent) :
 
     QTextCodec::setCodecForLocale(QTextCodec::codecForName("UTF-8"));
 
-    preferences = new QSettings("StrangeBrew", "StrangeBrew");
-
+    preferences = new QSettings("Doug Edey", "StrangeBrew");
     Database();
+    Database::readDB(preferences->value("Style/Year", "2004").toString());
+
+    if (preferences->value("Cloud/URL", "").toString() == "") {
+
+        // First run, prompt for settings
+        QMessageBox::about(this, "First run", "Since this is your first run, please check your prefences");
+        Preferences *p = new Preferences();
+        p->exec();
+        delete p;
+    }
     Database::readDB(preferences->value("Style/Year", "2004").toString());
 
     // Setup the comments filter for loss of focus

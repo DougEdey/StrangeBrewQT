@@ -19,27 +19,27 @@ Recipe::Recipe()
 
     boilMinutes = opts.value("Times/BoilTime").toInt();
 
-    efficiency = opts.value("Calculations/Efficiency").toDouble();
-    attenuation = opts.value("Calculations/Attenuation").toDouble();
-    ibuCalcMethod = opts.value("Calculations/IBUCalcMethod");
-    ibuHopUtil = opts.value("Calculations/HopsUtil");
-    fwhTime = opts.value("Calculations/FWHTime");
-    mashHopTime = opts.value("Calculations/MashHopTime");
-    dryHopTime = opts.value("Calculations/DryHopTime");
+    efficiency = opts.value("Calculations/Efficiency", "75").toDouble();
+    attenuation = opts.value("Calculations/Attenuation", "75").toDouble();
+    ibuCalcMethod = opts.value("Calculations/IBUCalcMethod", TINSETH);
+    ibuHopUtil = opts.value("Calculations/HopsUtil", "4.15");
+    fwhTime = opts.value("Calculations/FWHTime", "1");
+    mashHopTime = opts.value("Calculations/MashHopTime", "2");
+    dryHopTime = opts.value("Calculations/DryHopTime", "0");
     hopUnits = opts.value("Calculations/HopsU", "oz");
     maltUnits = opts.value("Calculations/MaltU", "lb");
-    evapMethod = opts.value("Calculations/EvapCalcMethod");
-    evap = opts.value("Calculations/Evaporation").toDouble();
-    alcMethod = opts.value("Calculations/AlcCalcMethod");
-    colourMethod = opts.value("Calculations/ColourMethod");
-    pelletHopPct = opts.value("Calculations/PelletHopsPct");
+    evapMethod = opts.value("Calculations/EvapCalcMethod", "Constant");
+    evap = opts.value("Calculations/Evaporation", "1.5").toDouble();
+    alcMethod = opts.value("Calculations/AlcCalcMethod", ALC_BY_VOLUME);
+    colourMethod = opts.value("Calculations/ColourMethod", "1");
+    pelletHopPct = opts.value("Calculations/PelletHopsPct", "6");
 
-    brewer = opts.value("Labels/Brewer").toString();
+    brewer = opts.value("Labels/Brewer", "Unknown").toString();
 
-    bottleU = opts.value("Carbonation/BottleU");
-    bottleSize = opts.value("Carbonation/BottleSize");
-    bottleTemp = opts.value("Carbonation/BottleTemp");
-    servTemp = opts.value("Carbonation/ServTemp");
+    bottleU = opts.value("Carbonation/BottleU", CONVERTER_FL_OZ);
+    bottleSize = opts.value("Carbonation/BottleSize", "12");
+    bottleTemp = opts.value("Carbonation/BottleTemp", "68");
+    servTemp = opts.value("Carbonation/ServTemp", "45");
     targetVol = opts.value("Carbonation/VolsCO2");
 
     primeSugar.setUnits(opts.value("Carbonation/SugarU").toString());

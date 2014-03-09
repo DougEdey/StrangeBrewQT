@@ -46,6 +46,8 @@ Preferences::Preferences(QWidget *parent) :
 
 void Preferences::loadSettings() {
     QSettings settings("Doug Edey", "StrangeBrew");
+
+    cloudURL = settings.value("Cloud/URL", "strangebrewcloud.appspot.com").toString();
     //Calculations
     ibuCalcMethod = settings.value("Calculations/IBUCalcMethod", TINSETH).toString();
     alcCalcMethod = settings.value("Calculations/AlcCalcMethod", ALC_BY_VOLUME).toString();
@@ -148,7 +150,7 @@ void Preferences::loadSettings() {
 void Preferences::saveSettings() {
     QSettings settings("Doug Edey", "StrangeBrew");
     //Calculations
-
+    settings.setValue("Cloud/URL", cloudURL);
     settings.setValue("Calculations/IBUCalcMethod", ibuCalcMethod);
     settings.setValue("Calculations/AlcCalcMethod", alcCalcMethod);
     settings.setValue("Calculations/ColourMethod", colourMethod);

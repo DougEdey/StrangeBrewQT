@@ -31,7 +31,9 @@ defineTest(copyAllToDestdir) {
         win32:FILE ~= s,/,\\,g
         win32:DDIR ~= s,/,\\,g
 
-        win32 { QMAKE_POST_LINK += $$QMAKE_COPY -y $$quote($$FILE) $$quote($$DDIR) $$escape_expand(\\n\\t) }
+        win32 {
+            #QMAKE_POST_LINK += xcopy $$quote($$FILE) $$quote($$DDIR) $$escape_expand(\\n\\t)
+        }
         unix {
             QMAKE_POST_LINK += $$QMAKE_COPY -r $$quote($$FILE) $$quote($$DDIR) $$escape_expand(\\n\\t)
         }
@@ -54,7 +56,6 @@ SOURCES += main.cpp\
         strangebrew.cpp \
     sbstringutils.cpp \
     importxml.cpp \
-    recipe.cpp \
     options.cpp \
     hop.cpp \
     fermentable.cpp \
@@ -104,6 +105,7 @@ SOURCES += main.cpp\
     tool_dialogs/extractdialog.cpp \
     tool_dialogs/hydrodialog.cpp \
     tool_dialogs/conversiontool.cpp \
+    recipe.cpp \
     remoterecipes.cpp \
     recipemodel.cpp \
     cloudcontrol.cpp
@@ -197,5 +199,18 @@ linux64 {
     DESTDIR = ../build/linux/x64
 }
 
+winx86 {
+    DESTDIR = ..\build\windows\x86
+}
+
+winx64 {
+    DESTDIR = ..\build\windows\x64
+}
+
 copyAllToDestdir(../data)
 copyAllToDestdir(../Recipes)
+
+win32 {
+    QMAKE_POST_LINK += xcopy ..\data $$DESTDIR\data /E /Y $$escape_expand(\\n\\t)
+    QMAKE_POST_LINK += xcopy ..\Recipes $$DESTDIR\Recipes /E /Y $$escape_expand(\\n\\t)
+}

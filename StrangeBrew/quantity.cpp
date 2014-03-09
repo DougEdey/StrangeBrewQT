@@ -7,9 +7,9 @@ Quantity::Quantity()
     abrv = "";
 }
 
-QList<Converter> QUANTITY_volUnits = Quantity::initVolUnits();
-QList<Converter> QUANTITY_weightUnits = Quantity::initWeightUnits();
-QList<Converter> QUANTITY_pressureUnits = Quantity::initPressureUnits();
+QList<Converter> QUANTITY_volUnits;// = Quantity::initVolUnits();
+QList<Converter> QUANTITY_weightUnits;// = Quantity::initWeightUnits();
+QList<Converter> QUANTITY_pressureUnits;// = Quantity::initPressureUnits();
 QString QUANTITY_WEIGHT = "weight";
 QString QUANTITY_VOL = "volume";
 QString QUANTITY_PRESSURE = "pressure";

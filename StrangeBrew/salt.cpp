@@ -22,7 +22,7 @@ QString SALT = "Salt";
 QString BAKING_SODA = "Baking Soda";
 QString CHALK = "Chalk";
 
-QList<Salt> salts = Salt::initSalts();
+QList<Salt> salts;
 
 Salt::Salt()
 {
@@ -31,7 +31,7 @@ Salt::Salt()
 
 Salt::Salt(QString name, QString commonName, QString chemicalName,
         double gramsPerTsp, QList<ChemicalEffect> chemEff) {
-
+    Converter::initWeights();
     this->name = name;
     this->commonName = commonName;
     this->chemicalName = chemicalName;
@@ -177,7 +177,9 @@ double Salt::getEffectByChem(QString chem) {
 }
 
 Salt Salt::getSaltByName(QString name) {
-
+    if (salts.size() == 0) {
+        salts = initSalts();
+    }
     for (int i = 0; i < salts.size(); i++) {
         if (salts.at(i).getName() == name ) {
             return salts.at(i);

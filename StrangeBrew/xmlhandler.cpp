@@ -45,6 +45,7 @@ bool XMLHandler::endDocument() {
  */
 bool XMLHandler::startElement(const QString &namespaceURI, const QString &localName,
                               const QString &qName, const QXmlAttributes &atts) {
+    Q_UNUSED(namespaceURI);
     QString eName = localName; // element unit
 
     if (QString::compare(eName, "") == 0)
@@ -224,6 +225,9 @@ void XMLHandler::sbStartElement(QString eName) {
  */
 bool XMLHandler::endElement(const QString &namespaceURI, const QString &localName, const QString &qName)
 {
+    Q_UNUSED(namespaceURI);
+    Q_UNUSED(localName);
+
     qDebug() << "End Element " << currentList << ": " << qName;
     if (importType == "STRANGEBREW") {
         if ((QString::compare(qName, "ITEM", Qt::CaseInsensitive) == 0)
