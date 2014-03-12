@@ -157,7 +157,7 @@ private slots:
 private:
     Ui::Preferences *ui;
 
-
+    QString cloudURL;
     QString ibuCalcMethod;
     QString alcCalcMethod;
     QString evapCalcMethod;

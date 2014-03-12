@@ -1,6 +1,4 @@
 #include "converter.h"
-
-// volumes
 QString CONVERTER_FL_OUNCES = "fl. ounces";
 QString CONVERTER_FL_OZ = "fl. oz";
 QString CONVERTER_GALLONS_US = "gallons US";
@@ -40,9 +38,11 @@ QString CONVERTER_KILOGRAM = "kilogram";
 QString CONVERTER_DEFAULT_WEIGHT = CONVERTER_G;
 QString CONVERTER_DEFAULT_VOLUME = CONVERTER_L;
 
-QStringList CONVERTER_weightUnits = Converter::initWeights();
-QStringList CONVERTER_weightUnitsAbrv = Converter::initWeights("abrv");
-QStringList CONVERTER_weightUnitsFull = Converter::initWeights("full");
+QStringList CONVERTER_weightUnits;// = Converter::initWeights();
+QStringList CONVERTER_weightUnitsAbrv;// = Converter::initWeights("abrv");
+QStringList CONVERTER_weightUnitsFull;// = Converter::initWeights("full");
+
+// volumes
 
 Converter::Converter(QString n, QString a, double t) {
     unit = n;
