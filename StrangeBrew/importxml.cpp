@@ -3,6 +3,7 @@
 ImportXML::ImportXML(QString type)
 {
     this->type = type;
+    SBcontentHandler = NULL;
 }
 
 ImportXML::~ImportXML() {

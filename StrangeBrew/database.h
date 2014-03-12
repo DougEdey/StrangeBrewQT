@@ -34,17 +34,17 @@ private:
     static QString lastErrorString;
 
 public:
-    static QList<Hop> hopsDB;
-    static QList<Hop> stockHopsDB;
+    static QList<Hop*> hopsDB;
+    static QList<Hop*> stockHopsDB;
 
-    static QList<Fermentable> fermDB;
-    static QList<Fermentable> stockFermDB;
+    static QList<Fermentable*> fermDB;
+    static QList<Fermentable*> stockFermDB;
 
-    static QList<Yeast> yeastDB;
-    static QList<Style> styleDB;
-    static QList<Misc> miscDB;
-    static QList<PrimeSugar> primeSugarDB;
-    static QList<WaterProfile> waterDB;
+    static QList<Yeast*> yeastDB;
+    static QList<Style*> styleDB;
+    static QList<Misc*> miscDB;
+    static QList<PrimeSugar*> primeSugarDB;
+    static QList<WaterProfile*> waterDB;
 
     static QString dbName;
     static QString styleFileName;
@@ -58,24 +58,24 @@ public:
     static QSqlDatabase connectDB();
     static QString lastError();
 
-    static int inDB(Yeast o);
-    static int inDB(Fermentable o);
-    static int inDB(Hop o);
-    static int inDB(Misc o);
-    static int inDB(Style o);
-    static int inDB(PrimeSugar o);
-    static int inDB(WaterProfile o);
+    static int inDB(Yeast *o);
+    static int inDB(Fermentable *o);
+    static int inDB(Hop *o);
+    static int inDB(Misc *o);
+    static int inDB(Style *o);
+    static int inDB(PrimeSugar *o);
+    static int inDB(WaterProfile *o);
 
     static bool readDB(QString styleYear);
 
     static bool readFermentables();
     static bool writeFermentable(Fermentable &f);
-    static bool writeFermentables(QList<Fermentable> replacement);
+    static bool writeFermentables(QList<Fermentable*> replacement);
     static bool writeFermentables();
 
     static bool readHops();
     static bool writeHop(Hop &h);
-    static bool writeHops(QList<Hop> replacement);
+    static bool writeHops(QList<Hop*> replacement);
     static bool writeHops();
 
     static bool readYeast();

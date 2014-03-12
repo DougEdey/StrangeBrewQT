@@ -13,6 +13,7 @@ int MiscModel::columnCount(const QModelIndex &) const {
 }
 
 int MiscModel::rowCount(const QModelIndex &parent) const {
+    Q_UNUSED(parent);
     if (m_data != NULL) {
         return m_data->count();
     }
@@ -21,10 +22,10 @@ int MiscModel::rowCount(const QModelIndex &parent) const {
 
 QVariant MiscModel::data(const QModelIndex &index, int role) const {
 
-    Misc m = m_data->at(index.row());
+    Misc *m = m_data->at(index.row());
 
     if (role == Qt::ToolTipRole) {
-        return SBStringUtils::multiLineToolTip(120, m.getComments());
+        return SBStringUtils::multiLineToolTip(120, m->getComments());
     }
 
     if (role != Qt::DisplayRole && role != Qt::EditRole)
@@ -32,17 +33,17 @@ QVariant MiscModel::data(const QModelIndex &index, int role) const {
 
     switch (index.column()) {
     case 0:
-        return m.getName();
+        return m->getName();
     case 1:
-        return m.getAmount();
+        return m->getAmount();
     case 2:
-        return m.getUnits();
+        return m->getUnits();
     case 3:
-        return m.getCostPerU();
+        return m->getCostPerU();
     case 4:
-        return m.getStage();
+        return m->getStage();
     case 5:
-        return m.getTime();
+        return m->getTime();
 
     }
 
@@ -71,7 +72,8 @@ QVariant MiscModel::headerData(int section, Qt::Orientation orientation, int rol
 }
 
 bool MiscModel::setData(const QModelIndex &index, const QVariant &value, int role) {
-    Misc m = m_data->at(index.row());
+    Q_UNUSED(role);
+    Misc *m = m_data->at(index.row());
 
     qDebug() << index.row() << ":" << index.column() << " " << value.toString();
 
@@ -79,32 +81,32 @@ bool MiscModel::setData(const QModelIndex &index, const QVariant &value, int rol
     case 0: {
         // Find the misc item with this name
         // If the name has changed
-        if (value.toString().compare(m.toString()) != 0) {
+        if (value.toString().compare(m->toString()) != 0) {
             Misc *newMisc = Database::findMisc(value.toString());
-            if (newMisc == &Database::miscDB.last()) {
+            if (newMisc == Database::miscDB.last()) {
                 return false;
             }
-            m.setName(value.toString());
-            m.setCost((*newMisc).getCostPerU());
-            m.setComments((*newMisc).getComments());
+            m->setName(value.toString());
+            m->setCost((*newMisc).getCostPerU());
+            m->setComments((*newMisc).getComments());
         }
         break;
     }
     case 1:
-        m.setAmount(value.toDouble());
+        m->setAmount(value.toDouble());
         break;
     case 2:
-        m.setUnits(value.toString());
+        m->setUnits(value.toString());
         break;
     case 3:
-        m.setCost(value.toDouble());
+        m->setCost(value.toDouble());
         break;
     case 4:
         qDebug() << "Setting stage: " << value.toString();
-        m.setStage(value.toString());
+        m->setStage(value.toString());
         break;
     case 5:
-        m.setTime(value.toInt());
+        m->setTime(value.toInt());
         break;
     }
 
@@ -116,7 +118,7 @@ bool MiscModel::setData(const QModelIndex &index, const QVariant &value, int rol
     return true;
 }
 
-void MiscModel::dataList(QList<Misc> *miscList)
+void MiscModel::dataList(QList<Misc*> *miscList)
 {
     beginResetModel();
     m_data = miscList;
@@ -125,11 +127,12 @@ void MiscModel::dataList(QList<Misc> *miscList)
 }
 
 bool MiscModel::insertRow(int row, const QModelIndex &parent) {
-     beginInsertRows(QModelIndex(), row, row);
-     Misc m;
-     m_data->append(m);
-     endInsertRows();
-     return true;
+    Q_UNUSED(parent);
+    beginInsertRows(QModelIndex(), row, row);
+    Misc *m = new Misc();
+    m_data->append(m);
+    endInsertRows();
+    return true;
 }
 
 

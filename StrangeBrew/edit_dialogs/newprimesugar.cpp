@@ -22,7 +22,7 @@ void NewPrimeSugar::on_buttonBox_accepted()
     if (newPrime == NULL) {
         newPrime = new PrimeSugar();
         newPrime->setName(ui->nameEditCombo->currentText());
-        Database::primeSugarDB.append(*newPrime);
+        Database::primeSugarDB.append(newPrime);
     }
 
     newPrime->setYield(ui->yieldSpin->value());

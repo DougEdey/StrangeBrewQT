@@ -9,7 +9,7 @@ private:
     double yield;
 
 public:
-    PrimeSugar();
+    explicit PrimeSugar(QObject *parent = 0);
     double getYield();
     void setYield(double y);
 };

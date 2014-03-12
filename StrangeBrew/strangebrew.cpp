@@ -8,6 +8,16 @@ StrangeBrew::StrangeBrew(QWidget *parent) :
 {
     ui->setupUi(this);
     ui->boilVolumeUnitsCombo->blockSignals(true);
+
+    mcbid = NULL;
+    miscid = NULL;
+    mashid = NULL;
+    fermid = NULL;
+    hcbid = NULL;
+
+    recipeXML = NULL;
+    currentRecipe = NULL;
+
     QCoreApplication::setApplicationName("StrangeBrew");
     QCoreApplication::setOrganizationDomain("http://github.com/DougEdey/StrangeBrew");
     QCoreApplication::setOrganizationName("Doug Edey");
@@ -74,18 +84,16 @@ StrangeBrew::StrangeBrew(QWidget *parent) :
     ui->mashStepsTable->setModel(mashModel);
     ui->fermTable->setModel(fermModel);
 
-    Q_FOREACH(Yeast item, Database::yeastDB) {
-        ui->yeastCombo->addItem(item.getName());
+    Q_FOREACH(Yeast *item, Database::yeastDB) {
+        ui->yeastCombo->addItem(item->getName());
     }
 
-    Q_FOREACH(Style item, Database::styleDB) {
-        ui->styleCombo->addItem(item.getName());
+    Q_FOREACH(Style *item, Database::styleDB) {
+        ui->styleCombo->addItem(item->getName());
     }
 
-    Q_FOREACH(PrimeSugar item, Database::primeSugarDB) {
-        qDebug() << "Prime Sugar " << item.getName();
-        ui->primeSugarCombo->addItem(item.getName());
-
+    Q_FOREACH(PrimeSugar *item, Database::primeSugarDB) {
+        ui->primeSugarCombo->addItem(item->getName());
     }
 
     // manual setup for the IDs
@@ -793,21 +801,21 @@ bool StrangeBrew::eventFilter(QObject *object, QEvent *event)
             QModelIndexList selectedRows = ui->miscIngredientsList->selectionModel()->selectedIndexes();
             for (int i = 0; i < selectedRows.length(); i++) {
                 int curRow = selectedRows.at(i).row();
-                Misc mSelected = currentRecipe->getMisc(curRow);
+                Misc *mSelected = currentRecipe->getMisc(curRow);
 
-                if (mSelected.getComments().compare(ui->commentsText->toPlainText()) == 0)
+                if (mSelected->getComments().compare(ui->commentsText->toPlainText()) == 0)
                     return false;
 
                 QMessageBox::StandardButton reply;
                 reply = QMessageBox::question(this,
                                                "Save Comment?",
-                                               "Update comments for misc ingredient " + mSelected.getName(),
+                                               "Update comments for misc ingredient " + mSelected->getName(),
                                               QMessageBox::Yes | QMessageBox::No);
 
                 if (reply == QMessageBox::Yes) {
-                    mSelected.setComments(ui->commentsText->toPlainText());
+                    mSelected->setComments(ui->commentsText->toPlainText());
                 } else {
-                    ui->commentsText->setText(mSelected.getComments());
+                    ui->commentsText->setText(mSelected->getComments());
                 }
 
                 currentRecipe->getMiscList()->replace(curRow, mSelected);
@@ -924,18 +932,18 @@ void StrangeBrew::updateCostPanel() {
     ui->bottleCostValue->setText(QString::number(bottleCost, 'f', 2));
 }
 
-QList<Style> StrangeBrew::getStyleMatches(){
+QList<Style*> StrangeBrew::getStyleMatches(){
 
-    QList<Style> styles;
-    Style s;
+    QList<Style*> styles;
+    Style *s;
 
     for (int i=0; i< Database::styleDB.size(); i++){
         s = Database::styleDB[i];
 
-        if (currentRecipe->getEstOg() > s.getOgLow() && currentRecipe->getEstOg() < s.getOgHigh()
-            && currentRecipe->getAlcohol() > s.getAlcLow() && currentRecipe->getAlcohol() < s.getAlcHigh()
-            && currentRecipe->getColour(SRM) > s.getSrmLow() && currentRecipe->getColour(SRM) < s.getSrmHigh()
-            && currentRecipe->getIbu() > s.getIbuLow() && currentRecipe->getIbu() < s.getIbuHigh() ) {
+        if (currentRecipe->getEstOg() > s->getOgLow() && currentRecipe->getEstOg() < s->getOgHigh()
+            && currentRecipe->getAlcohol() > s->getAlcLow() && currentRecipe->getAlcohol() < s->getAlcHigh()
+            && currentRecipe->getColour(SRM) > s->getSrmLow() && currentRecipe->getColour(SRM) < s->getSrmHigh()
+            && currentRecipe->getIbu() > s->getIbuLow() && currentRecipe->getIbu() < s->getIbuHigh() ) {
             styles.append(s);
         }
 
@@ -948,33 +956,33 @@ void StrangeBrew::on_stylesList_activated(const QModelIndex &index)
 {
     // Activated a style in the list view
     qDebug() << "Style list activated: " << index.row();
-    Style s = styleMatches[index.row()];
+    Style *s = styleMatches[index.row()];
     qDebug() << ui->ibuProgress->value();
-    ui->ibuStyleLow->setText(QString::number(s.getIbuLow(), 'f', 2));
-    ui->ibuStyleHigh->setText(QString::number(s.getIbuHigh(), 'f', 2));
-    ui->ibuProgress->setMinimum(QString::number(s.getIbuLow(), 'f', 0).toInt());
-    ui->ibuProgress->setMaximum(QString::number(s.getIbuHigh(), 'f', 0).toInt());
+    ui->ibuStyleLow->setText(QString::number(s->getIbuLow(), 'f', 2));
+    ui->ibuStyleHigh->setText(QString::number(s->getIbuHigh(), 'f', 2));
+    ui->ibuProgress->setMinimum(QString::number(s->getIbuLow(), 'f', 0).toInt());
+    ui->ibuProgress->setMaximum(QString::number(s->getIbuHigh(), 'f', 0).toInt());
     qDebug() << ui->ibuProgress->value();
 
 
-    ui->colourStyleLow->setText(QString::number(s.getSrmLow(), 'f', 2));
-    ui->colourStyleHigh->setText(QString::number(s.getSrmHigh(), 'f', 2));
-    ui->colourProgress->setRange(QString::number(s.getSrmLow()*10, 'f', 0).toInt(),
-                                QString::number(s.getSrmHigh()*10, 'f', 0).toInt());
+    ui->colourStyleLow->setText(QString::number(s->getSrmLow(), 'f', 2));
+    ui->colourStyleHigh->setText(QString::number(s->getSrmHigh(), 'f', 2));
+    ui->colourProgress->setRange(QString::number(s->getSrmLow()*10, 'f', 0).toInt(),
+                                QString::number(s->getSrmHigh()*10, 'f', 0).toInt());
     ui->colourProgress->setValue(QString::number(currentRecipe->getColour("SRM") * 10, 'f', 0).toInt());
 
 
-    ui->abvStyleLow->setText(QString::number(s.getAlcLow(), 'f', 2));
-    ui->abvStyleHigh->setText(QString::number(s.getAlcHigh(), 'f', 2));
-    ui->abvProgress->setRange(QString::number(s.getAlcLow()*100, 'f', 0).toInt(),
-                            QString::number(s.getAlcHigh()*100, 'f', 0).toInt());
+    ui->abvStyleLow->setText(QString::number(s->getAlcLow(), 'f', 2));
+    ui->abvStyleHigh->setText(QString::number(s->getAlcHigh(), 'f', 2));
+    ui->abvProgress->setRange(QString::number(s->getAlcLow()*100, 'f', 0).toInt(),
+                            QString::number(s->getAlcHigh()*100, 'f', 0).toInt());
     ui->abvProgress->setValue(QString::number(currentRecipe->getAlcohol() * 100, 'f', 0).toInt());
 
 
-    ui->ogStyleLow->setText(QString::number(s.getOgLow(), 'f', 3));
-    ui->ogStyleHigh->setText(QString::number(s.getOgHigh(), 'f', 3));
-    ui->ogProgress->setMinimum(QString::number(s.getOgLow()*1000, 'f', 0).toInt());
-    ui->ogProgress->setMaximum(QString::number(s.getOgHigh()*1000, 'f', 0).toInt());
+    ui->ogStyleLow->setText(QString::number(s->getOgLow(), 'f', 3));
+    ui->ogStyleHigh->setText(QString::number(s->getOgHigh(), 'f', 3));
+    ui->ogProgress->setMinimum(QString::number(s->getOgLow()*1000, 'f', 0).toInt());
+    ui->ogProgress->setMaximum(QString::number(s->getOgHigh()*1000, 'f', 0).toInt());
     ui->ogProgress->setValue(QString::number(currentRecipe->getEstOg() * 1000, 'f', 0).toInt());
 
 }
@@ -1023,7 +1031,7 @@ void StrangeBrew::on_deleteHop_clicked()
 void StrangeBrew::on_miscIngredientsList_clicked(const QModelIndex &index)
 {
     // Set the Comments text to this items comments
-    ui->commentsText->setPlainText(currentRecipe->getMisc(index.row()).getComments());
+    ui->commentsText->setPlainText(currentRecipe->getMisc(index.row())->getComments());
 }
 
 void StrangeBrew::on_delMisc_clicked()
@@ -1353,7 +1361,7 @@ void StrangeBrew::on_styleCombo_currentIndexChanged(const QString &arg1)
 void StrangeBrew::on_yeastCombo_currentIndexChanged(const QString &arg1)
 {
     if (arg1.compare("Yeast", Qt::CaseInsensitive) != 0)  {
-        currentRecipe->setYeast(arg1);
+        currentRecipe->setYeast(Database::findYeast(arg1));
     }
     updateTopUI();
 }

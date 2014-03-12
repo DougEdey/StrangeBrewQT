@@ -146,21 +146,21 @@ bool Hop::operator==(const QString &other) const {
     return (this->getName() == other);
 }
 
-bool Hop::lessThan(Hop a, Hop b) {
-    if (a.minutes == b .minutes) {
+bool Hop::lessThan(Hop *a, Hop *b) {
+    if (a->minutes == b->minutes) {
         return a < b;
     }
 
-    return a.minutes < b.minutes;
+    return a->minutes < b->minutes;
 }
 
 
-bool Hop::moreThan(Hop a, Hop b) {
-    if (a.minutes == b .minutes) {
+bool Hop::moreThan(Hop *a, Hop *b) {
+    if (a->minutes == b->minutes) {
         return a > b;
     }
 
-    return a.minutes > b.minutes;
+    return a->minutes > b->minutes;
 }
 
 QString Hop::toString() {

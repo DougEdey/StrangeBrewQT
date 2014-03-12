@@ -12,8 +12,8 @@
 class NewIngrTable : public QAbstractTableModel
 {
     Q_OBJECT
-    QList<Ingredient*> *m_data = NULL;
-    std::vector<bool> *m_enabled = NULL;
+    QList<Ingredient*> *m_data;
+    std::vector<bool> *m_enabled;
 public:
     explicit NewIngrTable(QObject *parent = 0);
 

@@ -8,10 +8,10 @@ Yeast::Yeast(QString name) : Ingredient(name) {
 
 }
 
-Yeast Yeast::getAlternate() {
-    return *altYeast;
+Yeast *Yeast::getAlternate() {
+    return altYeast;
 }
 
-void Yeast::setAlternate(Yeast alt) {
-    *altYeast = alt;
+void Yeast::setAlternate(Yeast *alt) {
+   altYeast = alt;
 }

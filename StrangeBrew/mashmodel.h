@@ -11,7 +11,7 @@
 class MashModel : public QAbstractTableModel
 {
     Q_OBJECT
-    Mash *m_data = NULL;
+    Mash *m_data;
 public:
     explicit MashModel(QObject *parent = 0);
 

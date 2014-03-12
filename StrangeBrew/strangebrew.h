@@ -56,15 +56,15 @@ class StrangeBrew : public QMainWindow
     NotesModel *notesModel;
     MashModel *mashModel;
     FermModel *fermModel;
-    QList<Style> styleMatches;
+    QList<Style*> styleMatches;
 
-    MaltItemDelegate *mcbid = NULL;
-    MiscItemDelegate *miscid = NULL;
-    MashItemDelegate *mashid = NULL;
-    FermItemDelegate *fermid = NULL;
-    HopItemDelegate *hcbid = NULL;
+    MaltItemDelegate *mcbid;
+    MiscItemDelegate *miscid;
+    MashItemDelegate *mashid;
+    FermItemDelegate *fermid;
+    HopItemDelegate *hcbid;
 
-    ImportXML *recipeXML = NULL;
+    ImportXML *recipeXML;
 
 public:
     explicit StrangeBrew(QWidget *parent = 0);
@@ -76,7 +76,7 @@ public:
 
 
     void updateTopUI();
-    QList<Style> getStyleMatches();
+    QList<Style*> getStyleMatches();
     void updateStylePanel();
     void focusLostOnComments(const QFocusEvent &event);
     bool eventFilter(QObject *object, QEvent *event);
@@ -218,7 +218,7 @@ private slots:
 
 private:
     QSettings *preferences;
-    Recipe *currentRecipe = NULL;
+    Recipe *currentRecipe;
     Ui::StrangeBrew *ui;
     void setupConnections();
 

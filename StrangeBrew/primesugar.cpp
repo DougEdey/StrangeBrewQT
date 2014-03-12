@@ -1,6 +1,6 @@
 #include "primesugar.h"
 
-PrimeSugar::PrimeSugar()
+PrimeSugar::PrimeSugar(QObject *parent) : Ingredient(parent)
 {
     yield = 1.0;
 }

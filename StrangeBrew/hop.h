@@ -45,8 +45,8 @@ public:
     virtual bool operator >(const Hop &other) const;
     virtual bool operator ==(const Hop &other) const;
     virtual bool operator ==(const QString &other) const;
-    static bool lessThan(Hop a, Hop b);
-    static bool moreThan(Hop a, Hop b);
+    static bool lessThan(Hop *a, Hop *b);
+    static bool moreThan(Hop *a, Hop *b);
     QString toString();
 };
 

@@ -49,45 +49,45 @@ QVariant MaltModel::data(const QModelIndex &index, int role) const {
     //"S", "M", "Malt", "Amount", "Units", "Points",
     //           "Lov", "Cost/U", "%"
     if (role == Qt::ToolTipRole) {
-        return SBStringUtils::multiLineToolTip(120, m_data->at(index.row()).getDescription());
+        return SBStringUtils::multiLineToolTip(120, m_data->at(index.row())->getDescription());
     }
 
     if (role != Qt::DisplayRole && role != Qt::EditRole)
         return QVariant();
 
-    Fermentable f = m_data->at(index.row());
+    Fermentable *f = m_data->at(index.row());
 
     if (type == "percent") {
         switch (index.column()) {
-        case 0: return f.getName();
-        case 1: return f.getPppg();
-        case 2: return f.getLov();
-        case 3: return f.getPercent();
+        case 0: return f->getName();
+        case 1: return f->getPppg();
+        case 2: return f->getLov();
+        case 3: return f->getPercent();
         }
     }
 
     switch (index.column()) {
     case 0: {
-        return f.getMashed();
+        return f->getMashed();
     }
     case 1:
-        return f.getSteep();
+        return f->getSteep();
     case 2:
-        return f.ferments();
+        return f->ferments();
     case 3:
-        return f.getName();
+        return f->getName();
     case 4:
-        return QString::number(f.getAmount(), 'f', 2);
+        return QString::number(f->getAmount(), 'f', 2);
     case 5:
-        return f.getUnitsAbrv();
+        return f->getUnitsAbrv();
     case 6:
-        return f.getPppg();
+        return f->getPppg();
     case 7:
-        return f.getLov();
+        return f->getLov();
     case 8:
-        return f.getCostPerU();
+        return f->getCostPerU();
     case 9:
-        return QString::number(f.getPercent(), 'f', 2);
+        return QString::number(f->getPercent(), 'f', 2);
     default:
         return QVariant();
    };
@@ -132,7 +132,7 @@ QVariant MaltModel::headerData(int section, Qt::Orientation orientation, int rol
      }
  }
 
-void MaltModel::dataList(QList<Fermentable> *maltList) {
+void MaltModel::dataList(QList<Fermentable*> *maltList) {
     beginResetModel();
     m_data = maltList;
     endResetModel();
@@ -141,7 +141,7 @@ void MaltModel::dataList(QList<Fermentable> *maltList) {
 bool MaltModel::setData(const QModelIndex &index, const QVariant &value, int role) {
     Q_UNUSED(role);
 
-    Fermentable f = m_data->at(index.row());
+    Fermentable *f = m_data->at(index.row());
 
     if (type == "percent") {
         switch (index.column()) {
@@ -150,51 +150,50 @@ bool MaltModel::setData(const QModelIndex &index, const QVariant &value, int rol
         case 2:
         break;
         case 3:
-            f.setPercent(value.toDouble());
+            f->setPercent(value.toDouble());
         }
     } else {
 
         switch (index.column()) {
         case 0:
-            f.setMashed(value.toBool());
+            f->setMashed(value.toBool());
         case 1:
             // changed the mashed
-            f.setSteep(value.toBool());
+            f->setSteep(value.toBool());
             break;
         case 2:
-            f.ferments(value.toBool());
+            f->ferments(value.toBool());
             break;
         case 3: {
             // Changed the name
-            QList<Fermentable>::iterator findIt = std::find(Database::fermDB.begin(), Database::fermDB.end(), value.toString());
-            if (findIt != Database::fermDB.end()) {
-                Fermentable newMalt = (*findIt);
-                qDebug() << "Old Hop: " << f.getName();
-                qDebug() << "New Hop: " << newMalt.getName();
-                f.setName(newMalt.getName());
-                f.setPppg(newMalt.getPppg());
-                f.setMashed(newMalt.getMashed());
-                f.setSteep(newMalt.getSteep());
-                f.ferments(newMalt.ferments());
-                f.setCost(newMalt.getCostPerU());
+            Fermentable *newMalt = Database::findFermentable(value.toString());
+            if (newMalt != NULL) {
+                qDebug() << "Old Hop: " << f->getName();
+                qDebug() << "New Hop: " << newMalt->getName();
+                f->setName(newMalt->getName());
+                f->setPppg(newMalt->getPppg());
+                f->setMashed(newMalt->getMashed());
+                f->setSteep(newMalt->getSteep());
+                f->ferments(newMalt->ferments());
+                f->setCost(newMalt->getCostPerU());
             }
             break;
         }
 
         case 4:
-            f.setAmount(value.toDouble());
+            f->setAmount(value.toDouble());
             break;
         case 5:
-            f.setUnits(value.toString());
+            f->setUnits(value.toString());
             break;
         case 6:
-            f.setPppg(value.toDouble());
+            f->setPppg(value.toDouble());
             break;
         case 7:
-            f.setLov(value.toInt());
+            f->setLov(value.toInt());
             break;
         case 8:
-            f.setCost(value.toDouble());
+            f->setCost(value.toDouble());
             break;
         case 9:
             //h.setCost(value.toDouble());
@@ -209,7 +208,7 @@ bool MaltModel::setData(const QModelIndex &index, const QVariant &value, int rol
     }
 
     qDebug() << "Replaced row at " << index.row();
-    qDebug() << m_data->at(index.row()).getName();
+    qDebug() << m_data->at(index.row())->getName();
     emit dataChanged(index, index);
     return true;
 }
@@ -217,7 +216,7 @@ bool MaltModel::setData(const QModelIndex &index, const QVariant &value, int rol
 bool MaltModel::insertRow(int row, const QModelIndex &parent) {
     Q_UNUSED(parent);
      beginInsertRows(QModelIndex(), row, row);
-     Fermentable m;
+     Fermentable *m = new Fermentable();
      m_data->append(m);
      endInsertRows();
      return true;

@@ -9,8 +9,8 @@ NewYeast::NewYeast(QWidget *parent) :
 
     yeastList = QStringList();
 
-    Q_FOREACH(Yeast y, Database::yeastDB) {
-        yeastList << y.getName();
+    Q_FOREACH(Yeast *y, Database::yeastDB) {
+        yeastList << y->getName();
     }
 
     yeastCompleter = new QCompleter(yeastList, this);
@@ -41,7 +41,7 @@ void NewYeast::on_buttonBox_accepted()
     if (newYeast == NULL) {
         newYeast = new Yeast();
         newYeast->setName(ui->nameEditCombo->currentText());
-        Database::yeastDB.append(*newYeast);
+        Database::yeastDB.append(newYeast);
     }
 
     newYeast->setCost(ui->costSpin->value());

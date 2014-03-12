@@ -11,11 +11,12 @@
 class HopsModel : public QAbstractTableModel
 {
     Q_OBJECT
-    QList<Hop> *m_data = NULL;
+    QList<Hop*> *m_data;
 public:
     explicit HopsModel(QObject *parent = 0) :
         QAbstractTableModel(parent)
     {
+        m_data = NULL;
     }
 
     QVariant headerData(int section, Qt::Orientation orientation, int role) const;
@@ -26,7 +27,7 @@ public:
     Qt::ItemFlags flags(const QModelIndex &index) const;
     bool setData(const QModelIndex &index, const QVariant &value, int role);
     //Hop &getHop(const int index);
-    void dataList(QList<Hop> *hopList);
+    void dataList(QList<Hop*> *hopList);
     bool removeRow(int row, const QModelIndex &parent=QModelIndex());
     bool insertRow(int row, const QModelIndex &parent=QModelIndex());
 signals:

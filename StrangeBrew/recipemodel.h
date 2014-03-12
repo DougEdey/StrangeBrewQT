@@ -8,7 +8,7 @@
 class RecipeModel : public QAbstractTableModel
 {
     Q_OBJECT
-    QList<basicRecipe> *m_data = NULL;
+    QList<basicRecipe> *m_data;// = NULL;
 public:
     explicit RecipeModel(QObject *parent = 0);
 

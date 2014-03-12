@@ -2,17 +2,17 @@
 
 QSettings Database::preferences("Doug Edey", "StrangeBrew");
 
-QList<Hop> Database::hopsDB = QList<Hop>();
-QList<Hop> Database::stockHopsDB = QList<Hop>();
+QList<Hop*> Database::hopsDB = QList<Hop*>();
+QList<Hop*> Database::stockHopsDB = QList<Hop*>();
 
-QList<Fermentable> Database::fermDB = QList<Fermentable>();
-QList<Fermentable> Database::stockFermDB = QList<Fermentable>();
+QList<Fermentable*> Database::fermDB = QList<Fermentable*>();
+QList<Fermentable*> Database::stockFermDB = QList<Fermentable*>();
 
-QList<Yeast> Database::yeastDB = QList<Yeast>();
-QList<Style> Database::styleDB  = QList<Style>();
-QList<Misc> Database::miscDB = QList<Misc>();
-QList<PrimeSugar> Database::primeSugarDB = QList<PrimeSugar>();
-QList<WaterProfile> Database::waterDB  = QList<WaterProfile>();
+QList<Yeast*> Database::yeastDB = QList<Yeast*>();
+QList<Style*> Database::styleDB  = QList<Style*>();
+QList<Misc*> Database::miscDB = QList<Misc*>();
+QList<PrimeSugar*> Database::primeSugarDB = QList<PrimeSugar*>();
+QList<WaterProfile*> Database::waterDB  = QList<WaterProfile*>();
 
 QStringList Database::styleYears = QStringList();
 QString Database::styleFileName = "";
@@ -220,8 +220,8 @@ Database::~Database() {
     conn.close();
 }
 
-int Database::inDB(Yeast o){
-    Yeast y;
+int Database::inDB(Yeast *o){
+    Yeast *y;
     for (int i=0; i<yeastDB.size(); i++){
         y = yeastDB.at(i);
         if (o == y) {
@@ -231,8 +231,8 @@ int Database::inDB(Yeast o){
     return -1;
 }
 
-int Database::inDB(Fermentable o){
-    Fermentable y;
+int Database::inDB(Fermentable *o){
+    Fermentable *y;
     for (int i=0; i<fermDB.size(); i++){
         y = fermDB.at(i);
         if (o == y) {
@@ -242,8 +242,8 @@ int Database::inDB(Fermentable o){
     return -1;
 }
 
-int Database::inDB(Hop o){
-    Hop y;
+int Database::inDB(Hop *o){
+    Hop *y;
     for (int i=0; i<hopsDB.size(); i++){
         y = hopsDB.at(i);
         if (o == y) {
@@ -253,8 +253,8 @@ int Database::inDB(Hop o){
     return -1;
 }
 
-int Database::inDB(Misc o){
-    Misc y;
+int Database::inDB(Misc *o){
+    Misc *y;
     for (int i=0; i<miscDB.size(); i++){
         y = miscDB.at(i);
         if (o == y) {
@@ -264,19 +264,19 @@ int Database::inDB(Misc o){
     return -1;
 }
 
-int Database::inDB(Style o){
-    Style y;
+int Database::inDB(Style *o){
+    Style *y;
     for (int i=0; i<styleDB.size(); i++){
         y = styleDB.at(i);
-        if (o.getName() == y.getName()) {
+        if (o->getName() == y->getName()) {
             return i;
         }
     }
     return -1;
 }
 
-int Database::inDB(PrimeSugar o){
-    PrimeSugar y;
+int Database::inDB(PrimeSugar *o){
+    PrimeSugar *y;
     for (int i=0; i<primeSugarDB.size(); i++){
         y = primeSugarDB.at(i);
         if (o == y) {
@@ -286,8 +286,8 @@ int Database::inDB(PrimeSugar o){
     return -1;
 }
 
-int Database::inDB(WaterProfile o){
-    WaterProfile y;
+int Database::inDB(WaterProfile *o){
+    WaterProfile *y;
     for (int i=0; i<waterDB.size(); i++){
         y = waterDB.at(i);
         if (o == y) {
@@ -380,16 +380,14 @@ bool Database::readFermentables() {
 
         f->setDescription(statement.value(descrCol).toString() );
         f->setModified(statement.value(stockCol).toBool());
-        fermDB.append(*f);
+        fermDB.append(f);
 
         // check to see if we have nonStock set
 
         if(f->getStock() > 0.00 ) {
             qDebug() << "Adding to Stock DB";
-            stockFermDB.append(*f);
+            stockFermDB.append(f);
         }
-
-        delete f;
 
     }
 
@@ -524,7 +522,7 @@ bool Database::writeFermentable(Fermentable &f) {
     return true;
 }
 
-bool Database::writeFermentables(QList<Fermentable> replacement) {
+bool Database::writeFermentables(QList<Fermentable*> replacement) {
     fermDB = replacement;
     return writeFermentables();
 }
@@ -563,12 +561,12 @@ bool Database::writeFermentables() {
     sort(fermDB.begin(), fermDB.end());
 
     while (i < fermDB.size()) {
-        Fermentable f = fermDB.at(i);
+        Fermentable *f = fermDB.at(i);
         i++;
 
-        selectFerm.bindValue(":name", f.getName());
+        selectFerm.bindValue(":name", f->getName());
         if(!selectFerm.exec()) {
-            qDebug() << "Failed to select " << f.getName();
+            qDebug() << "Failed to select " << f->getName();
             qDebug() << conn.lastError().text();
             lastErrorString = conn.lastError().text();
             return false;
@@ -578,33 +576,33 @@ bool Database::writeFermentables() {
         qDebug() << "Result size " << selectFerm.value(0).toInt();
 
         if(selectFerm.value(0).toInt() == 0){
-            qDebug() << "Adding fermentable " << f.getName();
-            insertFerm.bindValue(":name", f.getName());
-            insertFerm.bindValue(":yield", f.getPppg());
-            insertFerm.bindValue(":lov", f.getLov());
-            insertFerm.bindValue(":cost", f.getCostPerU());
-            insertFerm.bindValue(":stock", f.getStock());
-            insertFerm.bindValue(":units", f.getUnitsAbrv());
-            insertFerm.bindValue(":mash", f.getMashed());
-            insertFerm.bindValue(":descr", f.getDescription());
-            insertFerm.bindValue(":steep", f.getSteep());
-            insertFerm.bindValue(":ferments", f.ferments());
+            qDebug() << "Adding fermentable " << f->getName();
+            insertFerm.bindValue(":name", f->getName());
+            insertFerm.bindValue(":yield", f->getPppg());
+            insertFerm.bindValue(":lov", f->getLov());
+            insertFerm.bindValue(":cost", f->getCostPerU());
+            insertFerm.bindValue(":stock", f->getStock());
+            insertFerm.bindValue(":units", f->getUnitsAbrv());
+            insertFerm.bindValue(":mash", f->getMashed());
+            insertFerm.bindValue(":descr", f->getDescription());
+            insertFerm.bindValue(":steep", f->getSteep());
+            insertFerm.bindValue(":ferments", f->ferments());
             insertFerm.exec();
         } else {
 
-            selectSpecificFerm.bindValue(":name", f.getName());
-            selectSpecificFerm.bindValue(":yield", f.getPppg());
-            selectSpecificFerm.bindValue(":lov", f.getLov());
-            selectSpecificFerm.bindValue(":cost", f.getCostPerU());
-            selectSpecificFerm.bindValue(":stock", f.getStock());
-            selectSpecificFerm.bindValue(":units", f.getUnitsAbrv());
-            selectSpecificFerm.bindValue(":mash", f.getMashed());
-            selectSpecificFerm.bindValue(":descr", f.getDescription());
-            selectSpecificFerm.bindValue(":steep", f.getSteep());
-            selectSpecificFerm.bindValue(":ferments", f.ferments());
+            selectSpecificFerm.bindValue(":name", f->getName());
+            selectSpecificFerm.bindValue(":yield", f->getPppg());
+            selectSpecificFerm.bindValue(":lov", f->getLov());
+            selectSpecificFerm.bindValue(":cost", f->getCostPerU());
+            selectSpecificFerm.bindValue(":stock", f->getStock());
+            selectSpecificFerm.bindValue(":units", f->getUnitsAbrv());
+            selectSpecificFerm.bindValue(":mash", f->getMashed());
+            selectSpecificFerm.bindValue(":descr", f->getDescription());
+            selectSpecificFerm.bindValue(":steep", f->getSteep());
+            selectSpecificFerm.bindValue(":ferments", f->ferments());
 
             if(!selectSpecificFerm.exec()) {
-                qDebug() << "Failed to specific select " << f.getName();
+                qDebug() << "Failed to specific select " << f->getName();
                 qDebug() << conn.lastError().text();
 
                 QMessageBox msgBox;
@@ -621,18 +619,18 @@ bool Database::writeFermentables() {
             // we have a name match, see if anything has changed
             if(selectSpecificFerm.value(0).toInt() == 0) {
 
-                qDebug() << "Fermentables Update: " << f.getName();
-                updateFerm.bindValue(":yield", f.getPppg());
-                updateFerm.bindValue(":lov", f.getLov());
-                updateFerm.bindValue(":cost", f.getCostPerU());
-                updateFerm.bindValue(":stock", f.getStock());
-                updateFerm.bindValue(":units", f.getUnitsAbrv());
-                updateFerm.bindValue(":mash", f.getMashed());
-                updateFerm.bindValue(":descr", f.getDescription());
-                updateFerm.bindValue(":steep", f.getSteep());
-                updateFerm.bindValue(":ferments", f.ferments());
+                qDebug() << "Fermentables Update: " << f->getName();
+                updateFerm.bindValue(":yield", f->getPppg());
+                updateFerm.bindValue(":lov", f->getLov());
+                updateFerm.bindValue(":cost", f->getCostPerU());
+                updateFerm.bindValue(":stock", f->getStock());
+                updateFerm.bindValue(":units", f->getUnitsAbrv());
+                updateFerm.bindValue(":mash", f->getMashed());
+                updateFerm.bindValue(":descr", f->getDescription());
+                updateFerm.bindValue(":steep", f->getSteep());
+                updateFerm.bindValue(":ferments", f->ferments());
                 // where cause
-                updateFerm.bindValue(":name", f.getName());
+                updateFerm.bindValue(":name", f->getName());
 
                 if (!updateFerm.exec()) {
                     qDebug() << conn.lastError().text();
@@ -681,31 +679,31 @@ bool Database::readHops() {
 
 
     while (statement.next()) {
-        Hop h;
+        Hop *h = new Hop();
         //Item,Name,Alpha,Cost,Stock,Units,Descr,Storage,Date,Modified
         if (statement.value(nameCol).toString().compare("") == 0) {
             continue;
         }
 
-        h.setName(statement.value(nameCol).toString());
-        h.setAlpha(statement.value(alphaCol).toDouble());
+        h->setName(statement.value(nameCol).toString());
+        h->setAlpha(statement.value(alphaCol).toDouble());
 
         if (QString::compare(statement.value(costCol).toString(), "") != 0)
-            h.setCost(statement.value(costCol).toDouble());
+            h->setCost(statement.value(costCol).toDouble());
 
-        h.setUnits(statement.value(unitsCol).toString());
+        h->setUnits(statement.value(unitsCol).toString());
 
         if (QString::compare(statement.value(stockCol).toString(), "") != 0)
-            h.setStock(statement.value(stockCol).toDouble());
+            h->setStock(statement.value(stockCol).toDouble());
 
-        h.setDescription(statement.value(descrCol).toString());
+        h->setDescription(statement.value(descrCol).toString());
 
         if (QString::compare(statement.value(storageCol).toString(), "") != 0)
-            h.setStorage(statement.value(storageCol).toDouble());
+            h->setStorage(statement.value(storageCol).toDouble());
 
-        h.setDate(statement.value(dateCol).toString());
+        h->setDate(statement.value(dateCol).toString());
 
-        h.setModified(statement.value(modifiedCol).toBool());
+        h->setModified(statement.value(modifiedCol).toBool());
 
         { // test for the type
             QString tempType = statement.value(typeCol).toString();
@@ -713,12 +711,12 @@ bool Database::readHops() {
                 tempType = preferences.value("Hops/Type").toString();
             }
 
-            h.setType(tempType);
+            h->setType(tempType);
         }
 
         hopsDB.push_back(h);
 
-        if (h.getStock() > 0) {
+        if (h->getStock() > 0) {
             stockHopsDB.push_back(h);
         }
 
@@ -861,7 +859,7 @@ bool Database::writeHop(Hop &h) {
 
 }
 
-bool Database::writeHops(QList<Hop> replacement) {
+bool Database::writeHops(QList<Hop *> replacement) {
     hopsDB = replacement;
     return writeHops();
 }
@@ -900,9 +898,9 @@ bool Database::writeHops() {
     int i = 0;
 
     while (i < hopsDB.size()) {
-        Hop h = hopsDB.at(i);
+        Hop *h = hopsDB.at(i);
 
-        selectHops.bindValue(":name", h.getName());
+        selectHops.bindValue(":name", h->getName());
 
         if (!selectHops.exec()) {
             qDebug() << conn.lastError().text();
@@ -919,15 +917,15 @@ bool Database::writeHops() {
         selectHops.next();
         // Does this hop exist?
         if(selectHops.value(0).toInt() == 0){
-            insertHop.bindValue(":name", h.getName());
-            insertHop.bindValue(":alpha", h.getAlpha());
-            insertHop.bindValue(":cost", h.getCostPerU());
-            insertHop.bindValue(":stock", h.getStock());
-            insertHop.bindValue(":units", h.getUnitsAbrv());
-            insertHop.bindValue(":descr", h.getDescription());
-            insertHop.bindValue(":storage", h.getStorage());
-            insertHop.bindValue(":date", h.getDate());
-            insertHop.bindValue(":type", h.getType());
+            insertHop.bindValue(":name", h->getName());
+            insertHop.bindValue(":alpha", h->getAlpha());
+            insertHop.bindValue(":cost", h->getCostPerU());
+            insertHop.bindValue(":stock", h->getStock());
+            insertHop.bindValue(":units", h->getUnitsAbrv());
+            insertHop.bindValue(":descr", h->getDescription());
+            insertHop.bindValue(":storage", h->getStorage());
+            insertHop.bindValue(":date", h->getDate());
+            insertHop.bindValue(":type", h->getType());
 
             if (!insertHop.exec()) {
                 qDebug() << conn.lastError().text();
@@ -942,14 +940,14 @@ bool Database::writeHops() {
             }
         } else { // check to see if we need to update this hop
 
-            selectSpecificHop.bindValue(":name", h.getName());
-            selectSpecificHop.bindValue(":alpha", h.getAlpha());
-            selectSpecificHop.bindValue(":cost", h.getCostPerU());
-            selectSpecificHop.bindValue(":stock", h.getStock());
-            selectSpecificHop.bindValue(":units", h.getUnitsAbrv());
-            selectSpecificHop.bindValue(":descr", h.getDescription());
-            selectSpecificHop.bindValue(":storage", h.getStorage());
-            selectSpecificHop.bindValue(":type", h.getType());
+            selectSpecificHop.bindValue(":name", h->getName());
+            selectSpecificHop.bindValue(":alpha", h->getAlpha());
+            selectSpecificHop.bindValue(":cost", h->getCostPerU());
+            selectSpecificHop.bindValue(":stock", h->getStock());
+            selectSpecificHop.bindValue(":units", h->getUnitsAbrv());
+            selectSpecificHop.bindValue(":descr", h->getDescription());
+            selectSpecificHop.bindValue(":storage", h->getStorage());
+            selectSpecificHop.bindValue(":type", h->getType());
 
 
             if(!selectSpecificHop.exec()) {
@@ -968,16 +966,16 @@ bool Database::writeHops() {
 
             if(selectSpecificHop.value(0).toInt() == 0) {
                 // update required
-                updateHop.bindValue(":alpha", h.getAlpha());
-                updateHop.bindValue(":cost", h.getCostPerU());
-                updateHop.bindValue(":stock", h.getStock());
-                updateHop.bindValue(":units", h.getUnitsAbrv());
-                updateHop.bindValue(":descr", h.getDescription());
-                updateHop.bindValue(":storage", h.getStorage());
-                updateHop.bindValue(":date", h.getDate().toString());
-                updateHop.bindValue(":type", h.getType());
+                updateHop.bindValue(":alpha", h->getAlpha());
+                updateHop.bindValue(":cost", h->getCostPerU());
+                updateHop.bindValue(":stock", h->getStock());
+                updateHop.bindValue(":units", h->getUnitsAbrv());
+                updateHop.bindValue(":descr", h->getDescription());
+                updateHop.bindValue(":storage", h->getStorage());
+                updateHop.bindValue(":date", h->getDate().toString());
+                updateHop.bindValue(":type", h->getType());
                 // where
-                updateHop.bindValue(":name", h.getName());
+                updateHop.bindValue(":name", h->getName());
 
                 if(!updateHop.exec()) {
                     qDebug() << conn.lastError().text();
@@ -1033,19 +1031,19 @@ bool Database::readYeast() {
     int modifiedCol = yeasts.record().indexOf("Modified");
 
     while (yeasts.next()) {
-        Yeast y;
+        Yeast *y = new Yeast();
         if (yeasts.value(nameCol).toString().compare("") == 0) {
             continue;
         }
 
-        y.setName(yeasts.value(nameCol).toString());
+        y->setName(yeasts.value(nameCol).toString());
 
         if (QString::compare(yeasts.value(costCol).toString(), "") != 0)
-            y.setCost(yeasts.value(costCol).toDouble());
+            y->setCost(yeasts.value(costCol).toDouble());
 
-        y.setDescription(yeasts.value(descrCol).toString());
+        y->setDescription(yeasts.value(descrCol).toString());
         if (modifiedCol != -1)
-            y.setModified(yeasts.value(modifiedCol).toBool());
+            y->setModified(yeasts.value(modifiedCol).toBool());
         yeastDB.push_back(y);
     }
 
@@ -1139,9 +1137,9 @@ bool Database::writeYeast() {
     int i = 0;
     while (i < yeastDB.size()) {
         //Item,Name,Cost,Descr,Modified
-        Yeast y = yeastDB.at(i);
+        Yeast *y = yeastDB.at(i);
         i++;
-        selectYeast.bindValue(":name", y.getName());
+        selectYeast.bindValue(":name", y->getName());
         if(!selectYeast.exec()) {
             qDebug() << conn.lastError().text();
 
@@ -1158,9 +1156,9 @@ bool Database::writeYeast() {
         selectYeast.next();
         if(selectYeast.value(0).toInt() == 0) {
 
-            insertYeast.bindValue(":name", y.getName());
-            insertYeast.bindValue(":cost", y.getCostPerU());
-            insertYeast.bindValue(":descr", y.getDescription());
+            insertYeast.bindValue(":name", y->getName());
+            insertYeast.bindValue(":cost", y->getCostPerU());
+            insertYeast.bindValue(":descr", y->getDescription());
 
             if(!insertYeast.exec()) {
                 qDebug() << conn.lastError().text();
@@ -1231,30 +1229,30 @@ bool Database::writeYeast() {
             continue;
         }
 
-        Style s;
+        Style *s = new Style();
         //Item,Name, Category,OG_Low,OG_High,Alc_Low,Alc_High,IBU_Low,IBU_High,Lov_Low,Lov_High,Comm_examples,Descr
-        s.setName(styleList.value(nameCol).toString());
-        s.setCategory(styleList.value(categoryCol).toString());
-        s.setCatNum(styleList.value(subcategoryCol).toString());
-        s.setOgLow(styleList.value(ogLowCol).toDouble());
-        s.setOgHigh(styleList.value(ogHighCol).toDouble());
-        s.setFgLow(styleList.value(fgLowCol).toDouble());
-        s.setFgHigh(styleList.value(fgHighCol).toDouble());
-        s.setAlcLow(styleList.value(alcLowCol).toDouble());
-        s.setAlcHigh(styleList.value(alcHighCol).toDouble());
-        s.setIbuLow(styleList.value(ibuLowCol).toDouble());
-        s.setIbuHigh(styleList.value(ibuHighCol).toDouble());
-        s.setSrmLow(styleList.value(lovLowCol).toDouble());
-        s.setSrmHigh(styleList.value(lovHighCol).toDouble());
-        s.setExamples(styleList.value(commercialCol).toString());
-        s.setYear(styleList.value(yearCol).toString());
-        s.setAroma(styleList.value(aromaCol).toString());
-        s.setAppearance(styleList.value(appearanceCol).toString());
-        s.setMouthfeel(styleList.value(mouthfeelCol).toString());
-        s.setImpression(styleList.value(impressionCol).toString());
-        s.setIngredients(styleList.value(ingredientsCol).toString());
-        s.setComments(styleList.value(commentsCol).toString());
-        s.setComplete();
+        s->setName(styleList.value(nameCol).toString());
+        s->setCategory(styleList.value(categoryCol).toString());
+        s->setCatNum(styleList.value(subcategoryCol).toString());
+        s->setOgLow(styleList.value(ogLowCol).toDouble());
+        s->setOgHigh(styleList.value(ogHighCol).toDouble());
+        s->setFgLow(styleList.value(fgLowCol).toDouble());
+        s->setFgHigh(styleList.value(fgHighCol).toDouble());
+        s->setAlcLow(styleList.value(alcLowCol).toDouble());
+        s->setAlcHigh(styleList.value(alcHighCol).toDouble());
+        s->setIbuLow(styleList.value(ibuLowCol).toDouble());
+        s->setIbuHigh(styleList.value(ibuHighCol).toDouble());
+        s->setSrmLow(styleList.value(lovLowCol).toDouble());
+        s->setSrmHigh(styleList.value(lovHighCol).toDouble());
+        s->setExamples(styleList.value(commercialCol).toString());
+        s->setYear(styleList.value(yearCol).toString());
+        s->setAroma(styleList.value(aromaCol).toString());
+        s->setAppearance(styleList.value(appearanceCol).toString());
+        s->setMouthfeel(styleList.value(mouthfeelCol).toString());
+        s->setImpression(styleList.value(impressionCol).toString());
+        s->setIngredients(styleList.value(ingredientsCol).toString());
+        s->setComments(styleList.value(commentsCol).toString());
+        s->setComplete();
         styleDB.push_back(s);
     }
 
@@ -1340,32 +1338,32 @@ bool Database::importStyles(QString year) {
     int ingredientsCol = record.indexOf("Ingredients");
 
     while(selectYear.next()) {
-        Style s;
+        Style *s = new Style();
 
-        s.setName(selectYear.value(nameCol).toString());
-        s.setCategory(selectYear.value(categoryCol).toString());
-        s.setCatNum(selectYear.value(catNumCol).toString());
-        s.setOgLow(selectYear.value(ogLowCol).toDouble());
-        s.setOgHigh(selectYear.value(ogHighCol).toDouble());
-        s.setFgLow(selectYear.value(fgLowCol).toDouble());
-        s.setFgHigh(selectYear.value(fgHighCol).toDouble());
-        s.setAlcLow(selectYear.value(alcLowCol).toDouble());
-        s.setAlcHigh(selectYear.value(alcHighCol).toDouble());
-        s.setIbuLow(selectYear.value(ibuLowCol).toDouble());
-        s.setIbuHigh(selectYear.value(ibuHighCol).toDouble());
-        s.setSrmLow(selectYear.value(lovLowCol).toDouble());
-        s.setSrmHigh(selectYear.value(lovHighCol).toDouble());
-        s.setExamples(selectYear.value(commercialCol).toString());
-        s.setAppearance(selectYear.value(appearanceCol).toString());
-        s.setAroma(selectYear.value(aromaCol).toString());
-        s.setFlavour(selectYear.value(flavourCol).toString());
-        s.setMouthfeel(selectYear.value(mouthfeelCol).toString());
-        s.setImpression(selectYear.value(impressionCol).toString());
-        s.setComments(selectYear.value(commentsCol).toString());
-        s.setIngredients(selectYear.value(ingredientsCol).toString());
+        s->setName(selectYear.value(nameCol).toString());
+        s->setCategory(selectYear.value(categoryCol).toString());
+        s->setCatNum(selectYear.value(catNumCol).toString());
+        s->setOgLow(selectYear.value(ogLowCol).toDouble());
+        s->setOgHigh(selectYear.value(ogHighCol).toDouble());
+        s->setFgLow(selectYear.value(fgLowCol).toDouble());
+        s->setFgHigh(selectYear.value(fgHighCol).toDouble());
+        s->setAlcLow(selectYear.value(alcLowCol).toDouble());
+        s->setAlcHigh(selectYear.value(alcHighCol).toDouble());
+        s->setIbuLow(selectYear.value(ibuLowCol).toDouble());
+        s->setIbuHigh(selectYear.value(ibuHighCol).toDouble());
+        s->setSrmLow(selectYear.value(lovLowCol).toDouble());
+        s->setSrmHigh(selectYear.value(lovHighCol).toDouble());
+        s->setExamples(selectYear.value(commercialCol).toString());
+        s->setAppearance(selectYear.value(appearanceCol).toString());
+        s->setAroma(selectYear.value(aromaCol).toString());
+        s->setFlavour(selectYear.value(flavourCol).toString());
+        s->setMouthfeel(selectYear.value(mouthfeelCol).toString());
+        s->setImpression(selectYear.value(impressionCol).toString());
+        s->setComments(selectYear.value(commentsCol).toString());
+        s->setIngredients(selectYear.value(ingredientsCol).toString());
 
-//		qDebug() << "Adding style " + s.getName() + s.toText());
-        s.setComplete();
+//		qDebug() << "Adding style " + s->getName() + s->toText());
+        s->setComplete();
         styleDB.push_back(s);
     }
 
@@ -1412,14 +1410,14 @@ bool Database::readMisc() {
             continue;
         }
 
-        Misc m;
+        Misc *m = new Misc();
 
-        m.setName(selectMisc.value(nameCol).toString());
-        m.setCost(selectMisc.value(costCol).toDouble());
-        m.setDescription(selectMisc.value(descrCol).toString());
-        m.setUnits(selectMisc.value(unitsCol).toString());
-        m.setStage(selectMisc.value(stageCol).toString());
-        m.setModified(selectMisc.value(modifiedCol).toBool());
+        m->setName(selectMisc.value(nameCol).toString());
+        m->setCost(selectMisc.value(costCol).toDouble());
+        m->setDescription(selectMisc.value(descrCol).toString());
+        m->setUnits(selectMisc.value(unitsCol).toString());
+        m->setStage(selectMisc.value(stageCol).toString());
+        m->setModified(selectMisc.value(modifiedCol).toBool());
 
         miscDB.push_back(m);
     }
@@ -1442,8 +1440,8 @@ bool Database::writeMisc() {
     int i = 0;
 
     while (i < miscDB.size()) {
-        Misc m = miscDB.at(i);
-        selectMisc.bindValue(":name", m.getName());
+        Misc *m = miscDB.at(i);
+        selectMisc.bindValue(":name", m->getName());
 
         if (!selectMisc.exec()){
             qDebug() << conn.lastError().text();
@@ -1462,12 +1460,12 @@ bool Database::writeMisc() {
         if(selectMisc.value(0).toInt() == 0) {
             //Name,Descr,Stock,Units,Cost,Stage
 
-            insertMisc.bindValue(":name", m.getName());
-            insertMisc.bindValue(":cost", m.getCostPerU());
-            insertMisc.bindValue(":descr", m.getDescription());
-            insertMisc.bindValue(":units", m.getUnitsAbrv());
-            insertMisc.bindValue(":stage", m.getStage());
-            insertMisc.bindValue(":stock", m.getStock());
+            insertMisc.bindValue(":name", m->getName());
+            insertMisc.bindValue(":cost", m->getCostPerU());
+            insertMisc.bindValue(":descr", m->getDescription());
+            insertMisc.bindValue(":units", m->getUnitsAbrv());
+            insertMisc.bindValue(":stage", m->getStage());
+            insertMisc.bindValue(":stock", m->getStock());
 
             if(!insertMisc.exec()) {
                 qDebug() << conn.lastError().text();
@@ -1680,13 +1678,13 @@ bool Database::readPrimeSugar() {
             continue;
         }
 
-        PrimeSugar p;
+        PrimeSugar *p = new PrimeSugar();
 
-        p.setName(selectPrime.value(nameCol).toString());
-        p.setYield(selectPrime.value(yieldCol).toDouble());
-        p.setUnits(selectPrime.value(unitsCol).toString());
-        p.setAmount(0);
-        p.setDescription(selectPrime.value(descrCol).toString());
+        p->setName(selectPrime.value(nameCol).toString());
+        p->setYield(selectPrime.value(yieldCol).toDouble());
+        p->setUnits(selectPrime.value(unitsCol).toString());
+        p->setAmount(0);
+        p->setDescription(selectPrime.value(descrCol).toString());
         primeSugarDB.push_back(p);
     }
     qDebug() << "Prime Found " << primeSugarDB.size();
@@ -1735,19 +1733,19 @@ bool Database::readWater() {
         }
 
         //Name,Descr,Ca,Mg,Na,SO4,HCO3,Cl,Hardness,TDS,PH,Alk
-        WaterProfile w;
-        w.setName(selectWater.value(nameCol).toString());
-        w.setDescription(selectWater.value(descrCol).toString());
-        w.setCa(selectWater.value(caCol).toDouble());
-        w.setMg(selectWater.value(mgCol).toDouble());
-        w.setNa(selectWater.value(naCol).toDouble());
-        w.setSo4(selectWater.value(so4Col).toDouble());
-        w.setHco3(selectWater.value(hco3Col).toDouble());
-        w.setCl(selectWater.value(clCol).toDouble());
-        w.setHardness(selectWater.value(hardnessCol).toDouble());
-        w.setTds(selectWater.value(tdsCol).toDouble());
-        w.setPh(selectWater.value(phCol).toDouble());
-        w.setAlkalinity(selectWater.value(alkCol).toDouble());
+        WaterProfile *w = new WaterProfile();
+        w->setName(selectWater.value(nameCol).toString());
+        w->setDescription(selectWater.value(descrCol).toString());
+        w->setCa(selectWater.value(caCol).toDouble());
+        w->setMg(selectWater.value(mgCol).toDouble());
+        w->setNa(selectWater.value(naCol).toDouble());
+        w->setSo4(selectWater.value(so4Col).toDouble());
+        w->setHco3(selectWater.value(hco3Col).toDouble());
+        w->setCl(selectWater.value(clCol).toDouble());
+        w->setHardness(selectWater.value(hardnessCol).toDouble());
+        w->setTds(selectWater.value(tdsCol).toDouble());
+        w->setPh(selectWater.value(phCol).toDouble());
+        w->setAlkalinity(selectWater.value(alkCol).toDouble());
 
         waterDB.push_back(w);
     }
@@ -1762,7 +1760,7 @@ QStringList Database::getPrimeSugarNameList() {
     QStringList names;
 
     for (int i = 0; i < primeSugarDB.size(); i++) {
-        names.append(primeSugarDB.at(i).getName());
+        names.append(primeSugarDB.at(i)->getName());
     }
 
     return names;
@@ -1892,8 +1890,8 @@ PrimeSugar *Database::findSugar(QString name) {
         return NULL;
     }
     for (int i = 0; i < primeSugarDB.size(); i++) {
-        if (primeSugarDB[i].getName().compare(name, Qt::CaseInsensitive) == 0) {
-            return &primeSugarDB[i];
+        if (primeSugarDB[i]->getName().compare(name, Qt::CaseInsensitive) == 0) {
+            return primeSugarDB[i];
         }
     }
     return NULL;
@@ -1905,8 +1903,8 @@ Hop* Database::findHop(QString name) {
         return NULL;
     }
     for (int i = 0; i < hopsDB.size(); i++) {
-        if (hopsDB[i].getName().compare(name, Qt::CaseInsensitive) == 0) {
-            return &hopsDB[i];
+        if (hopsDB[i]->getName().compare(name, Qt::CaseInsensitive) == 0) {
+            return hopsDB[i];
         }
     }
     return NULL;
@@ -1917,8 +1915,8 @@ Fermentable *Database::findFermentable(QString name) {
         return NULL;
     }
     for (int i = 0; i < fermDB.size(); i++) {
-        if (fermDB[i].getName().compare(name, Qt::CaseInsensitive) == 0) {
-            return &fermDB[i];
+        if (fermDB[i]->getName().compare(name, Qt::CaseInsensitive) == 0) {
+            return fermDB[i];
         }
     }
 
@@ -1931,8 +1929,8 @@ Yeast* Database::findYeast(QString name) {
         return NULL;
     }
     for (int i = 0; i < yeastDB.size(); i++) {
-        if (yeastDB[i].getName().compare(name, Qt::CaseInsensitive) == 0) {
-            return &yeastDB[i];
+        if (yeastDB[i]->getName().compare(name, Qt::CaseInsensitive) == 0) {
+            return yeastDB[i];
         }
     }
     return NULL;
@@ -1945,8 +1943,8 @@ Misc *Database::findMisc(QString name) {
     }
 
     for (int i = 0; i < miscDB.size(); i++) {
-        if (miscDB[i].getName().compare(name, Qt::CaseInsensitive) == 0) {
-            return &miscDB[i];
+        if (miscDB[i]->getName().compare(name, Qt::CaseInsensitive) == 0) {
+            return miscDB[i];
         }
     }
 
@@ -1959,8 +1957,8 @@ Style *Database::findStyle(QString name) {
     }
 
     for (int i = 0; i < styleDB.size(); i++) {
-        if (styleDB[i].getName().compare(name, Qt::CaseInsensitive) == 0) {
-            return &styleDB[i];
+        if (styleDB[i]->getName().compare(name, Qt::CaseInsensitive) == 0) {
+            return styleDB[i];
         }
     }
 

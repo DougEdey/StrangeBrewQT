@@ -8,14 +8,14 @@
 class StyleModel : public QAbstractListModel
 {
     Q_OBJECT
-    QList<Style> *m_data = NULL;
+    QList<Style*> *m_data;
 public:
     explicit StyleModel(QObject *parent = 0);
 
     //void setData(QList<Style> styleList);
     QVariant data(const QModelIndex &index, int role) const;
     int rowCount(const QModelIndex &parent) const;
-    void dataList(QList<Style> *styleList);
+    void dataList(QList<Style *> *styleList);
 signals:
 
 public slots:

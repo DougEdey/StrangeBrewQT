@@ -15,8 +15,8 @@ public:
 
     }
 
-    Yeast getAlternate();
-    void setAlternate(Yeast alt);
+    Yeast *getAlternate();
+    void setAlternate(Yeast *alt);
 };
 
 #endif // YEAST_H

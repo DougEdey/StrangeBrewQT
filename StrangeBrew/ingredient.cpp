@@ -1,7 +1,6 @@
 #include "ingredient.h"
 
-
-Ingredient::Ingredient() {
+Ingredient::Ingredient(QObject *parent) : QObject(parent) {
     modified = true;
     description = "";
     modified = false;
@@ -10,7 +9,7 @@ Ingredient::Ingredient() {
     name = "";
 }
 
-Ingredient::Ingredient(QString name) {
+Ingredient::Ingredient(QString name, QObject *parent) : QObject(parent) {
     modified = true;
     description = "";
     modified = false;
@@ -20,7 +19,15 @@ Ingredient::Ingredient(QString name) {
 }
 
 
-
+Ingredient::Ingredient(const Ingredient &other) : QObject(0) {
+    modified = other.modified;
+    description = other.description;
+    modified = other.modified;
+    name = other.name;
+    type = other.type;
+    costPerU = other.costPerU;
+    amount = other.amount;
+}
 
 double Ingredient::getAmountAs(QString s) const { return amount.getValueAs(s); }
 double Ingredient::getAmount() const { return amount.getValue(); }
@@ -110,16 +117,16 @@ void Ingredient::convertTo(QString newUnits){
 
 
 // Comparators for Sort
-bool Ingredient::lessThan(Ingredient a, Ingredient b) {
+bool Ingredient::lessThan(Ingredient *a, Ingredient *b) {
     return a < b;
 }
 
-bool Ingredient::moreThan(Ingredient a, Ingredient b) {
+bool Ingredient::moreThan(Ingredient *a, Ingredient *b) {
     return a > b;
 }
 
 
 
-bool Ingredient::sortWeight(Ingredient a, Ingredient b) {
-    return a.getAmount() > b.getAmount();
+bool Ingredient::sortWeight(Ingredient *a, Ingredient *b) {
+    return a->getAmount() > b->getAmount();
 }

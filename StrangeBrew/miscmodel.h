@@ -9,12 +9,13 @@
 class MiscModel : public QAbstractTableModel
 {
     Q_OBJECT
-    QList<Misc> *m_data = NULL;
+    QList<Misc*> *m_data;
 
 public:
     explicit MiscModel(QObject *parent = 0) :
         QAbstractTableModel(parent)
     {
+        m_data = NULL;
     }
 
     Qt::ItemFlags flags(const QModelIndex &index) const;
@@ -22,7 +23,7 @@ public:
     int columnCount(const QModelIndex &) const;
     QVariant data(const QModelIndex &index, int role) const;
     QVariant headerData(int section, Qt::Orientation orientation, int role) const;
-    void dataList(QList<Misc> *miscList);
+    void dataList(QList<Misc*> *miscList);
     bool setData(const QModelIndex &index, const QVariant &value, int role);
 
     bool removeRow(int row, const QModelIndex &parent=QModelIndex());

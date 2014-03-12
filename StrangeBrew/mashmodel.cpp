@@ -3,6 +3,7 @@
 MashModel::MashModel(QObject *parent) :
     QAbstractTableModel(parent)
 {
+    m_data = NULL;
 }
 
 Qt::ItemFlags MashModel::flags(const QModelIndex &index) const {

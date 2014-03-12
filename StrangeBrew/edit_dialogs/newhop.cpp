@@ -8,8 +8,8 @@ NewHop::NewHop(QWidget *parent) :
     ui->setupUi(this);
     allowRefresh = false;
 
-    Q_FOREACH(Hop h, Database::hopsDB) {
-        hopList << h.getName();
+    Q_FOREACH(Hop *h, Database::hopsDB) {
+        hopList << h->getName();
     }
 
     hopCompleter = new QCompleter(hopList, this);
@@ -79,7 +79,7 @@ void NewHop::on_buttonBox_accepted()
     toDB->setCost(ui->costSpin->value());
 
     if (addHop) {
-        Database::hopsDB.append(*toDB);
+        Database::hopsDB.append(toDB);
     }
     if (Database::writeHop(*toDB)) {
         qDebug() << Database::lastError();

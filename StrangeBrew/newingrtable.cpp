@@ -4,6 +4,8 @@ NewIngrTable::NewIngrTable(QObject *parent) :
     QAbstractTableModel(parent)
 {
     qDebug() << "Creating new ingredient table";
+    m_data = NULL;
+    m_enabled = NULL;
 }
 
 void NewIngrTable::dataList(QList<Ingredient*> *data, std::vector<bool> *bList) {
@@ -21,6 +23,7 @@ void NewIngrTable::dataList(QList<Ingredient*> *data, std::vector<bool> *bList) 
 
 int NewIngrTable::rowCount(const QModelIndex &parent) const
 {
+    Q_UNUSED(parent);
     if (m_data != NULL) {
         return m_data->size();
     }
@@ -29,6 +32,7 @@ int NewIngrTable::rowCount(const QModelIndex &parent) const
 
 int NewIngrTable::columnCount(const QModelIndex &parent) const
 {
+    Q_UNUSED(parent);
     return 2;
 }
 
@@ -79,6 +83,7 @@ QVariant NewIngrTable::data(const QModelIndex &index, int role) const
 
 bool NewIngrTable::setData(const QModelIndex &index, const QVariant &value, int role)
 {
+    Q_UNUSED(role);
     if (index.column() != 0) {
         return false;
     }

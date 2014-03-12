@@ -10,8 +10,8 @@ QWidget* HopItemDelegate::createEditor(QWidget *parent, const QStyleOptionViewIt
 {
     QComboBox *cb = new QComboBox(parent);
     if (index.column() == 0) {
-        Q_FOREACH(Hop h, Database::hopsDB) {
-            cb->addItem(h.getName());
+        Q_FOREACH(Hop *h, Database::hopsDB) {
+            cb->addItem(h->getName());
         }
     } else if (index.column() == 1) {
         cb->addItem(HOP_PELLET);

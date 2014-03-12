@@ -3,6 +3,7 @@
 RecipeModel::RecipeModel(QObject *parent) :
     QAbstractTableModel(parent)
 {
+    m_data = NULL;
 }
 
 bool RecipeModel::setData(const QModelIndex &index, const QVariant &value, int role) {

@@ -7,8 +7,8 @@ QWidget *MiscItemDelegate::createEditor(QWidget *parent, const QStyleOptionViewI
     if (index.column() == 0) {
         QComboBox *cb = new QComboBox(parent);
 
-        Q_FOREACH(Misc item, Database::miscDB) {
-            cb->addItem(item.getName());
+        Q_FOREACH(Misc *item, Database::miscDB) {
+            cb->addItem(item->getName());
         }
 
         return cb;

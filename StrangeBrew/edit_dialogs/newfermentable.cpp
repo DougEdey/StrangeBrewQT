@@ -8,8 +8,8 @@ NewFermentable::NewFermentable(QWidget *parent) :
     ui->setupUi(this);
     allowRefresh = false;
 
-    Q_FOREACH(Fermentable m, Database::fermDB) {
-        maltList << m.getName();
+    Q_FOREACH(Fermentable *m, Database::fermDB) {
+        maltList << m->getName();
     }
 
     maltCompleter = new QCompleter(maltList, this);
@@ -45,7 +45,7 @@ void NewFermentable::on_buttonBox_accepted()
     if (toDB == NULL) {
         toDB = new Fermentable();
         toDB->setName(ui->nameEdit->currentText());
-        Database::fermDB.append(*toDB);
+        Database::fermDB.append(toDB);
 
     }
 

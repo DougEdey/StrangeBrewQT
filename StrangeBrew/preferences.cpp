@@ -14,8 +14,8 @@ Preferences::Preferences(QWidget *parent) :
     ui->bottleUnitCombo->addItem(CONVERTER_FL_OZ);
     ui->bottleUnitCombo->addItem(CONVERTER_L);
 
-    Q_FOREACH(PrimeSugar p, Database::primeSugarDB) {
-        ui->primeSugarCombo->addItem(p.getName());
+    Q_FOREACH(PrimeSugar *p, Database::primeSugarDB) {
+        ui->primeSugarCombo->addItem(p->getName());
     }
 
     ui->sugarUnitsCombo->addItems(CONVERTER_weightUnitsAbrv);
@@ -36,8 +36,8 @@ Preferences::Preferences(QWidget *parent) :
 
     ui->hopTypeCombo->addItems(HOP_forms);
 
-    Q_FOREACH(WaterProfile w, Database::waterDB) {
-        ui->waterProfileCombo->addItem(w.getName());
+    Q_FOREACH(WaterProfile *w, Database::waterDB) {
+        ui->waterProfileCombo->addItem(w->getName());
     }
 
     loadSettings();

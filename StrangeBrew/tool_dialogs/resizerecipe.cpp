@@ -58,20 +58,20 @@ void ResizeRecipe::on_buttonBox_accepted()
     QString newUnit;
     if (ui->maltCheck->isChecked()) {
         newUnit = ui->maltUnitCombo->currentText();
-        QList<Fermentable> *maltList = recipe->getMaltList();
+        QList<Fermentable*> *maltList = recipe->getMaltList();
         for (int i = 0; i < maltList->size(); i++ ) {
-            Fermentable f = maltList->at(i);
-            f.convertTo(newUnit);
+            Fermentable *f = maltList->at(i);
+            f->convertTo(newUnit);
             maltList->replace(i, f);
         }
     }
 
     if (ui->hopCheck->isChecked()) {
         newUnit = ui->hopUnitCombo->currentText();
-        QList<Hop> *hopList = recipe->getHopList();
+        QList<Hop*> *hopList = recipe->getHopList();
         for (int i = 0; i < hopList->size(); i++ ) {
-            Hop h = hopList->at(i);
-            h.convertTo(newUnit);
+            Hop *h = hopList->at(i);
+            h->convertTo(newUnit);
             hopList->replace(i, h);
         }
     }

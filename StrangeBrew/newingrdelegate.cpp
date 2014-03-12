@@ -126,5 +126,6 @@ void NewIngrDelegate::setModelData(QWidget *editor, QAbstractItemModel *model, c
 }
 
 QString NewIngrDelegate::displayText(const QVariant &value, const QLocale &locale) const {
+    Q_UNUSED(locale);
     return value.toString();
 }

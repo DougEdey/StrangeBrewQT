@@ -8,11 +8,11 @@ class XMLHandler : public QXmlDefaultHandler
 {
 private:
     Recipe *r;
-    Fermentable m;
-    Hop h;
-    Misc misc;
+    Fermentable *m;
+    Hop *h;
+    Misc *misc;
     Note note;
-    QXmlAttributes currentAttributes;
+    const QXmlAttributes *currentAttributes;
     FermentStep ferm;
     Salt salt;
     Acid acid;

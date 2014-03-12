@@ -73,7 +73,7 @@ public:
     QString getVolUnits() const;
     double getSparge();
     QString getStyle() const;
-    Style getStyleObj() const;
+    Style *getStyleObj() const;
     double getTotalHopsOz() const;
     double getTotalHops() const;
     double getTotalHopsCost() const;
@@ -111,10 +111,10 @@ public:
     void setOtherCost(double c);
     void setPelletHopPct(double p);
     void setStyle(QString s);
-    void setStyle(Style s);
+    void setStyle(Style *s);
     void setTrubLoss(Quantity t);
     void setYeastName(QString s);
-    void setYeast(Yeast y);
+    void setYeast(Yeast *y);
     int getFermentStepSize() const;
     QString getFermentStepType(int i);
     void setVersion(QString v);
@@ -131,7 +131,7 @@ public:
     FermentStep delFermentStep(int i);
     void calcFermentTotals();
     QString getHopUnits() const;
-    Hop getHop(int i) const;
+    Hop *getHop(int i) const;
     int getHopsListSize() const;
     QString getHopName(int i) const;
     QString getHopType(int i) const;
@@ -151,7 +151,7 @@ public:
     void setHopMinutes(int i, int m);
     void setHopCost(int i, QString c);
     void setHopAmount(int i, double a);
-    Fermentable getFermentable(int i);
+    Fermentable *getFermentable(int i);
     int getMaltListSize() const;
     QString getMaltName(int i) const;
     QString getMaltUnits(int i) const;
@@ -178,7 +178,7 @@ public:
     void setMaltMashed(int i, bool c);
     void setMaltFerments(int i, bool c);
     int getMiscListSize() const;
-    Misc getMisc(int i) const;
+    Misc *getMisc(int i) const;
 
     QString getMiscName(int i) const;
     void setMiscName(int i, QString n);
@@ -212,11 +212,11 @@ public:
     void setPreBoil(double u);
     void setPostBoil(Quantity p);
     void setFinalWortVol(Quantity p);
-    Fermentable *addMalt(Fermentable m);
+    Fermentable *addMalt(Fermentable *m);
     void delMalt(int i);
-    Hop *addHop(Hop h);
+    Hop *addHop(Hop *h);
     void delHop(int i);
-    Misc* addMisc(Misc m);
+    Misc* addMisc(Misc *m);
     void delMisc(int i);
     void calcMiscCost();
     void addNote(Note n);
@@ -258,8 +258,8 @@ public:
     void setServTemp(double serv);
     double getTargetVol() const;
     void setTargetVol(double target);
-    PrimeSugar getPrimeSugar() const;
-    void setPrimeSugar(PrimeSugar primeSugar);
+    PrimeSugar *getPrimeSugar() const;
+    void setPrimeSugar(PrimeSugar *primeSugar);
     WaterProfile getSourceWater() const;
     WaterProfile getTargetWater() const;
     void setSourceWater(WaterProfile sourceWater);
@@ -278,11 +278,11 @@ public:
     double getAcidAmount5_2();
     void substractIngredients();
     bool pushRecipe();
-    void replaceHop(int &i, Hop h);
+    void replaceHop(int &i, Hop *h);
 
-    QList<Hop> *getHopList();
-    QList<Fermentable> *getMaltList();
-    QList<Misc> *getMiscList();
+    QList<Hop *> *getHopList();
+    QList<Fermentable *> *getMaltList();
+    QList<Misc *> *getMiscList();
     QList<FermentStep> *getFermentStepsList();
     QList<MashStep> *getMashStepsList();
     QList<Note> *getNotes();
@@ -291,8 +291,8 @@ public:
     void addHop();
     void addMalt();
    // ~Recipe();
-    void replaceMisc(int &i, Misc m);
-    Misc getMiscPtr(int i) const;
+    void replaceMisc(int &i, Misc *m);
+    Misc *getMiscPtr(int i) const;
     void setKegTubeID(QString id);
     void setKegTubeHeight(double height);
     QString getFinalWortVolStr();
@@ -340,8 +340,8 @@ private:
     double ibu;
 
     QString name;
-    Style style;
-    Yeast yeast;
+    Style *style;
+    Yeast *yeast;
     WaterProfile sourceWater;
     WaterProfile targetWater;
     QList<Salt> brewingSalts;
@@ -360,7 +360,7 @@ private:
     QVariant bottleTemp;
     QVariant servTemp;
     QVariant targetVol;
-    PrimeSugar primeSugar;
+    PrimeSugar *primeSugar;
     QVariant carbTempU;
     bool kegged;
     QVariant kegPSI;
@@ -396,9 +396,9 @@ private:
     QVariant totalFermentTime;
 
     // ingredients
-    QList<Hop> hops;
-    QList<Fermentable> fermentables;
-    QList<Misc> misc;
+    QList<Hop*> hops;
+    QList<Fermentable*> fermentables;
+    QList<Misc*> misc;
     QList<FermentStep> fermentationSteps;
     // notes
     QList<Note> notes;

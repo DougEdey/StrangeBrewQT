@@ -16,6 +16,9 @@ Recipe::Recipe()
     estFg = 1.000;
     filename = "";
     version = "7";
+    primeSugar = new PrimeSugar();
+    style = new Style();
+    yeast = new Yeast();
 
     boilMinutes = opts.value("Times/BoilTime").toInt();
 
@@ -42,7 +45,7 @@ Recipe::Recipe()
     servTemp = opts.value("Carbonation/ServTemp");
     targetVol = opts.value("Carbonation/VolsCO2");
 
-    primeSugar.setUnits(opts.value("Carbonation/SugarU").toString());
+    primeSugar->setUnits(opts.value("Carbonation/SugarU").toString());
     carbTempU = opts.value("Carbonation/CarbTempU");
     kegged = opts.value("Carbonation/Kegged").toBool();
     kegTubeID = opts.value("Carbonation/TubingID");
@@ -52,8 +55,8 @@ Recipe::Recipe()
 
     QString sugarOption = opts.value("Carbonation/PrimingSugar").toString();
     PrimeSugar *findPS = Database::findSugar(sugarOption);
-    if (findPS != NULL && *findPS != Database::primeSugarDB.last()) {
-        primeSugar = *findPS;
+    if (findPS != NULL && findPS != Database::primeSugarDB.last()) {
+        primeSugar = findPS;
     }
 
     // TODO Load default Salt options!
@@ -136,8 +139,8 @@ double Recipe::getColour() {
 double Recipe::getMcu() {
     double mcu = 0;
     for (int i = 0; i < fermentables.size(); i++) {
-        Fermentable m = fermentables[i];
-        mcu += m.getAmountAs(CONVERTER_LB) * m.getLov() / getPostBoilVol(CONVERTER_GAL);
+        Fermentable *m = fermentables[i];
+        mcu += m->getAmountAs(CONVERTER_LB) * m->getLov() / getPostBoilVol(CONVERTER_GAL);
     }
 
     return mcu;
@@ -311,10 +314,10 @@ double Recipe::getSparge() {
 }
 
 QString Recipe::getStyle() const {
-    return style.getName();
+    return style->getName();
 }
 
-Style Recipe::getStyleObj() const {
+Style *Recipe::getStyleObj() const {
     return style;
 }
 
@@ -355,11 +358,11 @@ double Recipe::getTotalMiscCost() const {
 }
 
 QString Recipe::getYeast() const {
-    return yeast.getName();
+    return yeast->getName();
 }
 
 Yeast *Recipe::getYeastObj() {
-    return &yeast;
+    return yeast;
 }
 
 bool Recipe::getDirty() const {
@@ -579,20 +582,20 @@ void Recipe::setPelletHopPct(double p) {
 }
 
 void Recipe::setStyle(QString s) {
-    if (style.getName() == s)
+    if (style->getName() == s)
         return;
     isDirty = true;
     // Lookup the style
     Style *newStyle = Database::findStyle(s);
     if (newStyle == NULL) {
-        style.setName(s);
+        style->setName(s);
     } else {
-        setStyle(*newStyle);
+        setStyle(newStyle);
     }
 }
 
-void Recipe::setStyle(Style s) {
-    if (s.getName() == style.getName())
+void Recipe::setStyle(Style *s) {
+    if (s->getName() == style->getName())
         return;
     isDirty = true;
     style = s;
@@ -616,14 +619,14 @@ void Recipe::setTrubLoss(Quantity t) {
 }
 
 void Recipe::setYeastName(QString s) {
-    if (yeast.getName() == s)
+    if (yeast->getName() == s)
         return;
     isDirty = true;
-    yeast.setName(s);
+    yeast->setName(s);
 }
 
-void Recipe::setYeast(Yeast y) {
-    if (yeast.getName() == y.getName())
+void Recipe::setYeast(Yeast *y) {
+    if (yeast->getName() == y->getName())
         return;
     isDirty = true;
     yeast = y;
@@ -733,11 +736,11 @@ QString Recipe::getHopUnits() const {
     return hopUnits.toString();
 }
 
-QList<Hop> *Recipe::getHopList() {
+QList<Hop*> *Recipe::getHopList() {
     return &hops;
 }
 
-Hop Recipe::getHop(int i) const {
+Hop *Recipe::getHop(int i) const {
     if (i < hops.size()) {
         return hops[i];
     }
@@ -751,111 +754,111 @@ int Recipe::getHopsListSize() const {
 }
 
 QString Recipe::getHopName(int i) const {
-    return hops[i].getName();
+    return hops[i]->getName();
 }
 
 QString Recipe::getHopType(int i) const {
-    return hops[i].getType();
+    return hops[i]->getType();
 }
 
 double Recipe::getHopAlpha(int i) const {
-    return hops[i].getAlpha();
+    return hops[i]->getAlpha();
 }
 
 QString Recipe::getHopUnits(int i) const {
-    return hops[i].getUnits();
+    return hops[i]->getUnits();
 }
 
 QString Recipe::getHopAdd(int i) const {
-    return hops[i].getAdd();
+    return hops[i]->getAdd();
 }
 
 int Recipe::getHopMinutes(int i) const {
-    return hops[i].getMinutes();
+    return hops[i]->getMinutes();
 }
 
 double Recipe::getHopIBU(int i) const {
-    return hops[i].getIBU();
+    return hops[i]->getIBU();
 }
 
 double Recipe::getHopCostPerU(int i) const {
-    return hops[i].getCostPerU();
+    return hops[i]->getCostPerU();
 }
 
 double Recipe::getHopAmountAs(int i, QString s) const {
-    return hops[i].getAmountAs(s);
+    return hops[i]->getAmountAs(s);
 }
 
 QString Recipe::getHopDescription(int i) const {
-    return hops[i].getDescription();
+    return hops[i]->getDescription();
 }
 
 // hop list set functions
 void Recipe::setHopUnits(int i, QString u) {
-    if (hops[i].getUnits() == u)
+    if (hops[i]->getUnits() == u)
         return;
 
     isDirty = true;
-    hops[i].setUnits(u);
+    hops[i]->setUnits(u);
 }
 
 void Recipe::setHopName(int i, QString n) {
-    if (hops[i].getName() == n)
+    if (hops[i]->getName() == n)
         return;
     isDirty = true;
-    hops[i].setName(n);
+    hops[i]->setName(n);
 }
 
 void Recipe::setHopType(int i, QString t) {
-    if (hops[i].getType() == t)
+    if (hops[i]->getType() == t)
         return;
     isDirty = true;
-    hops[i].setType(t);
+    hops[i]->setType(t);
 }
 
 void Recipe::setHopAdd(int i, QString a) {
-    if (hops[i].getAdd() == a)
+    if (hops[i]->getAdd() == a)
         return;
     isDirty = true;
-    hops[i].setAdd(a);
+    hops[i]->setAdd(a);
 }
 
 void Recipe::setHopAlpha(int i, double a) {
-    if (hops[i].getAlpha() == a)
+    if (hops[i]->getAlpha() == a)
         return;
     isDirty = true;
-    hops[i].setAlpha(a);
+    hops[i]->setAlpha(a);
 }
 
 void Recipe::setHopMinutes(int i, int m) {
-    if (hops[i].getMinutes() == m)
+    if (hops[i]->getMinutes() == m)
         return;
     isDirty = true;
     // have to re-sort hops
-    hops[i].setMinutes(m);
+    hops[i]->setMinutes(m);
     // SORT HOPS
 }
 
 void Recipe::setHopCost(int i, QString c) {
     // TODO: Value string compare
     isDirty = true;
-    hops[i].setCost(c);
+    hops[i]->setCost(c);
 }
 
 void Recipe::setHopAmount(int i, double a) {
-    if (hops[i].getAmount() == a)
+    if (hops[i]->getAmount() == a)
         return;
     isDirty = true;
-    hops[i].setAmount(a);
+    hops[i]->setAmount(a);
 }
 
 // fermentable get methods
 // ArrayList getFermentablesList() { return fermentables; }
-Fermentable Recipe::getFermentable(int i) {
+Fermentable *Recipe::getFermentable(int i) {
     return fermentables[i];
 }
 
-QList<Fermentable> *Recipe::getMaltList() {
+QList<Fermentable*> *Recipe::getMaltList() {
     return &fermentables;
 }
 
@@ -864,76 +867,76 @@ int Recipe::getMaltListSize() const {
 }
 
 QString Recipe::getMaltName(int i) const {
-    return fermentables[i].getName();
+    return fermentables[i]->getName();
 }
 
 QString Recipe::getMaltUnits(int i) const {
-    return fermentables[i].getUnits();
+    return fermentables[i]->getUnits();
 }
 
 double Recipe::getMaltPppg(int i) const {
-    return fermentables[i].getPppg();
+    return fermentables[i]->getPppg();
 }
 
 double Recipe::getMaltLov(int i) const {
-    return fermentables[i].getLov();
+    return fermentables[i]->getLov();
 }
 
 double Recipe::getMaltCostPerU(int i) const {
-    return fermentables[i].getCostPerU();
+    return fermentables[i]->getCostPerU();
 }
 
 double Recipe::getMaltCostPerUAs(int i, QString s) const {
-    return fermentables[i].getCostPerUAs(s);
+    return fermentables[i]->getCostPerUAs(s);
 }
 
 double Recipe::getMaltPercent(int i) const {
-    return fermentables[i].getPercent();
+    return fermentables[i]->getPercent();
 }
 
 double Recipe::getMaltAmountAs(int i, QString s) const {
-    return fermentables[i].getAmountAs(s);
+    return fermentables[i]->getAmountAs(s);
 }
 
 QString Recipe::getMaltDescription(int i) const {
-    return fermentables[i].getDescription();
+    return fermentables[i]->getDescription();
 }
 
 bool Recipe::getMaltMashed(int i) const {
-    return fermentables[i].getMashed();
+    return fermentables[i]->getMashed();
 }
 
 bool Recipe::getMaltSteep(int i) const {
-    return fermentables[i].getSteep();
+    return fermentables[i]->getSteep();
 }
 
 bool Recipe::getMaltFerments(int i) const {
-    return fermentables[i].ferments();
+    return fermentables[i]->ferments();
 }
 
 // fermentable set methods
 void Recipe::setMaltName(int i, QString n) {
-    if (fermentables[i].getName() == n)
+    if (fermentables[i]->getName() == n)
         return;
     // have to re-sort
     isDirty = true;
-    fermentables[i].setName(n);
+    fermentables[i]->setName(n);
 
 }
 
 void Recipe::setMaltUnits(int i, QString u) {
-    if (fermentables[i].getUnits() == u)
+    if (fermentables[i]->getUnits() == u)
         return;
     isDirty = true;
-    fermentables[i].setUnits(u);
-    fermentables[i].setCost(fermentables[i].getCostPerUAs(u));
+    fermentables[i]->setUnits(u);
+    fermentables[i]->setCost(fermentables[i]->getCostPerUAs(u));
 }
 
 void Recipe::setMaltAmount(int i, double a) {
-    if (fermentables[i].getAmount() == a)
+    if (fermentables[i]->getAmount() == a)
         return;
     isDirty = true;
-    fermentables[i].setAmount(a);
+    fermentables[i]->setAmount(a);
     // TODO: SORT the fermentables list
     /*
     Comparator<Fermentable> c = new Comparator<Fermentable>()  {
@@ -959,69 +962,69 @@ void Recipe::setMaltAmount(int i, double a) {
 }
 
 void Recipe::setMaltAmountAs(int i, double a, QString u) {
-    if (fermentables[i].getAmountAs(u) == a)
+    if (fermentables[i]->getAmountAs(u) == a)
         return;
     isDirty = true;
-    fermentables[i].setAmountAs(a, u);
-    fermentables[i].setCost(fermentables[i].getCostPerUAs(u));
+    fermentables[i]->setAmountAs(a, u);
+    fermentables[i]->setCost(fermentables[i]->getCostPerUAs(u));
 }
 
 void Recipe::setMaltPppg(int i, double p) {
-    if (fermentables[i].getPppg() == p)
+    if (fermentables[i]->getPppg() == p)
         return;
     isDirty = true;
-    fermentables[i].setPppg(p);
+    fermentables[i]->setPppg(p);
 }
 
 void Recipe::setMaltLov(int i, double l) {
-    if (fermentables[i].getLov() == l)
+    if (fermentables[i]->getLov() == l)
         return;
     isDirty = true;
-    fermentables[i].setLov(l);
+    fermentables[i]->setLov(l);
 }
 
 void Recipe::setMaltCost(int i, QString c) {
     // TODO: Should be able to compare via string
     isDirty = true;
-    fermentables[i].setCost(c);
+    fermentables[i]->setCost(c);
 }
 
 void Recipe::setMaltCost(int i, double c) {
-    if (fermentables[i].getCostPerU() == c)
+    if (fermentables[i]->getCostPerU() == c)
         return;
     isDirty = true;
-    fermentables[i].setCost(c);
+    fermentables[i]->setCost(c);
 }
 
 void Recipe::setMaltPercent(int i, double p) {
-    if (fermentables[i].getPercent() == p)
+    if (fermentables[i]->getPercent() == p)
         return;
     isDirty = true;
-    fermentables[i].setPercent(p);
+    fermentables[i]->setPercent(p);
 }
 
 void Recipe::setMaltSteep(int i, bool c) {
-    if (fermentables[i].getSteep() == c)
+    if (fermentables[i]->getSteep() == c)
         return;
     isDirty = true;
-    fermentables[i].setSteep(c);
+    fermentables[i]->setSteep(c);
 }
 
 void Recipe::setMaltMashed(int i, bool c) {
-    if (fermentables[i].getMashed() == c)
+    if (fermentables[i]->getMashed() == c)
         return;
     isDirty = true;
-    fermentables[i].setMashed(c);
+    fermentables[i]->setMashed(c);
 }
 
 void Recipe::setMaltFerments(int i, bool c) {
-    if (fermentables[i].ferments() == c)
+    if (fermentables[i]->ferments() == c)
         return;
     isDirty = true;
-    fermentables[i].ferments(c);
+    fermentables[i]->ferments(c);
 }
 
-QList<Misc> *Recipe::getMiscList() {
+QList<Misc*> *Recipe::getMiscList() {
     return &misc;
 }
 
@@ -1030,97 +1033,97 @@ int Recipe::getMiscListSize() const {
     return misc.size();
 }
 
-Misc Recipe::getMisc(int i) const {
+Misc *Recipe::getMisc(int i) const {
     return misc.at(i);
 }
 
-Misc Recipe::getMiscPtr(int i) const {
+Misc *Recipe::getMiscPtr(int i) const {
     return misc[i];
 }
 
 QString Recipe::getMiscName(int i) const {
-    return misc[i].getName();
+    return misc[i]->getName();
 }
 
 void Recipe::setMiscName(int i, QString n) {
-    if (misc[i].getName() == n)
+    if (misc[i]->getName() == n)
         return;
     isDirty = true;
-    misc[i].setName(n);
+    misc[i]->setName(n);
 }
 
 double Recipe::getMiscAmount(int i) const {
-    Misc m = misc.at(i);
-    return m.getAmountAs(m.getUnits());
+    Misc *m = misc.at(i);
+    return m->getAmountAs(m->getUnits());
 }
 
 void Recipe::setMiscAmount(int i, double a) {
-    if (misc[i].getAmount() == a)
+    if (misc[i]->getAmount() == a)
         return;
     isDirty = true;
-    misc[i].setAmount(a);
+    misc[i]->setAmount(a);
     calcMiscCost();
 }
 
 QString Recipe::getMiscUnits(int i) const {
-    return misc.at(i).getUnits();
+    return misc.at(i)->getUnits();
 }
 
 void Recipe::setMiscUnits(int i, QString u) {
-    if (misc[i].getUnits() == u)
+    if (misc[i]->getUnits() == u)
         return;
     isDirty = true;
-    misc[i].setUnits(u);
+    misc[i]->setUnits(u);
     calcMiscCost();
 }
 
 double Recipe::getMiscCost(int i) const {
-    return misc.at(i).getCostPerU();
+    return misc.at(i)->getCostPerU();
 }
 
 void Recipe::setMiscCost(int i, double c) {
-    if (misc[i].getCostPerU() == c)
+    if (misc[i]->getCostPerU() == c)
         return;
     isDirty = true;
-    misc[i].setCost(c);
+    misc[i]->setCost(c);
     calcMiscCost();
 }
 
 QString Recipe::getMiscStage(int i) {
-    return misc[i].getStage();
+    return misc[i]->getStage();
 }
 
 void Recipe::setMiscStage(int i, QString s) {
-    if (misc[i].getStage() == s)
+    if (misc[i]->getStage() == s)
         return;
     isDirty = true;
-    misc[i].setStage(s);
+    misc[i]->setStage(s);
 }
 
 int Recipe::getMiscTime(int i) {
-    return misc[i].getTime();
+    return misc[i]->getTime();
 }
 
 void Recipe::setMiscTime(int i, int t) {
-    if (misc[i].getTime() == t)
+    if (misc[i]->getTime() == t)
         return;
     isDirty = true;
-    misc[i].setTime(t);
+    misc[i]->setTime(t);
 }
 
 QString Recipe::getMiscDescription(int i) const {
-    return misc.at(i).getDescription();
+    return misc.at(i)->getDescription();
 }
 
 void Recipe::setMiscComments(int i, QString c) {
-    if (misc[i].getComments() == c)
+    if (misc[i]->getComments() == c)
         return;
     isDirty = true;
-    misc[i].setComments(c);
+    misc[i]->setComments(c);
 }
 
 QString Recipe::getMiscComments(int i) {
-    return misc[i].getComments();
+    return misc[i]->getComments();
 }
 
 QList<Note> *Recipe::getNotes() {
@@ -1343,12 +1346,12 @@ void Recipe::setFinalWortVol(Quantity p) {
  */
 
 void Recipe::addMalt() {
-    Fermentable m;
+    Fermentable *m = new Fermentable();
     fermentables.push_back(m);
     std::sort(fermentables.begin(), fermentables.end(), Ingredient::sortWeight);
 }
 
-Fermentable* Recipe::addMalt(Fermentable m) {
+Fermentable* Recipe::addMalt(Fermentable *m) {
     isDirty = true;
 
     // TODO: Sort the fermentable List
@@ -1375,7 +1378,7 @@ Fermentable* Recipe::addMalt(Fermentable m) {
     fermentables.push_back(m);
     std::sort(fermentables.begin(), fermentables.end(), Ingredient::sortWeight);
     calcMaltTotals();
-    return &fermentables.last();
+    return fermentables.last();
 }
 
 void Recipe::delMalt(int i) {
@@ -1389,19 +1392,19 @@ void Recipe::delMalt(int i) {
 }
 
 void Recipe::addHop() {
-    Hop h;
+    Hop *h = new Hop();
     isDirty = true;
     hops.append(h);
     // SORT HOPS
     calcHopsTotals();
 }
 
-Hop *Recipe::addHop(Hop h) {
+Hop *Recipe::addHop(Hop *h) {
     isDirty = true;
     hops.append(h);
     // SORT HOPS
     calcHopsTotals();
-    return &hops.last();
+    return hops.last();
 }
 
 void Recipe::delHop(int i) {
@@ -1412,11 +1415,11 @@ void Recipe::delHop(int i) {
     }
 }
 
-Misc *Recipe::addMisc(Misc m) {
+Misc *Recipe::addMisc(Misc *m) {
     isDirty = true;
     misc.push_back(m);
     calcMiscCost();
-    return &misc.last();
+    return misc.last();
 }
 
 void Recipe::delMisc(int i) {
@@ -1430,8 +1433,8 @@ void Recipe::delMisc(int i) {
 void Recipe::calcMiscCost() {
     double MiscCost = 0;
     for (int i = 0; i < misc.size(); i++) {
-        Misc m = misc.at(i);
-        MiscCost += m.getAmountAs(m.getUnits()) * m.getCostPerU();
+        Misc *m = misc.at(i);
+        MiscCost += m->getAmountAs(m->getUnits()) * m->getCostPerU();
     }
     totalMiscCost = MiscCost;
 }
@@ -1483,8 +1486,8 @@ void Recipe::setAmountAndUnits(QString a) {
 void Recipe::calcEfficiency() {
     double possiblePoints = 0;
     for (int i = 0; i < fermentables.size(); i++) {
-        Fermentable m = fermentables[i];
-        possiblePoints += (m.getPppg() - 1) * m.getAmountAs(CONVERTER_LB) / getPostBoilVol(CONVERTER_GAL);
+        Fermentable *m = fermentables[i];
+        possiblePoints += (m->getPppg() - 1) * m->getAmountAs(CONVERTER_LB) / getPostBoilVol(CONVERTER_GAL);
 
     }
     qDebug() << estOg << " : " << possiblePoints;
@@ -1508,39 +1511,39 @@ void Recipe::calcMaltTotals() {
 
     // first figure out the total we're dealing with
     for (int i = 0; i < fermentables.size(); i++) {
-        Fermentable m = fermentables[i];
-        if (m.getName().compare("") == 0
-                || m.getAmountAs(CONVERTER_LB) <= 0.00) {
+        Fermentable *m = fermentables[i];
+        if (m->getName().compare("") == 0
+                || m->getAmountAs(CONVERTER_LB) <= 0.00) {
             continue;
         }
-        MaltLbs += (m.getAmountAs(CONVERTER_LB));
-        if (m.getMashed()) { // apply efficiency and add to mash weight
-            curPoints = (m.getPppg() - 1) * m.getAmountAs(CONVERTER_LB) * getEfficiency()
+        MaltLbs += (m->getAmountAs(CONVERTER_LB));
+        if (m->getMashed()) { // apply efficiency and add to mash weight
+            curPoints = (m->getPppg() - 1) * m->getAmountAs(CONVERTER_LB) * getEfficiency()
                     / getPostBoilVol(CONVERTER_GAL);
-            MashLbs += (m.getAmountAs(CONVERTER_LB));
+            MashLbs += (m->getAmountAs(CONVERTER_LB));
         } else {
-            curPoints = (m.getPppg() - 1) * m.getAmountAs(CONVERTER_LB) * 100 / getPostBoilVol(CONVERTER_GAL);
+            curPoints = (m->getPppg() - 1) * m->getAmountAs(CONVERTER_LB) * 100 / getPostBoilVol(CONVERTER_GAL);
         }
 
         maltPoints += curPoints;
 
         // Check to see if we can ferment this sugar
-        if (m.ferments()) {
+        if (m->ferments()) {
             fermentingMaltPoints += curPoints;
         }
 
 
 
-        MaltCost += m.getCostPerU() * m.getAmountAs(m.getUnits());
+        MaltCost += m->getCostPerU() * m->getAmountAs(m->getUnits());
     }
 
     for (int i = 0; i < fermentables.size(); i++) {
-        Fermentable &m = fermentables[i];
+        Fermentable *m = fermentables[i];
         // Malt % By Weight
-        if (m.getAmountAs(CONVERTER_LB) == 0) {
-            m.setPercent(0);
+        if (m->getAmountAs(CONVERTER_LB) == 0) {
+            m->setPercent(0);
         } else {
-            m.setPercent((m.getAmountAs(CONVERTER_LB) / MaltLbs * 100));
+            m->setPercent((m->getAmountAs(CONVERTER_LB) / MaltLbs * 100));
         }
     }
 
@@ -1593,44 +1596,44 @@ void Recipe::calcHopsTotals() {
         // calculate the average OG of the boil
         // first, the OG at the time of addition:
         double adjPreSize, aveOg = 0;
-        Hop &h = hops[i];
+        Hop *h = hops[i];
 
-        int time = h.getMinutes();
-        if (h.getAdd() == HOP_FWH) {
+        int time = h->getMinutes();
+        if (h->getAdd() == HOP_FWH) {
             time = time - fwhTime.toDouble();
-        } else if (h.getAdd() == HOP_MASH) {
+        } else if (h->getAdd() == HOP_MASH) {
             time = mashHopTime.toDouble();
-        } else if (h.getAdd() == HOP_DRY) {
+        } else if (h->getAdd() == HOP_DRY) {
             time = dryHopTime.toDouble();
         }
 
-        if (h.getMinutes() > 0) {
+        if (h->getMinutes() > 0) {
             adjPreSize = getPostBoilVol(CONVERTER_GAL)
                     + (getPreBoilVol(CONVERTER_GAL) - getPostBoilVol(CONVERTER_GAL))
-                    / (getBoilMinutes() / h.getMinutes());
+                    / (getBoilMinutes() / h->getMinutes());
         } else {
             adjPreSize = getPostBoilVol(CONVERTER_GAL);
         }
 
         aveOg = 1 + (((estOg - 1) + ((estOg - 1) / (adjPreSize / getPostBoilVol(CONVERTER_GAL)))) / 2);
         if (ibuCalcMethod.toString() == TINSETH) {
-            h.setIBU(BrewCalcs::calcTinseth(h.getAmountAs(CONVERTER_OZ), getPostBoilVol(CONVERTER_GAL), aveOg, time, h
-                    .getAlpha(), ibuHopUtil.toDouble()));
+            h->setIBU(BrewCalcs::calcTinseth(h->getAmountAs(CONVERTER_OZ), getPostBoilVol(CONVERTER_GAL), aveOg, time,
+                                             h->getAlpha(), ibuHopUtil.toDouble()));
         } else if (ibuCalcMethod.toString() == RAGER) {
-            h.setIBU(BrewCalcs::CalcRager(h.getAmountAs(CONVERTER_OZ), getPostBoilVol(CONVERTER_GAL), aveOg, time, h
-                    .getAlpha()));
+            h->setIBU(BrewCalcs::CalcRager(h->getAmountAs(CONVERTER_OZ), getPostBoilVol(CONVERTER_GAL), aveOg, time,
+                    h->getAlpha()));
         } else {
-            h.setIBU(BrewCalcs::CalcGaretz(h.getAmountAs(CONVERTER_OZ), getPostBoilVol(CONVERTER_GAL), aveOg, time,
-                    getPreBoilVol(CONVERTER_GAL), 1, h.getAlpha()));
+            h->setIBU(BrewCalcs::CalcGaretz(h->getAmountAs(CONVERTER_OZ), getPostBoilVol(CONVERTER_GAL), aveOg, time,
+                    getPreBoilVol(CONVERTER_GAL), 1, h->getAlpha()));
         }
-        if (h.getType() == HOP_PELLET) {
-            h.setIBU(h.getIBU() * (1.0 + (getPelletHopPct() / 100)));
+        if (h->getType() == HOP_PELLET) {
+            h->setIBU(h->getIBU() * (1.0 + (getPelletHopPct() / 100)));
         }
 
-        ibuTotal += h.getIBU();
+        ibuTotal += h->getIBU();
 
-        HopsCost += h.getCostPerU() * h.getAmountAs(h.getUnits());
-        HopsOz += h.getAmountAs(CONVERTER_OZ);
+        HopsCost += h->getCostPerU() * h->getAmountAs(h->getUnits());
+        HopsOz += h->getAmountAs(CONVERTER_OZ);
     }
 
     totalHopsCost = HopsCost;
@@ -1658,7 +1661,7 @@ QString Recipe::toXML(QString printOptions){
     sb.append(SBStringUtils::xmlElement("EFFICIENCY",  efficiency, 3));
     sb.append(SBStringUtils::xmlElement("OG", SBStringUtils::format(estOg, 3), 3));
     sb.append(SBStringUtils::xmlElement("FG", SBStringUtils::format(estFg, 3), 3));
-    sb.append(SBStringUtils::xmlElement("STYLE", style.getName(),3));
+    sb.append(SBStringUtils::xmlElement("STYLE", style->getName(),3));
     if (mashed)
         sb.append(SBStringUtils::xmlElement("MASH", "True", 3));
     else
@@ -1678,7 +1681,7 @@ QString Recipe::toXML(QString printOptions){
     sb.append(SBStringUtils::xmlElement("SIZE_UNITS", getVolUnits(), 3));
     sb.append(SBStringUtils::xmlElement("MALT_UNITS", maltUnits.toString(), 3));
     sb.append(SBStringUtils::xmlElement("HOPS_UNITS", hopUnits.toString(), 3));
-    sb.append(SBStringUtils::xmlElement("YEAST", yeast.getName(), 3));
+    sb.append(SBStringUtils::xmlElement("YEAST", yeast->getName(), 3));
 
     sb.append(SBStringUtils::xmlElement("RECIPE_DATE", created.toString("MM/dd/yyyy"), 3));
     sb.append(SBStringUtils::xmlElement("ATTENUATION", attenuation, 3));
@@ -1690,7 +1693,7 @@ QString Recipe::toXML(QString printOptions){
     sb.append(SBStringUtils::xmlElement("TRUB_LOSS", getTrubLossStr(), 3));
     sb.append(SBStringUtils::xmlElement("MISC_LOSS", getMiscLossStr(), 3));
     sb.append(SBStringUtils::xmlElement("PELLET_HOP_PCT", pelletHopPct.toString(), 3));
-    sb.append(SBStringUtils::xmlElement("YEAST_COST", yeast.getCostPerU(), 3));
+    sb.append(SBStringUtils::xmlElement("YEAST_COST", yeast->getCostPerU(), 3));
     sb.append(SBStringUtils::xmlElement("OTHER_COST", otherCost.toString(), 3));
     sb.append("  <!-- END SBJ1.0 Extensions -->\n");
     sb.append("  </DETAILS>\n");
@@ -1700,8 +1703,8 @@ QString Recipe::toXML(QString printOptions){
     sb.append(SBStringUtils::xmlElement("TOTAL",
                                        Quantity::convertUnit(CONVERTER_LB, maltUnits.toString(), totalMaltLbs.toDouble()), 4));
     for (int i = 0; i < fermentables.size(); i++) {
-        Fermentable m = fermentables[i];
-        sb.append(m.toXML());
+        Fermentable *m = fermentables[i];
+        sb.append(m->toXML());
     }
     sb.append("  </FERMENTABLES>\n");
 
@@ -1710,16 +1713,16 @@ QString Recipe::toXML(QString printOptions){
     sb.append(SBStringUtils::xmlElement("TOTAL",
                                        Quantity::convertUnit(CONVERTER_OZ, hopUnits.toString(), totalHopsOz.toDouble()), 4));
     for (int i = 0; i < hops.size(); i++) {
-        Hop h = hops[i];
-        sb.append(h.toXML());
+        Hop *h = hops[i];
+        sb.append(h->toXML());
     }
     sb.append("  </HOPS>\n");
 
     // misc ingredients list:
     sb.append("  <MISC>\n");
     for (int i = 0; i < misc.size(); i++) {
-        Misc mi = misc.at(i);
-        sb.append(mi.toXML());
+        Misc *mi = misc.at(i);
+        sb.append(mi->toXML());
     }
     sb.append("  </MISC>\n");
 
@@ -1737,10 +1740,10 @@ QString Recipe::toXML(QString printOptions){
     sb.append("      <BOTTLETEMP>" + SBStringUtils::format(bottleTemp.toDouble(), 1) + "</BOTTLETEMP>\n");
     sb.append("      <SERVTEMP>" + SBStringUtils::format(servTemp.toDouble(), 1) + "</SERVTEMP>\n");
     sb.append("      <VOL>" + SBStringUtils::format(targetVol.toDouble(), 1) + "</VOL>\n");
-    sb.append("      <SUGAR>" + primeSugar.getName() + "</SUGAR>\n");
-    sb.append("      <AMOUNT>" + SBStringUtils::format(primeSugar.getAmountAs(primeSugar.getUnits()), 1)
+    sb.append("      <SUGAR>" + primeSugar->getName() + "</SUGAR>\n");
+    sb.append("      <AMOUNT>" + SBStringUtils::format(primeSugar->getAmountAs(primeSugar->getUnits()), 1)
             + "</AMOUNT>\n");
-    sb.append("      <SUGARU>" + primeSugar.getUnitsAbrv() + "</SUGARU>\n");
+    sb.append("      <SUGARU>" + primeSugar->getUnitsAbrv() + "</SUGARU>\n");
     sb.append("      <TEMPU>" + carbTempU.toString() + "</TEMPU>\n");
 
     if (kegged)
@@ -1790,7 +1793,7 @@ QString Recipe::toXML(QString printOptions){
     sb.append("  </NOTES>\n");
 
     // style xml:
-    sb.append(style.toXML());
+    sb.append(style->toXML());
 
     sb.append("</STRANGEBREWRECIPE>");
 
@@ -1809,7 +1812,7 @@ QString Recipe::toText(bool detailed) {
     sb.append("Name: " + name + "\n");
     sb.append("Brewer: " + brewer  + "\n");
     sb.append("Size: " + SBStringUtils::format(getPostBoilVol(getVolUnits()), 1) + " " + getVolUnits() + "\n");
-    sb.append("Style: " + style.getName() + "\n");
+    sb.append("Style: " + style->getName() + "\n");
 
     QString temp = QString("OG: %1,\tFG:%2, \tAlc:%3, \tIBU:%4\n").arg(SBStringUtils::format(estOg, 3), SBStringUtils::format(estFg, 3),
               SBStringUtils::format(getAlcohol(), 2), SBStringUtils::format(ibu,2));
@@ -1817,7 +1820,7 @@ QString Recipe::toText(bool detailed) {
     //Object[] objs = { new Double(estOg), new Double(estFg), new Double(getAlcohol()), new Double(ibu) };
     //sb.append(mf.format(objs));
     sb.append("(Alc method: by " + getAlcMethod() + "; IBU method: " + ibuCalcMethod.toString() + ")\n");
-    sb.append("\nYeast: " + yeast.getName() + "\n");
+    sb.append("\nYeast: " + yeast->getName() + "\n");
     sb.append("\nFermentables:\n");
     temp = QString("%1 %2 %3 %4 %4 %5 %6\n").arg("Name", 30)
             .arg("amount", 6)
@@ -1827,8 +1830,8 @@ QString Recipe::toText(bool detailed) {
     sb.append(temp);
     //mf = new MessageFormat("{0} {1} {2} {3,number,0.000} {4} {5}%\n");
     for (int i = 0; i < fermentables.size(); i++) {
-        Fermentable f = fermentables[i];
-        sb.append(f.toString());
+        Fermentable *f = fermentables[i];
+        sb.append(f->toString());
         sb.append("\n");
     }
 
@@ -1837,8 +1840,8 @@ QString Recipe::toText(bool detailed) {
     sb.append(temp);
 
     for (int i = 0; i < hops.size(); i++) {
-        Hop h = hops[i];
-        sb.append(h.toString());
+        Hop *h = hops[i];
+        sb.append(h->toString());
     }
 
     if (mash.getStepSize() > 0) {
@@ -1894,8 +1897,8 @@ QString Recipe::toText(bool detailed) {
         sb.append("\nCarbonation:  " + targetVol.toString() + " volumes CO2\n");
         sb.append(" Bottle Temp: " + bottleTemp.toString() + carbTempU.toString() +
                   "  Serving Temp:" + servTemp.toString() + carbTempU.toString() + "\n");
-        sb.append(" Priming: " + SBStringUtils::format(primeSugar.getAmountAs(primeSugar.getUnits()), 1)
-                + primeSugar.getUnitsAbrv() + " of " + primeSugar.getName() + "\n");
+        sb.append(" Priming: " + SBStringUtils::format(primeSugar->getAmountAs(primeSugar->getUnits()), 1)
+                + primeSugar->getUnitsAbrv() + " of " + primeSugar->getName() + "\n");
         sb.append(" Or keg at: " + kegPSI.toString() + "PSI\n");
 
         if ((sourceWater.getName() != "") || (targetWater.getName() != "")) {
@@ -1928,13 +1931,13 @@ void Recipe::scaleRecipe(Quantity newSize) {
     if (conversionFactor != 1) {
         // TODO: figure out a way to make sure old IBU = new IBU
         for (int i = 0; i < getHopsListSize(); i++) {
-            Hop h = getHop(i);
-            h.setAmount(h.getAmountAs(h.getUnits()) * conversionFactor);
+            Hop *h = getHop(i);
+            h->setAmount(h->getAmountAs(h->getUnits()) * conversionFactor);
             hops.replace(i, h);
         }
         for (int i = 0; i < getMaltListSize(); i++) {
-            Fermentable f = getFermentable(i);
-            f.setAmount(f.getAmountAs(f.getUnits()) * conversionFactor);
+            Fermentable *f = getFermentable(i);
+            f->setAmount(f->getAmountAs(f->getUnits()) * conversionFactor);
             fermentables.replace(i, f);
         }
         setPostBoil(newSize);
@@ -2045,23 +2048,23 @@ QString Recipe::getKegTubeID() const {
 }
 
 QString Recipe::getPrimeSugarName() const {
-    return primeSugar.getName();
+    return primeSugar->getName();
 }
 
 QString Recipe::getPrimeSugarU() const {
-    return primeSugar.getUnitsAbrv();
+    return primeSugar->getUnitsAbrv();
 }
 
 void Recipe::setPrimeSugarU(QString primeU) {
-    if (primeU == primeSugar.getUnits())
+    if (primeU == primeSugar->getUnits())
         return;
     isDirty = true;
-    this->primeSugar.setUnits(primeU);
+    this->primeSugar->setUnits(primeU);
     calcPrimeSugar();
 }
 
 double Recipe::getPrimeSugarAmt() const {
-    return primeSugar.getAmountAs(primeSugar.getUnitsAbrv());
+    return primeSugar->getAmountAs(primeSugar->getUnitsAbrv());
 }
 
 void Recipe::calcPrimeSugar() {
@@ -2073,7 +2076,7 @@ void Recipe::calcPrimeSugar() {
     neededPrime *= Quantity::convertUnit(CONVERTER_L, getVolUnits(), primeSugarGL);
     neededPrime *= getFinalWortVol(getVolUnits());
 
-    primeSugar.setAmount(neededPrime);
+    primeSugar->setAmount(neededPrime);
 }
 
 void Recipe::calcKegPSI() {
@@ -2082,25 +2085,25 @@ void Recipe::calcKegPSI() {
 }
 
 void Recipe::setPrimeSugarName(QString n) {
-    if (n == primeSugar.getName())
+    if (n == primeSugar->getName())
         return;
     isDirty = true;
-    this->primeSugar.setName(n);
+    this->primeSugar->setName(n);
     // Name comes with Yeild! set it too
-    QList<PrimeSugar> db = Database::primeSugarDB;
+    QList<PrimeSugar*> db = Database::primeSugarDB;
     for (int i = 0; i < db.size(); i++) {
-        if (n == db[i].getName()) {
-            primeSugar.setYield(db[i].getYield());
+        if (n == db[i]->getName()) {
+            primeSugar->setYield(db[i]->getYield());
             calcPrimeSugar();
         }
     }
 }
 
 void Recipe::setPrimeSugarAmount(double q) {
-    if (q == primeSugar.getAmount())
+    if (q == primeSugar->getAmount())
         return;
     isDirty = true;
-    primeSugar.setAmount(q);
+    primeSugar->setAmount(q);
 }
 
 double Recipe::getServTemp() const {
@@ -2129,7 +2132,7 @@ void Recipe::setTargetVol(double target) {
     calcKegPSI();
 }
 
-PrimeSugar Recipe::getPrimeSugar() const {
+PrimeSugar *Recipe::getPrimeSugar() const {
     return primeSugar;
 }
 
@@ -2139,10 +2142,10 @@ void Recipe::setPrimeSugar(QString prime) {
     if (ps == NULL)
         return;
 
-    setPrimeSugar(*ps);
+    setPrimeSugar(ps);
 }
 
-void Recipe::setPrimeSugar(PrimeSugar primeSugar) {
+void Recipe::setPrimeSugar(PrimeSugar *primeSugar) {
     this->primeSugar = primeSugar;
     calcPrimeSugar();
 }
@@ -2258,15 +2261,15 @@ void Recipe::substractIngredients() {
     // THe user wants to subtract the ingredients from their pantry
     // we have to slowly iterate the list, because someone may change the AA and therefore
     // an object match doesn't work
-    QList<Fermentable> fDB = Database::fermDB;
+    QList<Fermentable*> fDB = Database::fermDB;
 
     for (int i = 0; i < fermentables.size(); i++) {
         int j = 0;
         // double iteration because there's no choice :(
 
         while(j < fDB.size()) {
-            if(fDB[j].getName() == fermentables[i].getName()) {
-                fDB[j].setStock(fDB[j].getStock() - fermentables[i].getAmountAs(fDB[j].getUnits()));
+            if(fDB[j]->getName() == fermentables[i]->getName()) {
+                fDB[j]->setStock(fDB[j]->getStock() - fermentables[i]->getAmountAs(fDB[j]->getUnits()));
                 break;
             }
             j++;
@@ -2276,7 +2279,7 @@ void Recipe::substractIngredients() {
     Database::getInstance().writeFermentables(fDB);
 
 
-    QList<Hop> hDB = Database::hopsDB;
+    QList<Hop*> hDB = Database::hopsDB;
 
     for (int i = 0; i < hops.size(); i++) {
 
@@ -2284,8 +2287,8 @@ void Recipe::substractIngredients() {
         // double iteration because there's no choice :(
         while(j < hDB.size()) {
 
-            if(hDB[j].getName() == hops[i].getName()) {
-                hDB[j].setStock(hDB[j].getStock() - hops[i].getAmountAs(hDB[j].getUnits()));
+            if(hDB[j]->getName() == hops[i]->getName()) {
+                hDB[j]->setStock(hDB[j]->getStock() - hops[i]->getAmountAs(hDB[j]->getUnits()));
                 break;
             }
             j++;
@@ -2298,15 +2301,15 @@ void Recipe::substractIngredients() {
 bool Recipe::pushRecipe() {
 
 
-
+    return true;
 }
 
-void Recipe::replaceHop(int &i, Hop h)
+void Recipe::replaceHop(int &i, Hop *h)
 {
     hops[i] = h;
 }
 
-void Recipe::replaceMisc(int &i, Misc m)
+void Recipe::replaceMisc(int &i, Misc *m)
 {
     misc.replace(i, m);
 }

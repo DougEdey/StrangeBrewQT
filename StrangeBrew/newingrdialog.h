@@ -2,9 +2,11 @@
 #define NEWINGRDIALOG_H
 
 #include <QDialog>
+#include <QStaticAssertFailure>
 #include "typeinfo"
 #include "ingredient.h"
 #include "database.h"
+#include "hop.h"
 
 namespace Ui {
 class NewIngrDialog;

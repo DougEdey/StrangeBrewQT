@@ -70,15 +70,15 @@ Recipe ProMashImport::readRecipe(QString inputFileName) {
 
     // lets try to read the hops : 635 bytes
     for (int i = 0; i < hopCount; i++) {
-        Hop h;
+        Hop *h = new Hop();
 
         s = inStream.read(55);
         qDebug() << "Hop name: " << s;
-        h.setName(s);
+        h->setName(s);
 
         inStream >> fl;
         qDebug() << "Alpha: " << fl;
-        h.setAlpha(fl);
+        h->setAlpha(fl);
 
         inStream.read(22);
 
@@ -102,18 +102,18 @@ Recipe ProMashImport::readRecipe(QString inputFileName) {
         s = inStream.read(165);
         qDebug() << "Substitutes: " << s;
         descr += "Substitutes: " + s.trimmed() + "\n";
-        h.setDescription(descr);
+        h->setDescription(descr);
 
         inStream.read(9);
 
         inStream >> fl;
         qDebug() << "Amount: " << fl;
-        h.setAmount(fl);
-        h.setUnits("oz");
+        h->setAmount(fl);
+        h->setUnits("oz");
 
         inStream >> x;
         qDebug() << "Min:" << x;
-        h.setMinutes(x);
+        h->setMinutes(x);
         myRecipe.addHop(h);
 
         inStream.read(5);
@@ -122,11 +122,11 @@ Recipe ProMashImport::readRecipe(QString inputFileName) {
 
     // lets try to read the malts
     for (int i = 0; i < maltCount; i++) {
-        Fermentable m;
+        Fermentable *m = new Fermentable();
 
         s = inStream.read(55);
         qDebug() << "Malt name: " << s;
-        m.setName(s.trimmed());
+        m->setName(s.trimmed());
 
         s = inStream.read(55);
         qDebug() << "Mfg: " << s;
@@ -143,11 +143,11 @@ Recipe ProMashImport::readRecipe(QString inputFileName) {
                 break;
             case 2 :
                 type = "extract";
-                m.setMashed(false);
+                m->setMashed(false);
                 break;
             case 3 :
                 type = "sugar";
-                m.setMashed(false);
+                m->setMashed(false);
                 break;
             case 4 :
                 type = "other";
@@ -162,7 +162,7 @@ Recipe ProMashImport::readRecipe(QString inputFileName) {
                     type2 = "LME";
                 else if (QString::compare(type, "grain") || QString::compare(type, "sugar"))
                     type2 = "Mustmash = no";
-                    m.setMashed(false);
+                    m->setMashed(false);
                 break;
 
             }
@@ -171,7 +171,7 @@ Recipe ProMashImport::readRecipe(QString inputFileName) {
                     type2 = "DME";
                 else if (QString::compare(type, "grain") || QString::compare(type, "sugar"))
                     type2 = "Mustmash = yes";
-                    m.setMashed(true);
+                    m->setMashed(true);
                 break;
             }
         }
@@ -179,11 +179,11 @@ Recipe ProMashImport::readRecipe(QString inputFileName) {
 
         inStream >> fl;
         qDebug() << "pppg: " << fl;
-        m.setPppg(fl);
+        m->setPppg(fl);
 
         inStream >> fl;
         qDebug() << "srm: " << fl;
-        m.setLov(fl);
+        m->setLov(fl);
 
         inStream.read(20);
         QString descr = "";
@@ -194,13 +194,13 @@ Recipe ProMashImport::readRecipe(QString inputFileName) {
         s = inStream.read(159);
         qDebug() << "comments: " << s;
         descr += "Comments: " + s + "\n";
-        m.setDescription(descr);
+        m->setDescription(descr);
 
         inStream.read(12);
         inStream >> fl;
         qDebug() << "amount: " << fl;
-        m.setAmount(fl);
-        m.setUnits("lb");
+        m->setAmount(fl);
+        m->setUnits("lb");
 
         myRecipe.addMalt(m);
 
@@ -208,11 +208,11 @@ Recipe ProMashImport::readRecipe(QString inputFileName) {
     }
 
     for (int i = 0; i < extraCount; i++) {
-        Misc m;
+        Misc *m = new Misc();
 
         s = inStream.read(55);
         qDebug() << "Extra: " << s;
-        m.setName(s);
+        m->setName(s);
 
         QString type = "";
         inStream >> x;
@@ -238,7 +238,7 @@ Recipe ProMashImport::readRecipe(QString inputFileName) {
                 break;
         }
         qDebug() << "Type: " << type;
-        m.setType(type);
+        m->setType(type);
 
         inStream >> l;
         qDebug() << "Time: " << l;
@@ -258,7 +258,7 @@ Recipe ProMashImport::readRecipe(QString inputFileName) {
                 break;
         }
         qDebug() << "Use: " << use;
-        m.setStage(use);
+        m->setStage(use);
         inStream.read(1);
 
         QString units = "";
@@ -288,19 +288,19 @@ Recipe ProMashImport::readRecipe(QString inputFileName) {
                 break;
         }
         qDebug() << "Units: " << units;
-        m.setUnits(units);
+        m->setUnits(units);
 
         inStream >> fl;
         qDebug() << "Amount: " << fl;
-        m.setAmount(fl);
+        m->setAmount(fl);
 
         s = inStream.read(222);
         qDebug() << "Usage: " << s;
-        m.setDescription(s);
+        m->setDescription(s);
 
         s = inStream.read(222);
         qDebug() << "Comments: " << s;
-        m.setComments(s);
+        m->setComments(s);
 
         myRecipe.addMisc(m);
 
@@ -308,7 +308,7 @@ Recipe ProMashImport::readRecipe(QString inputFileName) {
     }
 
     // yeast: 473
-    Yeast y;
+    Yeast *y = new Yeast();
 
     QString descr = "";
     s = inStream.read(55);
@@ -322,7 +322,7 @@ Recipe ProMashImport::readRecipe(QString inputFileName) {
     QString s2 = inStream.read(25);
     qDebug() << "Num: " << s2;
     descr = s2.trimmed() + " " + descr;
-    y.setName(descr);
+    y->setName(descr);
 
     inStream.read(2);
     descr = "";
@@ -333,7 +333,7 @@ Recipe ProMashImport::readRecipe(QString inputFileName) {
     s = inStream.read(159);
     qDebug() << "Comment: " << s;
     descr += "Comments: " + s.trimmed() + "\n";
-    y.setDescription(descr);
+    y->setDescription(descr);
 
     myRecipe.setYeast(y);
 

@@ -9,7 +9,7 @@
 class FermModel : public QAbstractTableModel
 {
     Q_OBJECT
-    QList<FermentStep> *m_data = NULL;
+    QList<FermentStep> *m_data;
 public:
     explicit FermModel(QObject *parent = 0);
 

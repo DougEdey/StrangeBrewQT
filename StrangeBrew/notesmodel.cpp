@@ -3,6 +3,7 @@
 NotesModel::NotesModel(QObject *parent) :
     QAbstractListModel(parent)
 {
+    m_data = NULL;
 }
 
 int NotesModel::rowCount(const QModelIndex &parent) const {

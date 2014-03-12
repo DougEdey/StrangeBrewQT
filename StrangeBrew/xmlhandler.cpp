@@ -4,6 +4,7 @@
 XMLHandler::XMLHandler() :QXmlDefaultHandler()
 {
     r = new Recipe();
+    currentAttributes = NULL;
 }
 
 
@@ -45,6 +46,9 @@ bool XMLHandler::endDocument() {
  */
 bool XMLHandler::startElement(const QString &namespaceURI, const QString &localName,
                               const QString &qName, const QXmlAttributes &atts) {
+    Q_UNUSED(namespaceURI);
+    Q_UNUSED(localName);
+
     QString eName = localName; // element unit
 
     if (QString::compare(eName, "") == 0)
@@ -52,7 +56,15 @@ bool XMLHandler::startElement(const QString &namespaceURI, const QString &localN
 
     qDebug() << "processing " << eName << " List: " << currentList;
     currentElement = eName;
-    currentAttributes = atts;
+
+    if (currentAttributes != NULL) {
+        qDebug() << "Current: " << currentAttributes->length();
+    }
+
+    qDebug() << "New: " << atts.length();
+
+    if (atts.length() > 0)
+        this->currentAttributes = &atts;
 
 
     if (QString::compare(eName, "STRANGEBREWRECIPE", Qt::CaseInsensitive) == 0) {
@@ -93,64 +105,65 @@ void XMLHandler::qbStartElement(QString eName){
     }
     else if (QString::compare(eName, "HOP") == 0) {
         // new hop
-        for (int i = 0; i < currentAttributes.length(); i++) {
-            QString str = currentAttributes.localName(i); // Attr name
+        for (int i = 0; i < currentAttributes->length(); i++) {
+            QString str = currentAttributes->localName(i); // Attr name
             if (QString::compare(str, "") == 0)
-                str = currentAttributes.qName(i);
+                str = currentAttributes->qName(i);
             if (QString::compare(str, "quantity") == 0)
-                h.setAmountAndUnits(currentAttributes.value(i));
+                h->setAmountAndUnits(currentAttributes->value(i));
             else if (QString::compare(str, "time", Qt::CaseInsensitive) == 0)
-                h.setMinutes(currentAttributes.value(i).toInt());
+                h->setMinutes(currentAttributes->value(i).toInt());
             else if (QString::compare(str, "alpha", Qt::CaseInsensitive) == 0)
-                h.setAlpha(currentAttributes.value(i).toDouble());
+                h->setAlpha(currentAttributes->value(i).toDouble());
         }
     }
     else if (QString::compare(eName, "GRAIN", Qt::CaseInsensitive) == 0) {
         // new "malt"
-        for (int i = 0; i < currentAttributes.length(); i++) {
-            QString str = currentAttributes.localName(i); // Attr name
+        m = new Fermentable();
+        for (int i = 0; i < currentAttributes->length(); i++) {
+            QString str = currentAttributes->localName(i); // Attr name
             if (QString::compare("", str, Qt::CaseInsensitive) == 0)
-                str = currentAttributes.qName(i);
+                str = currentAttributes->qName(i);
             if (QString::compare(str, "quantity", Qt::CaseInsensitive) == 0)
-                m.setAmountAndUnits(currentAttributes.value(i));
+                m->setAmountAndUnits(currentAttributes->value(i));
             else if (QString::compare(str, "color", Qt::CaseInsensitive) == 0)
-                m.setLov(currentAttributes.value(i).toDouble());
+                m->setLov(currentAttributes->value(i).toDouble());
             else if (QString::compare(str, "extract", Qt::CaseInsensitive) == 0)
-                m.setPppg(currentAttributes.value(i).toDouble());
+                m->setPppg(currentAttributes->value(i).toDouble());
             else if (QString::compare(str, "ferments", Qt::CaseInsensitive) == 0)
-                m.ferments(currentAttributes.value(i));
+                m->ferments(currentAttributes->value(i));
         }
     }
     // we have to do this here, because <batch> is an empty element
     else if (QString::compare(eName, "batch", Qt::CaseInsensitive)){
-        for (int i = 0; i < currentAttributes.length(); i++) {
-            QString str = currentAttributes.localName(i); // Attr name
+        for (int i = 0; i < currentAttributes->length(); i++) {
+            QString str = currentAttributes->localName(i); // Attr name
             if (QString::compare("", str, Qt::CaseInsensitive) == 0)
-                str = currentAttributes.qName(i);
+                str = currentAttributes->qName(i);
             if (QString::compare(str, "quantity", Qt::CaseInsensitive) == 0)
-                r->setAmountAndUnits(currentAttributes.value(i));
+                r->setAmountAndUnits(currentAttributes->value(i));
         }
     }
     // handle new misc ingredient
     else if (QString::compare(eName, "misc", Qt::CaseInsensitive) == 0) {
 
-        for (int i = 0; i < currentAttributes.length(); i++) {
-            QString str = currentAttributes.localName(i); // Attr name
+        for (int i = 0; i < currentAttributes->length(); i++) {
+            QString str = currentAttributes->localName(i); // Attr name
             if (QString::compare("", str, Qt::CaseInsensitive) == 0)
-                str = currentAttributes.qName(i);
+                str = currentAttributes->qName(i);
             if (QString::compare(str, "name", Qt::CaseInsensitive) == 0)
-                misc.setName(currentAttributes.value(i));
+                misc->setName(currentAttributes->value(i));
 
             if (QString::compare(str, "quantity", Qt::CaseInsensitive) == 0)
-                misc.setAmount(currentAttributes.value(i).toDouble());
+                misc->setAmount(currentAttributes->value(i).toDouble());
             if (QString::compare(str, "units", Qt::CaseInsensitive) == 0)
-                misc.setUnits(currentAttributes.value(i));
+                misc->setUnits(currentAttributes->value(i));
             if (QString::compare(str, "stage", Qt::CaseInsensitive) == 0)
-                misc.setStage(currentAttributes.value(i));
+                misc->setStage(currentAttributes->value(i));
             if (QString::compare(str, "time", Qt::CaseInsensitive) == 0)
-                misc.setTime(currentAttributes.value(i).toInt());
+                misc->setTime(currentAttributes->value(i).toInt());
             if (QString::compare(str, "comments", Qt::CaseInsensitive) == 0)
-                misc.setComments(currentAttributes.value(i));
+                misc->setComments(currentAttributes->value(i));
         }
     }
 }
@@ -201,11 +214,11 @@ void XMLHandler::sbStartElement(QString eName) {
     } else if (QString::compare(eName, "ITEM", Qt::CaseInsensitive) == 0) { // this is an item in a
         // list
         if (QString::compare(currentList, "FERMENTABLES", Qt::CaseInsensitive) == 0) {
-            new (&m) Fermentable();
+            m = new Fermentable();
         } else if (QString::compare(currentList, "HOPS", Qt::CaseInsensitive) == 0) {
-            new (&h) Hop();
+            h = new Hop();
         } else if (QString::compare(currentList, "MISC", Qt::CaseInsensitive) == 0) {
-            new (&misc) Misc();
+            misc = new Misc();
         } else if (QString::compare(currentList, "FERMENTATION_SCHEDULE", Qt::CaseInsensitive) == 0
                    || (currentList.compare("FERMENTATION_SCHEDUAL", Qt::CaseInsensitive) == 0)) {
             new (&ferm) FermentStep();
@@ -224,22 +237,24 @@ void XMLHandler::sbStartElement(QString eName) {
  */
 bool XMLHandler::endElement(const QString &namespaceURI, const QString &localName, const QString &qName)
 {
+    Q_UNUSED(namespaceURI);
+    Q_UNUSED(localName);
+
     qDebug() << "End Element " << currentList << ": " << qName;
     if (importType == "STRANGEBREW") {
         if ((QString::compare(qName, "ITEM", Qt::CaseInsensitive) == 0)
                 && (QString::compare(currentList, "FERMENTABLES", Qt::CaseInsensitive) == 0)) {
             if (descrBuf.trimmed().compare("") != 0) {
-                m.setDescription(descrBuf);
+                m->setDescription(descrBuf);
             }
             descrBuf = "";
             Fermentable *newFerm = r->addMalt(m);
             // Check to see if it needs to be added
-            Fermentable *findIt = Database::findFermentable(m.getName());
+            Fermentable *findIt = Database::findFermentable(m->getName());
             if (findIt != NULL) {
-                qDebug() << "New fermentable " << m.getName() << " found";
+                qDebug() << "New fermentable " << m->getName() << " found";
                 newIngr.append(newFerm);
             }
-            (&m)->~Fermentable();
         } else if (QString::compare(qName, "MALT", Qt::CaseInsensitive) == 0) {
             qDebug() << "Done loading malts";
         } else if (QString::compare(qName, "HOP", Qt::CaseInsensitive) == 0) {
@@ -247,26 +262,24 @@ bool XMLHandler::endElement(const QString &namespaceURI, const QString &localNam
         } else if ((QString::compare(qName, "ITEM", Qt::CaseInsensitive) == 0)
                 && (QString::compare(currentList, "HOPS", Qt::CaseInsensitive) == 0)) {
             Hop *newHop = r->addHop(h);
-            Hop *findIt = Database::findHop(h.getName());
-            if (findIt != NULL && findIt == &*Database::hopsDB.end()) {
+            Hop *findIt = Database::findHop(h->getName());
+            if (findIt != NULL && findIt == *Database::hopsDB.end()) {
                 newIngr.append(newHop);
             }
-            qDebug() << r->getHopsListSize() << "Adding Hop" << h.getName();
+            qDebug() << r->getHopsListSize() << "Adding Hop" << h->getName();
 
-            (&h)->~Hop();
         } else if (QString::compare(qName, "ITEM", Qt::CaseInsensitive) == 0
                 && QString::compare(currentList, "MISC", Qt::CaseInsensitive) == 0) {
 
             Misc *newMisc = r->addMisc(misc);
-            Misc *findIt = Database::findMisc(misc.getName());
-            if (findIt != NULL && findIt == &*Database::miscDB.end()) {
+            Misc *findIt = Database::findMisc(misc->getName());
+            if (findIt != NULL && findIt == *Database::miscDB.end()) {
                 newIngr.push_back(newMisc);
             }
-            (&misc)->~Misc();
+
         } else if (QString::compare(qName, "ITEM", Qt::CaseInsensitive) == 0
                 && QString::compare(currentList, "NOTES", Qt::CaseInsensitive) == 0) {
             r->addNote(note);
-            (&note)->~Note();
         } else if (QString::compare(qName, "ITEM", Qt::CaseInsensitive) == 0
                 && QString::compare(currentList, "MASH", Qt::CaseInsensitive) == 0) {
                 r->getMash()->addStep(type, startTemp, endTemp, method, minutes, rampMin, weightLbs);
@@ -326,11 +339,9 @@ bool XMLHandler::endElement(const QString &namespaceURI, const QString &localNam
     else if (QString::compare(importType, "QBREW", Qt::CaseInsensitive) == 0) {
         if (QString::compare(qName, "GRAIN", Qt::CaseInsensitive) == 0){
             r->addMalt(m);
-            (&m)->~Fermentable();
         }
         else if (QString::compare(qName, "HOP", Qt::CaseInsensitive) == 0){
             r->addHop(h);
-            (&h)->~Hop();
         }
         else if (QString::compare(qName, "TITLE", Qt::CaseInsensitive) == 0){
             r->setName(buffer);
@@ -365,10 +376,10 @@ bool XMLHandler::characters(const QString &ch) {
 
 void XMLHandler::qbCharacters(QString s){
     if (currentElement.compare("GRAIN", Qt::CaseInsensitive) == 0){
-        m.setName(s);
+        m->setName(s);
     }
     else if (currentElement.compare("HOP", Qt::CaseInsensitive) == 0){
-        h.setName(s);
+        h->setName(s);
     }
     else if (currentElement.compare("miscingredient", Qt::CaseInsensitive) == 0){
         r->setYeastName(s);
@@ -390,34 +401,34 @@ void XMLHandler::qbCharacters(QString s){
 void XMLHandler::sbCharacters(QString s){
     if (currentList.compare("FERMENTABLES", Qt::CaseInsensitive) == 0) {
         if (currentElement.compare("MALT", Qt::CaseInsensitive) == 0) {
-            m.setName(s);
+            m->setName(s);
             Fermentable *found = Database::findFermentable(s);
 
             if (found != NULL) {
-                if (m.getCostPerU() != 0) {
-                    m.setCost((*found).getCostPerU());
+                if (m->getCostPerU() != 0) {
+                    m->setCost((*found).getCostPerU());
                 }
 
-                if(m.getDescription().compare("") == 0) {
-                    m.setDescription((*found).getDescription());
+                if(m->getDescription().compare("") == 0) {
+                    m->setDescription((*found).getDescription());
                 }
             } else {
                 qDebug() << "Fermentable " << s << " Not found";
             }
         } else if (currentElement.compare("AMOUNT", Qt::CaseInsensitive) == 0) {
-            m.setAmount(s.toDouble());
+            m->setAmount(s.toDouble());
         } else if (currentElement.compare("POINTS", Qt::CaseInsensitive) == 0) {
-            m.setPppg(s.toDouble());
+            m->setPppg(s.toDouble());
         } else if (currentElement.compare("COSTLB", Qt::CaseInsensitive) == 0) {
-            m.setCost( s );
+            m->setCost( s );
         } else if (currentElement.compare("UNITS", Qt::CaseInsensitive) == 0) {
-            m.setUnits(s);
+            m->setUnits(s);
         } else if (currentElement.compare("LOV", Qt::CaseInsensitive) == 0) {
-            m.setLov(s.toDouble());
+            m->setLov(s.toDouble());
         } else if (currentElement.compare("MASHED", Qt::CaseInsensitive) == 0) {
-            m.setMashed(s);
+            m->setMashed(s);
         } else if (currentElement.compare("STEEPED", Qt::CaseInsensitive) == 0) {
-            m.setSteep(s);
+            m->setSteep(s);
         } else if (currentElement.compare("DescrLookup", Qt::CaseInsensitive) == 0 ||
                 currentElement.compare("description", Qt::CaseInsensitive) == 0) {
             descrBuf = descrBuf + s;
@@ -425,58 +436,58 @@ void XMLHandler::sbCharacters(QString s){
     }
     else if (currentList.compare("HOPS", Qt::CaseInsensitive) == 0) {
         if (currentElement.compare("HOP", Qt::CaseInsensitive) == 0) {
-            h.setName(s);
+            h->setName(s);
             Hop *findHop = Database::findHop(s);
             if (findHop != NULL) {
-                if (h.getCostPerU() == 0) {
-                    h.setCost((*findHop).getCostPerU());
+                if (h->getCostPerU() == 0) {
+                    h->setCost((*findHop).getCostPerU());
                 }
-                if(h.getDescription().compare("") == 0) {
-                    h.setDescription((*findHop).getDescription());
+                if(h->getDescription().compare("") == 0) {
+                    h->setDescription((*findHop).getDescription());
                 }
             }
         } else if (currentElement.compare("AMOUNT", Qt::CaseInsensitive) == 0) {
-            h.setAmount(s.toDouble());
+            h->setAmount(s.toDouble());
         } else if (currentElement.compare("ALPHA", Qt::CaseInsensitive) == 0) {
-            h.setAlpha(s.toDouble());
+            h->setAlpha(s.toDouble());
         } else if (currentElement.compare("UNITS", Qt::CaseInsensitive) == 0) {
-            h.setUnits(s);
+            h->setUnits(s);
         } else if (currentElement.compare("FORM", Qt::CaseInsensitive) == 0) {
-            h.setType(s);
+            h->setType(s);
         } else if (currentElement.compare("COSTOZ", Qt::CaseInsensitive) == 0) {
-            h.setCost( s );
+            h->setCost( s );
         } else if (currentElement.compare("ADD", Qt::CaseInsensitive) == 0) {
-            h.setAdd(s);
+            h->setAdd(s);
         } else if (currentElement.compare("DescrLookup", Qt::CaseInsensitive) == 0||
                 currentElement.compare("description", Qt::CaseInsensitive) == 0) {
-            h.setDescription(s);
+            h->setDescription(s);
         } else if (currentElement.compare("TIME", Qt::CaseInsensitive) == 0) {
-            h.setMinutes(s.toInt());
+            h->setMinutes(s.toInt());
         }
     }
 
     else if (currentList.compare("MISC", Qt::CaseInsensitive) == 0) {
         if (currentElement.compare("NAME", Qt::CaseInsensitive) == 0) {
 
-            misc.setName(s);
+            misc->setName(s);
         } else if (currentElement.compare("AMOUNT", Qt::CaseInsensitive) == 0) {
-            misc.setAmount(s.toDouble());
+            misc->setAmount(s.toDouble());
         } else if (currentElement.compare("UNITS", Qt::CaseInsensitive) == 0) {
-            misc.setUnits(s);
+            misc->setUnits(s);
         } else if (currentElement.compare("COMMENTS", Qt::CaseInsensitive) == 0) {
             qDebug() << "Setting comments to " << s;
-            misc.setComments(s);
+            misc->setComments(s);
         } else if (currentElement.compare("COST_PER_U", Qt::CaseInsensitive) == 0) {
-            // misc.setCost( Double.parseDouble(s) );
+            // misc->setCost( Double.parseDouble(s) );
         } else if (currentElement.compare("ADD", Qt::CaseInsensitive) == 0) {
-            h.setAdd(s);
+            misc->setTime(s.toInt());
         } else if (currentElement.compare("DescrLookup", Qt::CaseInsensitive) == 0||
                 currentElement.compare("description", Qt::CaseInsensitive) == 0) {
-            misc.setComments(s);
+            misc->setComments(s);
         } else if (currentElement.compare("TIME", Qt::CaseInsensitive) == 0) {
-            misc.setTime(s.toInt());
+            misc->setTime(s.toInt());
         } else if (currentElement.compare("STAGE", Qt::CaseInsensitive) == 0) {
-            misc.setStage(s);
+            misc->setStage(s);
         }
     }
     else if (currentList.compare("NOTES", Qt::CaseInsensitive) == 0) {
@@ -560,7 +571,7 @@ void XMLHandler::sbCharacters(QString s){
         } else if (currentElement.compare("STYLE", Qt::CaseInsensitive) == 0) {
             Style *n = Database::findStyle(s);
             if (n != NULL) {
-                r->setStyle(*n);
+                r->setStyle(n);
             } else {
                 r->setStyle(s);
             }
@@ -594,12 +605,12 @@ void XMLHandler::sbCharacters(QString s){
         } else if (currentElement.compare("COLOUR_METHOD", Qt::CaseInsensitive) == 0) {
             r->setColourMethod(s);
         } else if (currentElement.compare("EVAP", Qt::CaseInsensitive) == 0) {
-            if(currentAttributes.length() > 0) {
+            if(currentAttributes->length() > 0) {
                 int i = 0;
-                while(i < currentAttributes.length()) {
-                    QString attrName = currentAttributes.qName(i);
+                while(i < currentAttributes->length()) {
+                    QString attrName = currentAttributes->qName(i);
                     qDebug() << "Attr name: " << attrName;
-                    QString attrValue = currentAttributes.value(i);
+                    QString attrValue = currentAttributes->value(i);
                     if(attrName.compare("type", Qt::CaseInsensitive) == 0) {
                         if(attrValue.compare("6", Qt::CaseInsensitive) == 0) {
                             r->setEvapMethod("Percent");
@@ -725,7 +736,8 @@ bool XMLHandler::warning(const QXmlParseException &exception) {
 
 bool XMLHandler::fatalError(const QXmlParseException &exception)
 {
-return true;
+    Q_UNUSED(exception);
+    return true;
 }
 
 

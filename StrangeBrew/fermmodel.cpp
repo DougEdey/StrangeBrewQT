@@ -3,6 +3,7 @@
 FermModel::FermModel(QObject *parent) :
     QAbstractTableModel(parent)
 {
+    m_data = NULL;
 }
 
 Qt::ItemFlags FermModel::flags(const QModelIndex &index) const {

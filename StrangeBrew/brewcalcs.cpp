@@ -186,14 +186,14 @@ double BrewCalcs::KegPSI(double Temp, double VolsCO2)
     return PSI;
 }
 
-double BrewCalcs::PrimingSugarGL(double DisVolsCO2, double TargetVolsCO2, PrimeSugar sugar)
+double BrewCalcs::PrimingSugarGL(double DisVolsCO2, double TargetVolsCO2, PrimeSugar *sugar)
 {
     // returns the priming sugar in grams/litre needed to
     // carbonate beer w/ a dissolved vols CO2 to reach the target vols CO2
     // based on an article by Dave Draper in the July/August 1996 issue of Brewing Techniques.
     double GramsPerLitre = (TargetVolsCO2 - DisVolsCO2) / 0.286;
 
-    GramsPerLitre /= sugar.getYield();
+    GramsPerLitre /= sugar->getYield();
 
     return GramsPerLitre;
 }

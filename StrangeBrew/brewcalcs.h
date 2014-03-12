@@ -28,7 +28,7 @@ public:
     static double cToF(double tempC);
     static double dissolvedCO2(double BottleTemp);
     static double KegPSI(double Temp, double VolsCO2);
-    static double PrimingSugarGL(double DisVolsCO2, double TargetVolsCO2, PrimeSugar sugar);
+    static double PrimingSugarGL(double DisVolsCO2, double TargetVolsCO2, PrimeSugar *sugar);
     static WaterProfile calculateSalts(WaterProfile waterNeeds, double sizeInGal);
     static void updateWater(WaterProfile w, Salt s, double sizeInGal);
     static double calcColour(double lov, QString method);

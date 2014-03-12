@@ -10,7 +10,7 @@
 class NotesModel : public QAbstractListModel
 {
     Q_OBJECT
-    QList<Note> *m_data = NULL;
+    QList<Note> *m_data;
 public:
     explicit NotesModel(QObject *parent = 0);
 

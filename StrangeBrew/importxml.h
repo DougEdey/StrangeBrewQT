@@ -17,7 +17,7 @@ public:
     void setType(QString t);
 private:
     QString type;
-    XMLHandler *SBcontentHandler = NULL;// = new XMLHandler();
+    XMLHandler *SBcontentHandler;// = NULL;// = new XMLHandler();
 
 protected:
 

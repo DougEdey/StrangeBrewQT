@@ -3,6 +3,7 @@
 #include "newingrtable.h"
 #include "newingrdelegate.h"
 
+
 NewIngrDialog::NewIngrDialog(QList<Ingredient *> *newData, std::vector<bool> *boolList, QWidget *parent) :
     QDialog(parent),
     ui(new Ui::NewIngrDialog)
@@ -39,14 +40,12 @@ void NewIngrDialog::on_miscIngrButtons_accepted()
     qDebug() << bList->size();
     for (size_t i = 0; i < bList->size(); i++) {
         if (bList->at(i)) {
-            Ingredient* ingr = dataList->at(i);
-            qDebug() << typeid(ingr).name();
-
+            Ingredient *ingr = dataList->at(i);
             //try {
-            const Hop *h = dynamic_cast<const Hop*>(dataList->at(i));
+            Hop *h = dynamic_cast<Hop*>(ingr);
             if(h != NULL) {
                 // Save the hop
-                Database::hopsDB.append(*h);
+                Database::hopsDB.append(h);
                 newHop = true;
                 continue;
             //} catch (std::bad_cast) {
@@ -54,10 +53,10 @@ void NewIngrDialog::on_miscIngrButtons_accepted()
             }
 
             //try {
-                const Fermentable *f = dynamic_cast<const Fermentable*>(dataList->at(i));
+            Fermentable *f = dynamic_cast<Fermentable*>(dataList->at(i));
             if (f != NULL) {
                     // Save the Fermentable
-                Database::fermDB.append(*f);
+                Database::fermDB.append(f);
                 newFerm = true;
                 continue;
             //} catch (std::bad_cast) {
@@ -65,19 +64,19 @@ void NewIngrDialog::on_miscIngrButtons_accepted()
             }
 
 //                const Yeast &y = static_cast<const Yeast&>(ingr);
-            const Yeast *y = dynamic_cast<const Yeast*>(dataList->at(i));
+            Yeast *y = dynamic_cast<Yeast*>(dataList->at(i));
             if (y != NULL ){
                 // Save the yeast
-                Database::yeastDB.append(*y);
+                Database::yeastDB.append(y);
                 newYeast = true;
                 continue;
             }
 
                 //const Misc &m = static_cast<const Misc&>(ingr);
-            const Misc *m = dynamic_cast<const Misc*>(dataList->at(i));
+            Misc *m = dynamic_cast<Misc*>(dataList->at(i));
             if (m != NULL) {
                 // Save the misc
-                Database::miscDB.append(*m);
+                Database::miscDB.append(m);
                 newMisc = true;
                 continue;
             }

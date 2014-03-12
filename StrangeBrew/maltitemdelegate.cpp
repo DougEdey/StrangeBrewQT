@@ -97,8 +97,8 @@ QWidget *MaltItemDelegate::createEditor(QWidget *parent, const QStyleOptionViewI
     if (index.column() == 3 || index.column() == 5) {
         QComboBox *cb = new QComboBox(parent);
         if (index.column() == 3) {
-            Q_FOREACH(Fermentable f, Database::fermDB) {
-                cb->addItem(f.getName());
+            Q_FOREACH(Fermentable *f, Database::fermDB) {
+                cb->addItem(f->getName());
             }
         }
 

@@ -12,8 +12,8 @@ NewMisc::NewMisc(QWidget *parent) :
 
     miscList = QStringList();
 
-    Q_FOREACH(Misc m, Database::miscDB) {
-        miscList << m.getName();
+    Q_FOREACH(Misc *m, Database::miscDB) {
+        miscList << m->getName();
     }
 
     miscCompleter = new QCompleter(miscList, this);
@@ -55,7 +55,7 @@ void NewMisc::on_buttonBox_accepted()
     if (newMisc == NULL) {
         newMisc = new Misc();
         newMisc->setName(ui->nameEditCombo->currentText());
-        Database::miscDB.append(*newMisc);
+        Database::miscDB.append(newMisc);
     }
 
     newMisc->setCost(ui->costSpin->value());

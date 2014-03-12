@@ -9,6 +9,8 @@ Qt::ItemFlags HopsModel::flags(const QModelIndex &index) const {
 }
 
 int HopsModel::rowCount(const QModelIndex &parent) const {
+    Q_UNUSED(parent);
+
     if (m_data != NULL) {
         return m_data->count();
     }
@@ -27,33 +29,33 @@ int HopsModel::columnCount(const QModelIndex &) const
 QVariant HopsModel::data(const QModelIndex &index, int role) const {
 
     if (role == Qt::ToolTipRole) {
-        return SBStringUtils::multiLineToolTip(120, m_data->at(index.row()).getDescription());
+        return SBStringUtils::multiLineToolTip(120, m_data->at(index.row())->getDescription());
     }
     if (role != Qt::DisplayRole && role != Qt::EditRole)
         return QVariant();
 
-    Hop hop = m_data->at(index.row());
+    Hop *hop = m_data->at(index.row());
 
 
     switch (index.column()) {
     case 0:
-        return hop.getName();
+        return hop->getName();
     case 1:
-        return hop.getType();
+        return hop->getType();
     case 2:
-        return hop.getAlpha();
+        return hop->getAlpha();
     case 3:
-        return QString::number(hop.getAmount(), 'f', 2);
+        return QString::number(hop->getAmount(), 'f', 2);
     case 4:
-        return hop.getUnitsAbrv();
+        return hop->getUnitsAbrv();
     case 5:
-        return hop.getAdd();
+        return hop->getAdd();
     case 6:
-        return hop.getMinutes();
+        return hop->getMinutes();
     case 7:
-        return QString::number(hop.getIBU(), 'f', 2);
+        return QString::number(hop->getIBU(), 'f', 2);
     case 8:
-        return hop.getCostPerU();
+        return hop->getCostPerU();
     default:
         return QVariant();
    };
@@ -86,7 +88,7 @@ QVariant HopsModel::headerData(int section, Qt::Orientation orientation, int rol
      }
  }
 
-void HopsModel::dataList(QList<Hop> *hopList) {
+void HopsModel::dataList(QList<Hop*> *hopList) {
     // Delete existing rows first
     beginResetModel();
     m_data = hopList;
@@ -95,48 +97,48 @@ void HopsModel::dataList(QList<Hop> *hopList) {
 }
 
 bool HopsModel::setData(const QModelIndex &index, const QVariant &value, int role) {
+    Q_UNUSED(role);
 
-     Hop h = m_data->at(index.row());
+     Hop *h = m_data->at(index.row());
 
+     QString currentText = value.toString();
      switch (index.column()) {
      case 0: {
          // Changed the name
-
-         QList<Hop>::iterator findIt = std::find(Database::hopsDB.begin(), Database::hopsDB.end(), value.toString());
-         if (findIt != Database::hopsDB.end()) {
-             Hop newHop = (*findIt);
-             qDebug() << "Old Hop: " << h.getName();
-             qDebug() << "New Hop: " << newHop.getName();
-            h.setName(newHop.getName());
-            h.setAlpha(newHop.getAlpha());
-            h.setCost(newHop.getCostPerU());
+         Hop *newHop = Database::findHop(currentText);
+         if (newHop != NULL) {
+             qDebug() << "Old Hop: " << h->getName();
+             qDebug() << "New Hop: " << newHop->getName();
+            h->setName(newHop->getName());
+            h->setAlpha(newHop->getAlpha());
+            h->setCost(newHop->getCostPerU());
          }
          break;
      }
      case 1:
         // changed the type
-        h.setType(value.toString());
+        h->setType(value.toString());
         break;
      case 2:
-         h.setAlpha(value.toDouble());
+         h->setAlpha(value.toDouble());
          break;
      case 3:
-         h.setAmount(value.toDouble());
+         h->setAmount(value.toDouble());
          break;
      case 4:
-         h.setUnits(value.toString());
+         h->setUnits(value.toString());
          break;
      case 5:
-         h.setAdd(value.toString());
+         h->setAdd(value.toString());
          break;
      case 6:
-         h.setMinutes(value.toInt());
+         h->setMinutes(value.toInt());
          break;
      case 7:
          // No change
          break;
      case 8:
-         h.setCost(value.toDouble());
+         h->setCost(value.toDouble());
          break;
      }
 
@@ -150,19 +152,18 @@ bool HopsModel::setData(const QModelIndex &index, const QVariant &value, int rol
      QModelIndex from = this->createIndex(0, 0);
      QModelIndex to = this->createIndex(m_data->size(), columnCount(index));
 
-     qDebug() << "Replaced row at " << index.row();
-     qDebug() << m_data->at(index.row()).getName();
      emit dataChanged(from, to);
      return true;
  }
 
 
 bool HopsModel::insertRow(int row, const QModelIndex &parent) {
-     beginInsertRows(QModelIndex(), row, row);
-     Hop h;
-     m_data->append(h);
-     endInsertRows();
-     return true;
+    Q_UNUSED(parent);
+    beginInsertRows(QModelIndex(), row, row);
+    Hop *h = new Hop();
+    m_data->append(h);
+    endInsertRows();
+    return true;
 }
 
 
