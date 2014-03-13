@@ -17,6 +17,7 @@ QStringList HOP_addTypes = QStringList() << HOP_BOIL << HOP_FWH << HOP_DRY << HO
 
 Hop::Hop() : Ingredient() {
     // default constructor
+    setForm("hop");
     setType(HOP_DEFAULT_TYPE);
     setAdd(HOP_DEFAULT_ADD);
     setUnits(CONVERTER_DEFAULT_WEIGHT);
@@ -27,6 +28,7 @@ Hop::Hop() : Ingredient() {
 }
 
 Hop::Hop(QString u, QString t) {
+    setForm("hop");
     setUnits(u);
     setType(t);
     setAmount(0);

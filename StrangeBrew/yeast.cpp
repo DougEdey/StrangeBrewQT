@@ -5,7 +5,7 @@ Yeast::Yeast()
 }
 
 Yeast::Yeast(QString name) : Ingredient(name) {
-
+    setForm("yeast");
 }
 
 Yeast *Yeast::getAlternate() {

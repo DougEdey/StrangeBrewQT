@@ -28,7 +28,6 @@ public:
     }
 
     QString getAdd() const;
-
     double getAlpha() const;
     double getIBU() const;
     int getMinutes() const;
@@ -39,6 +38,7 @@ public:
     void setIBU(double i);
     void setMinutes(int m);
     void setStorage(double s);
+
     QString toXML();
 
     virtual bool operator <(const Hop &other) const;

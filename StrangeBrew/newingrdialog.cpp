@@ -42,8 +42,8 @@ void NewIngrDialog::on_miscIngrButtons_accepted()
         if (bList->at(i)) {
             Ingredient *ingr = dataList->at(i);
             //try {
-            Hop *h = dynamic_cast<Hop*>(ingr);
-            if(h != NULL) {
+            if(ingr->getType() == "hop") {
+                Hop *h = static_cast<Hop*>(ingr);
                 // Save the hop
                 Database::hopsDB.append(h);
                 newHop = true;
@@ -53,8 +53,9 @@ void NewIngrDialog::on_miscIngrButtons_accepted()
             }
 
             //try {
-            Fermentable *f = dynamic_cast<Fermentable*>(dataList->at(i));
-            if (f != NULL) {
+
+            if (ingr->getType() == "fermentable") {
+                Fermentable *f = static_cast<Fermentable*>(dataList->at(i));
                     // Save the Fermentable
                 Database::fermDB.append(f);
                 newFerm = true;
@@ -64,8 +65,8 @@ void NewIngrDialog::on_miscIngrButtons_accepted()
             }
 
 //                const Yeast &y = static_cast<const Yeast&>(ingr);
-            Yeast *y = dynamic_cast<Yeast*>(dataList->at(i));
-            if (y != NULL ){
+            if (dataList->at(i)->getType() == "yeast"){
+                Yeast *y = static_cast<Yeast*>(dataList->at(i));
                 // Save the yeast
                 Database::yeastDB.append(y);
                 newYeast = true;
@@ -73,8 +74,8 @@ void NewIngrDialog::on_miscIngrButtons_accepted()
             }
 
                 //const Misc &m = static_cast<const Misc&>(ingr);
-            Misc *m = dynamic_cast<Misc*>(dataList->at(i));
-            if (m != NULL) {
+            if (dataList->at(i)->getType() == "misc") {
+                Misc *m = static_cast<Misc*>(dataList->at(i));
                 // Save the misc
                 Database::miscDB.append(m);
                 newMisc = true;

@@ -53,7 +53,7 @@ QVariant NewIngrTable::data(const QModelIndex &index, int role) const
         return QVariant();
     }
 
-    qDebug() << typeid(m_data->at(index.row())).name();
+    //qDebug() << typeid(m_data->at(index.row())).name();
     /*const Hop *h = dynamic_cast<const Hop*>(i);
     // Do we have a hop?
     if (h != NULL) {

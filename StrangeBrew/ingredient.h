@@ -23,6 +23,7 @@ private:
     Quantity stock;
     QString type;
     bool modified;
+    QString form;
 
 public:
     explicit Ingredient(QObject *parent = 0);
@@ -30,6 +31,10 @@ public:
     Ingredient(const Ingredient& other);
     virtual ~Ingredient() {
     }
+
+    QString getForm() const { return form;}
+    void setForm (QString f) { form = f;}
+
     double getAmountAs(QString s) const ;
     double getAmount() const ;
     double getStockAs(QString s) const ;

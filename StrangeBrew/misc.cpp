@@ -11,6 +11,7 @@ QString MISC_stages[] = {MISC_MASH, MISC_BOIL, MISC_PRIMARY, MISC_SECONDARY, MIS
 
 // default constructor
 Misc::Misc() : Ingredient() {
+    setForm("misc");
     //setName("");
     //setCost(0);
     //setDescription("");

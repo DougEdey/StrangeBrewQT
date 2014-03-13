@@ -3,6 +3,7 @@
 // constructors:
 Fermentable::Fermentable() : Ingredient(){
     // default constructor
+    setForm("fermentable");
     setName("");
     pppg = 0;
     lov = 0;
@@ -18,6 +19,7 @@ Fermentable::Fermentable() : Ingredient(){
 }
 
 Fermentable::Fermentable(QString n, double p, double l, double a, QString u) : Ingredient() {
+    setForm("fermentable");
     setName(n);
     pppg = p;
     lov = l;
@@ -33,6 +35,7 @@ Fermentable::Fermentable(QString n, double p, double l, double a, QString u) : I
 
 
 Fermentable::Fermentable(QString u) {
+    setForm("fermentable");
     setName("");
     percent = 0;
     pppg = 1.000;

@@ -1,4 +1,4 @@
-#-------------------------------------------------
+
 #
 # Project created by QtCreator 2014-02-08T10:28:01
 #
@@ -197,6 +197,10 @@ linux32 {
 
 linux64 {
     DESTDIR = ../build/linux/x64
+}
+
+win32 {
+    DESTDIR = ..\build\windows\x86
 }
 
 winx86 {
