@@ -7,6 +7,8 @@ Ingredient::Ingredient(QObject *parent) : QObject(parent) {
     type = "";
     costPerU = 0.0;
     name = "";
+    amount.setAmount(0);
+    stock.setAmount(0);
 }
 
 Ingredient::Ingredient(QString name, QObject *parent) : QObject(parent) {
@@ -16,6 +18,8 @@ Ingredient::Ingredient(QString name, QObject *parent) : QObject(parent) {
     type = "";
     costPerU = 0.0;
     this->name = name;
+    amount.setAmount(0);
+    stock.setAmount(0);
 }
 
 
