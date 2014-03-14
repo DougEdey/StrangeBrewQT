@@ -246,3 +246,9 @@ void RemoteRecipes::recipeDownloaded() {
 QString RemoteRecipes::getRecipeFileName() {
     return recipeFileName;
 }
+
+void RemoteRecipes::on_cancelButton_clicked()
+{
+    emit rejected();
+    this->reject();
+}

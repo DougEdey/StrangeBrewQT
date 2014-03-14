@@ -50,6 +50,8 @@ private slots:
     void on_brewerCombo_currentIndexChanged(const QString &brewer);
     void on_downloadButton_clicked();
 
+    void on_cancelButton_clicked();
+
 private:
     Ui::RemoteRecipes *ui;
 };
