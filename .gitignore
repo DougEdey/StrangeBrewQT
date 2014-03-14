@@ -23,3 +23,8 @@ Makefile*
 
 *.autosave
 build*
+*.swp
+*.orig
+object_script*
+release
+
