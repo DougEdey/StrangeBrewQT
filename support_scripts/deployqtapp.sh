@@ -165,6 +165,7 @@ execscript=$tardir/"run$executable.sh"
 echo "Created run script: "$execscript
 
 echo "#!/bin/sh" > $execscript
+echo "cd ${0%/*}" > $execscript
 echo "export LD_LIBRARY_PATH=\`pwd\`/libs" >> $execscript
 echo "export QT_QPA_FONTDIR=\`pwd\`/fonts" >> $execscript
 echo "./$executable" >> $execscript
