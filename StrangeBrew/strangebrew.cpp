@@ -40,7 +40,7 @@ StrangeBrew::StrangeBrew(QWidget *parent) :
     if (preferences->value("Cloud/URL", "").toString() == "") {
 
         // First run, prompt for settings
-        QMessageBox::about(this, "First run", "Since this is your first run, please check your prefences");
+        QMessageBox::about(this, "First run", "Since this is your first run, please check your preferences");
         Preferences *p = new Preferences();
         p->exec();
         delete p;
@@ -1498,4 +1498,9 @@ void StrangeBrew::on_actionUpload_triggered()
     CloudControl *cControl = new CloudControl(this);
     cControl->UploadRecipe(this->currentRecipe);
     // Auto deletes itself when done
+}
+
+void StrangeBrew::on_actionSave_As_triggered()
+{
+    saveFile(true);
 }

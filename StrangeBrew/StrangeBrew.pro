@@ -33,8 +33,7 @@ defineTest(copyAllToDestdir) {
 
         win32 {
             #QMAKE_POST_LINK += xcopy $$quote($$FILE) $$quote($$DDIR) $$escape_expand(\\n\\t)
-        }
-        unix {
+        } else {
             QMAKE_POST_LINK += $$QMAKE_COPY -r $$quote($$FILE) $$quote($$DDIR) $$escape_expand(\\n\\t)
         }
     }

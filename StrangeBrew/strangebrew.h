@@ -216,6 +216,8 @@ private slots:
 
     void on_actionUpload_triggered();
 
+    void on_actionSave_As_triggered();
+
 private:
     QSettings *preferences;
     Recipe *currentRecipe;
