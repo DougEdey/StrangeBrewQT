@@ -27,6 +27,7 @@ Qt::ItemFlags MashModel::flags(const QModelIndex &index) const {
 }
 
 int MashModel::rowCount(const QModelIndex &parent) const {
+    Q_UNUSED(parent);
     if (m_data != NULL) {
         return m_data->getStepSize();
     }
@@ -119,49 +120,50 @@ void MashModel::dataList(Mash *mashPtr) {
 
 bool MashModel::setData(const QModelIndex &index, const QVariant &value, int role) {
 
-     int i = index.row();
-     //"Type", "Method", "Start Temp", "End Temp",
-     //"Ramp Min", "Step Min", "Weight", "In", "Out", "Temp"
+    if (role != Qt::EditRole)
+        return false;
 
-     if (index.column() == 0) {
+    int i = index.row();
+        //"Type", "Method", "Start Temp", "End Temp",
+        //"Ramp Min", "Step Min", "Weight", "In", "Out", "Temp"
 
-         if (value.toString().compare(SPARGE) == 0 ) {
-             qDebug() << "Sparge step selected";
-         }
+        if (index.column() == 0) {
 
-         QModelIndex typeIndex = index.sibling(index.row(), 1);
-         qDebug() << data(typeIndex, Qt::DisplayRole).toString();
+            if (value.toString().compare(SPARGE) == 0 ) {
+                qDebug() << "Sparge step selected";
+            }
+
+            QModelIndex typeIndex = index.sibling(index.row(), 1);
+            qDebug() << data(typeIndex, Qt::DisplayRole).toString();
 
 
-         // check if value is valid
-         if (value.toString().compare(SPARGE) == 0 // is the  new selection value a sparge?
-                 && !mash_spargeMethods.contains(data(typeIndex, Qt::DisplayRole).toString(), // if so, is the second column a valid sparge step?
-                                         Qt::CaseInsensitive))
-         {
-             // we have a sparge step and we're moving off it, give a warning if needed
-             QSettings opts("Doug Edey", "StrangeBrew");
-             if (opts.value("Application/timid", "True").toString().compare("True") == 0) {
-                 QMessageBox::StandardButton reply;
-                 QString message = "Changing the type of mash to " + value.toString() + " will change the method of this step."
-                         + "Do you wish to continue?";
-                 reply = QMessageBox::question(0,
+            // check if value is valid
+            QString cSpargeStep = data(typeIndex, Qt::DisplayRole).toString();
+
+            if (value.toString().compare(SPARGE) == 0 // is the  new selection value a sparge?
+                && !mash_spargeMethods.contains(cSpargeStep, // if so, is the second column a valid sparge step?
+                                                    Qt::CaseInsensitive))
+            {
+                // we have a sparge step and we're moving off it, give a warning if needed
+                QSettings opts("Doug Edey", "StrangeBrew");
+                if (opts.value("Application/timid", "True").toString().compare("True") == 0) {
+                    QMessageBox::StandardButton reply;
+                    QString message = "Changing the type of mash to " + value.toString() + " will change the method of this step."
+                                        + "Do you wish to continue?";
+                    reply = QMessageBox::question(0,
                                                 "Change Type?",
                                                 message,
-                                               QMessageBox::Yes | QMessageBox::No);
+                                                QMessageBox::Yes | QMessageBox::No);
 
-                 if (reply == QMessageBox::Yes) {
-                     qDebug() << "Setting step method " << mash_spargeMethods.at(0);
-                     m_data->setStepType(i, value.toString());
-                     m_data->setStepMethod(i, mash_spargeMethods.at(0));
-                     qDebug() << "New Method " << m_data->getStepMethod(i);
-                 } else {
-                     return false;
-                 }
-             }
-
-
-         }
-     }
+                    if (reply == QMessageBox::Yes) {
+                        m_data->setStepType(i, value.toString());
+                        m_data->setStepMethod(i, mash_spargeMethods.at(0));
+                    } else {
+                        return false;
+                    }
+            }
+        }
+    }
 
      bool convertOK;
      switch (index.column()) {
@@ -189,6 +191,8 @@ bool MashModel::setData(const QModelIndex &index, const QVariant &value, int rol
 
      }
 
+     // Should alert if convertOK is bad.
+
      if (m_data->getStepSize() > 0) {
         std::sort(m_data->steps.begin(), m_data->steps.end(), MashStep::lessThan);
      }
@@ -201,7 +205,7 @@ bool MashModel::setData(const QModelIndex &index, const QVariant &value, int rol
 }
 
 bool MashModel::insertRow(int row, const QModelIndex &parent) {
-     beginInsertRows(QModelIndex(), row, row);
+     beginInsertRows(parent, row, row);
      m_data->addStep();
      endInsertRows();
      return true;

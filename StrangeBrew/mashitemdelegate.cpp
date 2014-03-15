@@ -66,5 +66,6 @@ void MashItemDelegate::setModelData(QWidget *editor, QAbstractItemModel *model, 
 }
 
 QString MashItemDelegate::displayText(const QVariant &value, const QLocale &locale) const {
+    Q_UNUSED(locale);
     return value.toString();
 }

@@ -7,6 +7,7 @@ NotesModel::NotesModel(QObject *parent) :
 }
 
 int NotesModel::rowCount(const QModelIndex &parent) const {
+    Q_UNUSED(parent);
     if (m_data != NULL) {
         //qDebug() << "Note row Count " << m_data->count();
         return m_data->count();
@@ -35,7 +36,7 @@ void NotesModel::dataList(QList<Note> *NoteList) {
 }
 
 bool NotesModel::insertRow(int row, const QModelIndex &parent) {
-     beginInsertRows(QModelIndex(), row, row);
+     beginInsertRows(parent, row, row);
      Note m;
      m_data->append(m);
      endInsertRows();
@@ -44,7 +45,7 @@ bool NotesModel::insertRow(int row, const QModelIndex &parent) {
 
 
 bool NotesModel::removeRow(int row, const QModelIndex &parent) {
-    beginRemoveRows(QModelIndex(), row, row);
+    beginRemoveRows(parent, row, row);
     m_data->removeAt(row);
     endRemoveRows();
     return true;

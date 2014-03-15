@@ -77,5 +77,6 @@ void MiscItemDelegate::paint(QPainter *painter, const QStyleOptionViewItem &view
 }
 
 QString MiscItemDelegate::displayText(const QVariant &value, const QLocale &locale) const {
+    Q_UNUSED(locale);
     return value.toString();
 }

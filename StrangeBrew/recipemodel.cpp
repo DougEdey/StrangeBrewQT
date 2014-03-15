@@ -14,7 +14,8 @@ bool RecipeModel::setData(const QModelIndex &index, const QVariant &value, int r
 }
 
 Qt::ItemFlags RecipeModel::flags(const QModelIndex &index) const {
-
+    Q_UNUSED(index);
+    // All items are not editable, but are selectable
     return Qt::ItemIsEnabled | Qt::ItemIsSelectable;
 }
 

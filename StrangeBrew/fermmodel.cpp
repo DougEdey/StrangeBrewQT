@@ -21,10 +21,12 @@ void FermModel::dataList(QList<FermentStep> *newData) {
 }
 
 int FermModel::columnCount(const QModelIndex &parent) const {
+    Q_UNUSED(parent); // All the columns are the same
     return 3;
 }
 
 int FermModel::rowCount(const QModelIndex &parent) const {
+    Q_UNUSED(parent) // All the rows are the same
     if (m_data == NULL) {
         return 0;
     }
@@ -79,6 +81,10 @@ QVariant FermModel::data(const QModelIndex &index, int role) const {
 }
 
 bool FermModel::setData(const QModelIndex &index, const QVariant &value, int role) {
+
+    if (role != Qt::EditRole)
+        return false;
+
     int i = index.row();
     FermentStep f = m_data->at(i);
     switch (index.column()) {
