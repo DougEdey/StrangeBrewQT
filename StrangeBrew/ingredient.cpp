@@ -18,7 +18,7 @@ Ingredient::Ingredient(QString name, QObject *parent) : QObject(parent) {
     type = "";
     costPerU = 0.0;
     this->name = name;
-    amount.;setAmount(0);
+    amount.setAmount(0);
     stock.setAmount(0);
 }
 
