@@ -878,8 +878,9 @@ bool StrangeBrew::eventFilter(QObject *object, QEvent *event)
                 currentRecipe->getNotes()->replace(curRow, mSelected);
 
             }
+            return true;
         }
-        return true;
+        return false;
     }
 
     return false;
@@ -1079,7 +1080,9 @@ void StrangeBrew::on_notesList_activated(const QModelIndex &index)
     // set the notes content
     Note n = currentRecipe->getNote(index.row());
     ui->notesEdit->setText(n.getNote());
-
+    qDebug() << "Notes edit is read only: " << ui->notesEdit->isReadOnly();
+    ui->notesEdit->setFocus();
+    ui->notesEdit->setEnabled(true);
     // and the combo box
     int i = ui->noteCombo->findText(n.getType());
     if (i != -1) {

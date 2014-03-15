@@ -60,7 +60,7 @@
         <enum>Qt::NoFocus</enum>
        </property>
        <property name="currentIndex">
-        <number>2</number>
+        <number>3</number>
        </property>
        <widget class="QWidget" name="details">
         <property name="sizePolicy">
@@ -757,6 +757,12 @@
           </spacer>
          </item>
         </layout>
+        <zorder>notesList</zorder>
+        <zorder>noteCombo</zorder>
+        <zorder>noteDate</zorder>
+        <zorder>addNote</zorder>
+        <zorder>delNote</zorder>
+        <zorder>notesEdit</zorder>
        </widget>
        <widget class="QWidget" name="dilution">
         <attribute name="title">
