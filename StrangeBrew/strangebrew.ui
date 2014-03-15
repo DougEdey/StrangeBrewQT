@@ -60,7 +60,7 @@
         <enum>Qt::NoFocus</enum>
        </property>
        <property name="currentIndex">
-        <number>0</number>
+        <number>2</number>
        </property>
        <widget class="QWidget" name="details">
         <property name="sizePolicy">
@@ -711,9 +711,6 @@
         <zorder>miscIngredientsList</zorder>
         <zorder>commentsLabel</zorder>
         <zorder>splitter</zorder>
-        <zorder>horizontalSpacer_5</zorder>
-        <zorder>horizontalSpacer_6</zorder>
-        <zorder>horizontalSpacer_7</zorder>
        </widget>
        <widget class="QWidget" name="notes">
         <attribute name="title">
@@ -2211,12 +2208,25 @@
    <addaction name="menuTools"/>
   </widget>
   <widget class="QToolBar" name="mainToolBar">
+   <property name="iconSize">
+    <size>
+     <width>24</width>
+     <height>24</height>
+    </size>
+   </property>
    <attribute name="toolBarArea">
     <enum>TopToolBarArea</enum>
    </attribute>
    <attribute name="toolBarBreak">
     <bool>false</bool>
    </attribute>
+   <addaction name="actionNew"/>
+   <addaction name="actionOpen"/>
+   <addaction name="actionSave"/>
+   <addaction name="actionSave_As"/>
+   <addaction name="separator"/>
+   <addaction name="actionExport"/>
+   <addaction name="actionPrint"/>
    <addaction name="separator"/>
   </widget>
   <widget class="QStatusBar" name="statusBar"/>

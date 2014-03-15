@@ -1839,6 +1839,7 @@ public:
         StrangeBrew->setMenuBar(menuBar);
         mainToolBar = new QToolBar(StrangeBrew);
         mainToolBar->setObjectName(QStringLiteral("mainToolBar"));
+        mainToolBar->setIconSize(QSize(24, 24));
         StrangeBrew->addToolBar(Qt::TopToolBarArea, mainToolBar);
         statusBar = new QStatusBar(StrangeBrew);
         statusBar->setObjectName(QStringLiteral("statusBar"));
@@ -1874,11 +1875,18 @@ public:
         menuTools->addAction(actionExtract_Tool);
         menuTools->addAction(actionHydrometer);
         menuTools->addAction(actionConversion);
+        mainToolBar->addAction(actionNew);
+        mainToolBar->addAction(actionOpen);
+        mainToolBar->addAction(actionSave);
+        mainToolBar->addAction(actionSave_As);
+        mainToolBar->addSeparator();
+        mainToolBar->addAction(actionExport);
+        mainToolBar->addAction(actionPrint);
         mainToolBar->addSeparator();
 
         retranslateUi(StrangeBrew);
 
-        recipeTabs->setCurrentIndex(0);
+        recipeTabs->setCurrentIndex(2);
         mashTools->setCurrentIndex(0);
 
 

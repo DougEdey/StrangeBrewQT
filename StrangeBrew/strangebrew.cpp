@@ -6,6 +6,7 @@ StrangeBrew::StrangeBrew(QWidget *parent) :
     ui(new Ui::StrangeBrew)
 {
     ui->setupUi(this);
+
     qDebug() << CONVERTER_weightUnits.size();
     QUANTITY_volUnits = Quantity::initVolUnits();
     QUANTITY_weightUnits = Quantity::initWeightUnits();
