@@ -18,7 +18,7 @@ Ingredient::Ingredient(QString name, QObject *parent) : QObject(parent) {
     type = "";
     costPerU = 0.0;
     this->name = name;
-    amount.setAmount(0);
+    amount.;setAmount(0);
     stock.setAmount(0);
 }
 
@@ -49,7 +49,7 @@ QString Ingredient::getUnits() const { return amount.getUnits(); }
 
 double Ingredient::getCostPerUAs(QString to) const{
     // current value / new value * cost
-    return costPerU;
+    return Quantity::convertUnit(getUnits(), to, costPerU);
 }
 
 QString Ingredient::getUnitsAbrv() const { return amount.getAbrv(); }
