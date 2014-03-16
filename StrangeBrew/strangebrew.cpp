@@ -246,7 +246,7 @@ void StrangeBrew::updateUI() {
         hcbid = new HopItemDelegate();
     }
     ui->hopsList->setItemDelegate(hcbid);
-    //ui->hopsList->horizontalHeader()->setSectionResizeMode(QHeaderView::Stretch);
+    ui->hopsList->horizontalHeader()->setSectionResizeMode(QHeaderView::Stretch);
 
     // setup the Malt list
     mModel->dataList(currentRecipe->getMaltList());
@@ -259,6 +259,7 @@ void StrangeBrew::updateUI() {
     ui->fermentablesList->setColumnWidth(1, 20);
     ui->fermentablesList->setColumnWidth(2, 20);
 
+    // Set the resize mode for the Fermentables list
     ui->fermentablesList->horizontalHeader()->setSectionResizeMode(0, QHeaderView::Fixed);
     ui->fermentablesList->horizontalHeader()->setSectionResizeMode(1, QHeaderView::Fixed);
     ui->fermentablesList->horizontalHeader()->setSectionResizeMode(2, QHeaderView::Fixed);
@@ -277,7 +278,7 @@ void StrangeBrew::updateUI() {
         miscid = new MiscItemDelegate();
     }
     ui->miscIngredientsList->setItemDelegate(miscid);
-    //ui->miscIngredientsList->horizontalHeader()->setSectionResizeMode(QHeaderView::Stretch);
+    ui->miscIngredientsList->horizontalHeader()->setSectionResizeMode(QHeaderView::Stretch);
 
     // Setup the Note List
     notesModel->dataList(currentRecipe->getNotes());
@@ -290,7 +291,7 @@ void StrangeBrew::updateUI() {
     }
     ui->mashStepsTable->setItemDelegate(mashid);
 
-    //ui->mashStepsTable->horizontalHeader()->setSectionResizeMode(QHeaderView::Stretch);
+    ui->mashStepsTable->horizontalHeader()->setSectionResizeMode(QHeaderView::Stretch);
 
     // Setup the Fermentables List
     fermModel->dataList(currentRecipe->getFermentStepsList());
