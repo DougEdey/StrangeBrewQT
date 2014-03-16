@@ -23,6 +23,7 @@ public:
     void paint(QPainter *painter, const QStyleOptionViewItem &viewItemOption, const QModelIndex &index) const;
     bool editorEvent(QEvent *event, QAbstractItemModel *model, const QStyleOptionViewItem &option, const QModelIndex &index);
     QRect CheckBoxRect(const QStyleOptionViewItem &view_item_style_options, const QRect check_box_rect) const;
+    QSize sizeHint(const QStyleOptionViewItem &option, const QModelIndex &index) const;
 signals:
 
 public slots:

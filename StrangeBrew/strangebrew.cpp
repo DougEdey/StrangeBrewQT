@@ -103,6 +103,8 @@ StrangeBrew::StrangeBrew(QWidget *parent) :
     ui->mashStepsTable->setModel(mashModel);
     ui->fermTable->setModel(fermModel);
 
+    ui->fermentablesList->resizeColumnsToContents();
+
     Q_FOREACH(Yeast *item, Database::yeastDB) {
         ui->yeastCombo->addItem(item->getName());
     }
@@ -252,7 +254,21 @@ void StrangeBrew::updateUI() {
         mcbid = new MaltItemDelegate(ui->fermentablesList);
     }
     ui->fermentablesList->setItemDelegate(mcbid);
-    //ui->fermentablesList->horizontalHeader()->setSectionResizeMode(QHeaderView::Stretch);
+
+    ui->fermentablesList->setColumnWidth(0, 20);
+    ui->fermentablesList->setColumnWidth(1, 20);
+    ui->fermentablesList->setColumnWidth(2, 20);
+
+    ui->fermentablesList->horizontalHeader()->setSectionResizeMode(0, QHeaderView::Fixed);
+    ui->fermentablesList->horizontalHeader()->setSectionResizeMode(1, QHeaderView::Fixed);
+    ui->fermentablesList->horizontalHeader()->setSectionResizeMode(2, QHeaderView::Fixed);
+    ui->fermentablesList->horizontalHeader()->setSectionResizeMode(3, QHeaderView::Stretch);
+    ui->fermentablesList->horizontalHeader()->setSectionResizeMode(4, QHeaderView::Stretch);
+    ui->fermentablesList->horizontalHeader()->setSectionResizeMode(5, QHeaderView::Stretch);
+    ui->fermentablesList->horizontalHeader()->setSectionResizeMode(6, QHeaderView::Stretch);
+    ui->fermentablesList->horizontalHeader()->setSectionResizeMode(7, QHeaderView::Stretch);
+    ui->fermentablesList->horizontalHeader()->setSectionResizeMode(8, QHeaderView::Stretch);
+    ui->fermentablesList->horizontalHeader()->setSectionResizeMode(9, QHeaderView::Stretch);
 
     // Setup the Misc list
     miscModel->dataList(currentRecipe->getMiscList());

@@ -6,6 +6,15 @@ MaltItemDelegate::MaltItemDelegate(QTableView *parent) :
         parent_view = parent;
 }
 
+QSize MaltItemDelegate::sizeHint(const QStyleOptionViewItem &option, const QModelIndex &index) const {
+    if (index.column() <= 2) {
+        qDebug() << "Setting column " << index.column() << " size " << option.rect.size().height();
+        return QSize(6, option.rect.size().height());
+    }
+
+    return option.rect.size();
+}
+
 QRect MaltItemDelegate::CheckBoxRect(const QStyleOptionViewItem &view_item_style_options, const QRect check_box_rect) const {
 
     QStyleOptionButton check_box_style_option;
