@@ -319,10 +319,10 @@ void StrangeBrew::updateTopUI() {
 
     if (currentRecipe->getDirty()) {
         qDebug() << "Recipe is dirty";
-        title += "*]";
-    } else {
-        title += "]";
+        title += "*";
     }
+    title += "]";
+
 
     QWidget::setWindowTitle(title);
     //QApplication::setApplicationName(title);
@@ -992,15 +992,11 @@ QList<Style*> StrangeBrew::getStyleMatches(){
 void StrangeBrew::on_stylesList_activated(const QModelIndex &index)
 {
     // Activated a style in the list view
-    qDebug() << "Style list activated: " << index.row();
     Style *s = styleMatches[index.row()];
-    qDebug() << ui->ibuProgress->value();
     ui->ibuStyleLow->setText(QString::number(s->getIbuLow(), 'f', 2));
     ui->ibuStyleHigh->setText(QString::number(s->getIbuHigh(), 'f', 2));
     ui->ibuProgress->setMinimum(QString::number(s->getIbuLow(), 'f', 0).toInt());
     ui->ibuProgress->setMaximum(QString::number(s->getIbuHigh(), 'f', 0).toInt());
-    qDebug() << ui->ibuProgress->value();
-
 
     ui->colourStyleLow->setText(QString::number(s->getSrmLow(), 'f', 2));
     ui->colourStyleHigh->setText(QString::number(s->getSrmHigh(), 'f', 2));
