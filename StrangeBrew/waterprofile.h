@@ -4,7 +4,7 @@
 #include <QString>
 #include <vector>
 
-#include <sbstringutils.h>
+#include "sbstringutils.h"
 
 class WaterProfile
 {

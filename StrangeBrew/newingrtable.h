@@ -3,10 +3,10 @@
 
 #include <QAbstractTableModel>
 #include <QDebug>
-#include <fermentable.h>
-#include <misc.h>
-#include <hop.h>
-#include <yeast.h>
+#include "../fermentable.h"
+#include "../misc.h"
+#include "../hop.h"
+#include "../yeast.h"
 #include <typeinfo>
 
 class NewIngrTable : public QAbstractTableModel

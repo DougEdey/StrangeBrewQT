@@ -1608,9 +1608,18 @@ void Recipe::calcHopsTotals() {
         }
 
         if (h->getMinutes() > 0) {
-            adjPreSize = getPostBoilVol(CONVERTER_GAL)
-                    + (getPreBoilVol(CONVERTER_GAL) - getPostBoilVol(CONVERTER_GAL))
-                    / (getBoilMinutes() / h->getMinutes());
+            double pstbv = getPostBoilVol(CONVERTER_GAL);
+            double prebv = getPreBoilVol(CONVERTER_GAL);
+            // If something is weird, pre and post boil vol can be the same
+            // so do something sensible:
+            if (pstbv == prebv)
+                adjPreSize = prebv;
+            else {
+                double boilmin =getBoilMinutes();
+                int hmin = h->getMinutes();
+                adjPreSize = pstbv + (prebv - pstbv) / (boilmin / hmin );
+            }
+
         } else {
             adjPreSize = getPostBoilVol(CONVERTER_GAL);
         }

@@ -4,7 +4,7 @@
 #include <QDialog>
 #include <QCompleter>
 
-#include "database.h"
+#include "../database.h"
 
 namespace Ui {
 class NewYeast;

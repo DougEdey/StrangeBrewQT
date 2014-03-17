@@ -4,7 +4,7 @@
 #include <QDialog>
 #include <QSettings>
 
-#include "brewcalcs.h"
+#include "../brewcalcs.h"
 namespace Ui {
 class HydroDialog;
 }

@@ -2,7 +2,7 @@
 #define REFRACTTOOL_H
 
 #include <QDialog>
-#include "brewcalcs.h"
+#include "../brewcalcs.h"
 
 namespace Ui {
 class RefractTool;

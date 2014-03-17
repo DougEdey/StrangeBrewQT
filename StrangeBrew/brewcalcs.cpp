@@ -374,9 +374,9 @@ QString BrewCalcs::calcRGB(int method, double srm, int rConst, int gConst, int b
             B = 50.75 + -1.33 * srm;
         }
 
-        int r = round(R);
-        int b = round(B);
-        int g = round(G);
+        int r = int(R+0.5);
+        int b = int(B+0.5);
+        int g = int(G+0.5);
 
         if (r < 0)
             r = 0;
