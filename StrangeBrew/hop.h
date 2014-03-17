@@ -4,8 +4,8 @@
 #include <QString>
 #include <QDebug>
 
-#include <ingredient.h>
-#include <sbstringutils.h>
+#include "ingredient.h"
+#include "sbstringutils.h"
 #include "constants.h"
 
 class Hop : public Ingredient

@@ -1,4 +1,4 @@
-#include "tool_dialogs/resizerecipe.h"
+#include "resizerecipe.h"
 #include "ui_resizerecipe.h"
 
 ResizeRecipe::ResizeRecipe(QWidget *parent, Recipe *currentRecipe) :

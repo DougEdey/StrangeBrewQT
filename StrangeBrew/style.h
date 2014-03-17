@@ -2,7 +2,7 @@
 #define STYLE_H
 
 #include <QString>
-#include <sbstringutils.h>
+#include "sbstringutils.h"
 
 class Style
 {
