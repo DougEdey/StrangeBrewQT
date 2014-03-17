@@ -2,8 +2,8 @@
 #define MALTPERCENTDIALOG_H
 
 #include <QDialog>
-#include "recipe.h"
-#include "maltmodel.h"
+#include "../recipe.h"
+#include "../maltmodel.h"
 
 namespace Ui {
 class MaltPercentDialog;

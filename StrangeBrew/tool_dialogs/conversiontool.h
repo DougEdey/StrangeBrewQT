@@ -3,7 +3,7 @@
 
 #include <QDialog>
 
-#include "brewcalcs.h"
+#include "../brewcalcs.h"
 
 namespace Ui {
 class ConversionTool;

@@ -1,7 +1,7 @@
 #ifndef MISC_H
 #define MISC_H
 
-#include <ingredient.h>
+#include "ingredient.h"
 
 #include "sbstringutils.h"
 class Misc : public Ingredient

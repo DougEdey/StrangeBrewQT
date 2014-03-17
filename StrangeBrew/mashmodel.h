@@ -5,8 +5,8 @@
 #include <QMessageBox>
 #include <QTableView>
 
-#include <mash.h>
-#include <brewcalcs.h>
+#include "mash.h"
+#include "brewcalcs.h"
 
 class MashModel : public QAbstractTableModel
 {

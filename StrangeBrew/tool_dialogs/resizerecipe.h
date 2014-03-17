@@ -2,7 +2,7 @@
 #define RESIZERECIPE_H
 
 #include <QDialog>
-#include "recipe.h"
+#include "../recipe.h"
 
 
 namespace Ui {
