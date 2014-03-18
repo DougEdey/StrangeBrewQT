@@ -33,6 +33,8 @@ defineTest(copyAllToDestdir) {
 
         win32 {
             #QMAKE_POST_LINK += xcopy $$quote($$FILE) $$quote($$DDIR) $$escape_expand(\\n\\t)
+        } macx {
+            QMAKE_POST_LINK += $$QMAKE_COPY -r $$quote($$FILE) $$quote($$DDIR/StrangeBrew.app/Contents/MacOS/) $$escape_expand(\\n\\t)
         } else {
             QMAKE_POST_LINK += $$QMAKE_COPY -r $$quote($$FILE) $$quote($$DDIR) $$escape_expand(\\n\\t)
         }
