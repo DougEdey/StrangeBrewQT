@@ -210,6 +210,10 @@ winx64 {
     DESTDIR = ..\build\windows\x64
 }
 
+macx {
+    DESTDIR = ../build/mac
+}
+
 copyAllToDestdir(../data)
 copyAllToDestdir(../Recipes)
 
