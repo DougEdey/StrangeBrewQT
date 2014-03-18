@@ -20,7 +20,7 @@ Recipe::Recipe()
     style = new Style();
     yeast = new Yeast();
 
-    boilMinutes = opts.value("Times/BoilTime").toInt();
+    boilMinutes = opts.value("Recipe/BoilTime", "60").toInt();
 
     efficiency = opts.value("Calculations/Efficiency", "75").toDouble();
     attenuation = opts.value("Calculations/Attenuation", "75").toDouble();
