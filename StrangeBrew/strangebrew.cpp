@@ -103,7 +103,11 @@ StrangeBrew::StrangeBrew(QWidget *parent) :
     ui->mashStepsTable->setModel(mashModel);
     ui->fermTable->setModel(fermModel);
 
-    ui->fermentablesList->resizeColumnsToContents();
+    ui->fermentablesList->verticalHeader()->setVisible(false);
+    ui->miscIngredientsList->verticalHeader()->setVisible(false);
+    ui->hopsList->verticalHeader()->setVisible(false);
+    ui->mashStepsTable->verticalHeader()->setVisible(false);
+    ui->fermTable->verticalHeader()->setVisible(false);
 
     Q_FOREACH(Yeast *item, Database::yeastDB) {
         ui->yeastCombo->addItem(item->getName());
