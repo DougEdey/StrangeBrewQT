@@ -5,43 +5,6 @@
 #-------------------------------------------------
 
 # Copies the given files to the destination directory
-defineTest(copyToDestdir) {
-    files = $$1
-
-    for(FILE, files) {
-        DDIR = $$DESTDIR
-
-        # Replace slashes in paths with backslashes for Windows
-        win32:FILE ~= s,/,\\,g
-        win32:DDIR ~= s,/,\\,g
-
-        QMAKE_POST_LINK += $$QMAKE_COPY $$quote($$FILE) $$quote($$DDIR) $$escape_expand(\\n\\t)
-    }
-
-    export(QMAKE_POST_LINK)
-}
-
-defineTest(copyAllToDestdir) {
-    files = $$1
-
-    for(FILE, files) {
-        DDIR = $$DESTDIR
-
-        # Replace slashes in paths with backslashes for Windows
-        win32:FILE ~= s,/,\\,g
-        win32:DDIR ~= s,/,\\,g
-
-        win32 {
-            #QMAKE_POST_LINK += xcopy $$quote($$FILE) $$quote($$DDIR) $$escape_expand(\\n\\t)
-        } macx {
-            QMAKE_POST_LINK += $$QMAKE_COPY -r $$quote($$FILE) $$quote($$DDIR/StrangeBrew.app/Contents/MacOS/) $$escape_expand(\\n\\t)
-        } else {
-            QMAKE_POST_LINK += $$QMAKE_COPY -r $$quote($$FILE) $$quote($$DDIR) $$escape_expand(\\n\\t)
-        }
-    }
-
-    export(QMAKE_POST_LINK)
-}
 
 QT       += core gui xml sql network
 
@@ -201,25 +164,20 @@ linux64 {
 }
 
 win32 {
-    DESTDIR = ..\build\windows\x86
+    DESTDIR = ../build/windows/x86
 }
 
 winx86 {
-    DESTDIR = ..\build\windows\x86
+    DESTDIR = ../build/windows/x86
 }
 
 winx64 {
-    DESTDIR = ..\build\windows\x64
+    DESTDIR = ../build/windows/x64
 }
 
 macx {
     DESTDIR = ../build/mac
 }
 
-copyAllToDestdir(../data)
-copyAllToDestdir(../Recipes)
-
-win32 {
-    QMAKE_POST_LINK += xcopy ..\data $$DESTDIR\data /E /Y $$escape_expand(\\n\\t)
-    QMAKE_POST_LINK += xcopy ..\Recipes $$DESTDIR\Recipes /E /Y $$escape_expand(\\n\\t)
-}
+QMAKE_POST_LINK += $(COPY_DIR) ../data $$DESTDIR $$escape_expand(\\n\\t)
+QMAKE_POST_LINK += $(COPY_DIR) ../Recipes $$DESTDIR $$escape_expand(\\n\\t)
