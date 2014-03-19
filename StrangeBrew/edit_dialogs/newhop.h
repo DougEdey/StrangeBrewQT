@@ -4,8 +4,8 @@
 #include <QDialog>
 #include <QCompleter>
 
-#include "database.h"
-#include "quantity.h"
+#include "../database.h"
+#include "../quantity.h"
 
 namespace Ui {
 class NewHop;

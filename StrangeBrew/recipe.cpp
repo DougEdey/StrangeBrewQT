@@ -1612,6 +1612,21 @@ void Recipe::calcHopsTotals() {
             time = dryHopTime.toDouble();
         }
 
+<<<<<<< HEAD
+        if (h->getMinutes() > 0) {
+            double pstbv = getPostBoilVol(CONVERTER_GAL);
+            double prebv = getPreBoilVol(CONVERTER_GAL);
+            // If something is weird, pre and post boil vol can be the same
+            // so do something sensible:
+            if (pstbv == prebv)
+                adjPreSize = prebv;
+            else {
+                double boilmin =getBoilMinutes();
+                int hmin = h->getMinutes();
+                adjPreSize = pstbv + (prebv - pstbv) / (boilmin / hmin );
+            }
+
+=======
 
         if (h->getMinutes() > 0 && preBoilVol != postBoilVol) {
             // Get the volume at the time of the addition
@@ -1620,6 +1635,7 @@ void Recipe::calcHopsTotals() {
             double hopMin = h->getMinutes();
             adjPreSize = postBoilVol + (preBoilVol - postBoilVol);
             adjPreSize /= (boilMin / hopMin);
+>>>>>>> upstream/master
         } else {
             adjPreSize = postBoilVol;
         }

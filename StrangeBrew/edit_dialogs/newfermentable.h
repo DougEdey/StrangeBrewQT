@@ -5,9 +5,9 @@
 #include <QSettings>
 #include <QCompleter>
 
-#include "fermentable.h"
-#include "converter.h"
-#include "database.h"
+#include "../fermentable.h"
+#include "../converter.h"
+#include "../database.h"
 
 namespace Ui {
 class NewFermentable;
