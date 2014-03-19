@@ -1588,9 +1588,14 @@ void Recipe::calcHopsTotals() {
     }
 
     std::sort(hops.begin(), hops.end(), Ingredient::sortWeight);
+
     double ibuTotal = 0;
     double HopsCost = 0;
     double HopsOz = 0;
+
+    // Calculate these here so we don't need to run them every time we go round the loop
+    double preBoilVol = getPreBoilVol(CONVERTER_GAL);
+    double postBoilVol = getPostBoilVol(CONVERTER_GAL);
 
     for (int i = 0; i < hops.size(); i++) {
         // calculate the average OG of the boil
@@ -1607,26 +1612,34 @@ void Recipe::calcHopsTotals() {
             time = dryHopTime.toDouble();
         }
 
-        if (h->getMinutes() > 0) {
-            adjPreSize = getPostBoilVol(CONVERTER_GAL)
-                    + (getPreBoilVol(CONVERTER_GAL) - getPostBoilVol(CONVERTER_GAL))
-                    / (getBoilMinutes() / h->getMinutes());
+
+        if (h->getMinutes() > 0 && preBoilVol != postBoilVol) {
+            // Get the volume at the time of the addition
+
+            double boilMin = getBoilMinutes();
+            double hopMin = h->getMinutes();
+            adjPreSize = postBoilVol + (preBoilVol - postBoilVol);
+            adjPreSize /= (boilMin / hopMin);
         } else {
-            adjPreSize = getPostBoilVol(CONVERTER_GAL);
+            adjPreSize = postBoilVol;
         }
 
-        aveOg = 1 + (((estOg - 1) + ((estOg - 1) / (adjPreSize / getPostBoilVol(CONVERTER_GAL)))) / 2);
+        // Calculate the average OG of the volume variation
+        aveOg = 1 + (((estOg - 1) + ((estOg - 1) / (adjPreSize / postBoilVol))) / 2);
+
         if (ibuCalcMethod.toString() == TINSETH) {
-            h->setIBU(BrewCalcs::calcTinseth(h->getAmountAs(CONVERTER_OZ), getPostBoilVol(CONVERTER_GAL), aveOg, time,
+            h->setIBU(BrewCalcs::calcTinseth(h->getAmountAs(CONVERTER_OZ), postBoilVol, aveOg, time,
                                              h->getAlpha(), ibuHopUtil.toDouble()));
         } else if (ibuCalcMethod.toString() == RAGER) {
-            h->setIBU(BrewCalcs::CalcRager(h->getAmountAs(CONVERTER_OZ), getPostBoilVol(CONVERTER_GAL), aveOg, time,
+            h->setIBU(BrewCalcs::CalcRager(h->getAmountAs(CONVERTER_OZ), postBoilVol, aveOg, time,
                     h->getAlpha()));
-        } else {
-            h->setIBU(BrewCalcs::CalcGaretz(h->getAmountAs(CONVERTER_OZ), getPostBoilVol(CONVERTER_GAL), aveOg, time,
-                    getPreBoilVol(CONVERTER_GAL), 1, h->getAlpha()));
+        } else { // Gotta be Garetz
+            h->setIBU(BrewCalcs::CalcGaretz(h->getAmountAs(CONVERTER_OZ), postBoilVol, aveOg, time,
+                    preBoilVol, 1, h->getAlpha()));
         }
-        if (h->getType() == HOP_PELLET) {
+
+        // If we're a pellet and we have a adjustment value, use that
+        if (h->getType() == HOP_PELLET && getPelletHopPct() > 0) {
             h->setIBU(h->getIBU() * (1.0 + (getPelletHopPct() / 100)));
         }
 
