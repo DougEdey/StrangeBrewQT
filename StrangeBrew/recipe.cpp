@@ -1347,6 +1347,8 @@ void Recipe::setFinalWortVol(Quantity p) {
 
 void Recipe::addMalt() {
     Fermentable *m = new Fermentable();
+    // set defaults
+    m->setUnits(getMaltUnits());
     fermentables.push_back(m);
     std::sort(fermentables.begin(), fermentables.end(), Ingredient::sortWeight);
 }
@@ -1393,6 +1395,7 @@ void Recipe::delMalt(int i) {
 
 void Recipe::addHop() {
     Hop *h = new Hop();
+    h->setUnits(getHopUnits());
     isDirty = true;
     hops.append(h);
     // SORT HOPS
@@ -2332,7 +2335,10 @@ QString Recipe::getFilePath() {
 }
 
 QString Recipe::getFullFileName() {
-    return fileinfo.canonicalFilePath();
+    QString res= fileinfo.canonicalFilePath();
+    //Check whether empty - will be the case for new / save as recipes
+    if (res.isEmpty()) res=filename;
+    return res;
 }
 
 QString Recipe::getFileName() {
@@ -2340,5 +2346,6 @@ QString Recipe::getFileName() {
 }
 
 void Recipe::setFileName(QString f) {
+    filename=f;
     fileinfo.setFile(f);
 }

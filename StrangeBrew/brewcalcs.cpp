@@ -374,9 +374,9 @@ QString BrewCalcs::calcRGB(int method, double srm, int rConst, int gConst, int b
             B = 50.75 + -1.33 * srm;
         }
 
-        int r = int(R+0.5);
-        int b = int(B+0.5);
-        int g = int(G+0.5);
+        int r = round(R);
+        int b = round(B);
+        int g = round(G);
 
         if (r < 0)
             r = 0;
@@ -543,3 +543,12 @@ double BrewCalcs::acidAmountPerL(Acid acid, double moles) {
 
     return amnt;
 }
+
+#ifdef WIN32
+int BrewCalcs::round(double r) {
+    double d = (r > 0.0) ? floor(r + 0.5) : ceil(r - 0.5);
+    return int(d);
+}
+#endif
+
+
