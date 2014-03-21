@@ -6,7 +6,7 @@ Recipe::Recipe()
     acid = Acid::getAcidByName(CITRIC);
 
     QSettings opts("Doug Edey", "StrangeBrew");
-    qDebug() << opts.fileName();
+
     mash = Mash();
     name = "My Recipe";
     created = QDate::currentDate();
