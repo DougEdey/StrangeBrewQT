@@ -5,6 +5,21 @@ XMLHandler::XMLHandler() :QXmlDefaultHandler()
 {
     r = new Recipe();
     currentAttributes = NULL;
+    currentList = ""; //current List name
+    currentSubList = "";
+    currentElement = ""; // current element name
+    importType = ""; // the type of recipe we're importing
+    descrBuf = ""; // buffer to hold long descriptions
+    buffer = ""; // buffer
+
+    // mash step stuff:
+    type = "";
+    method = "";
+    startTemp = 0.0;
+    endTemp = 0.0;
+    minutes = 0;
+    rampMin = 0;
+    weightLbs = 0.0;
 }
 
 
