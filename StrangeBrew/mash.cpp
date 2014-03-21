@@ -91,6 +91,7 @@ void Mash::addStep(QString type, double st, double et, QString m, int min,
 int Mash::addStep(){
     MashStep step;
     // calcStepType(temp);
+
     if (!steps.empty()) {
         MashStep *lastStep = &steps[steps.size() -1];
         step.setStartTemp(lastStep->getEndTemp() + 1);
@@ -981,4 +982,28 @@ double Mash::calcWaterAddition(double targetTemp, double currentTemp,
 
     sb.append("  </MASH>\n");
     return sb;
+}
+
+
+QJsonObject Mash::toJSONObject() {
+    QJsonObject output;
+    output.insert("temp_unit", QJsonValue::fromVariant(tempUnits));
+
+    for (int i = 0; i < steps.size(); i++) {
+        MashStep st = steps.at(i);
+        QJsonObject step;
+        step.insert("type", QJsonValue::fromVariant(st.getType()));
+        step.insert("method", QJsonValue::fromVariant(st.getMethod()));
+        step.insert("temp", QJsonValue::fromVariant(st.getStartTemp()));
+        step.insert("duration", QJsonValue::fromVariant(st.getMinutes()));
+        output.insert(QString::number(i), step);
+    }
+
+    return output;
+}
+
+QString Mash::toJSONString() {
+    QJsonDocument doc(toJSONObject());
+
+    return doc.toJson();
 }

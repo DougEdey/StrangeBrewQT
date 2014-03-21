@@ -6,6 +6,9 @@
 #include <vector>
 #include <QtDebug>
 #include <QList>
+#include <QJsonArray>
+#include <QJsonObject>
+#include <QJsonDocument>
 
 #include "constants.h"
 #include "quantity.h"
@@ -141,6 +144,9 @@ public:
     QString getMashVolUnitsAbrv();
     void setSpargeTempF(double d);
     void setMashoutTempF(double d);
+
+    QJsonObject toJSONObject();
+    QString toJSONString();
 };
 
 
