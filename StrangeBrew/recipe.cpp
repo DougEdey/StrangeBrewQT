@@ -20,7 +20,7 @@ Recipe::Recipe()
     style = new Style();
     yeast = new Yeast();
 
-    boilMinutes = opts.value("Times/BoilTime").toInt();
+    boilMinutes = opts.value("Recipe/BoilTime").toInt();
 
     efficiency = opts.value("Calculations/Efficiency", "75").toDouble();
     attenuation = opts.value("Calculations/Attenuation", "75").toDouble();
@@ -937,6 +937,7 @@ void Recipe::setMaltAmount(int i, double a) {
         return;
     isDirty = true;
     fermentables[i]->setAmount(a);
+
     // TODO: SORT the fermentables list
     /*
     Comparator<Fermentable> c = new Comparator<Fermentable>()  {

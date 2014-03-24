@@ -172,6 +172,7 @@ bool MaltModel::setData(const QModelIndex &index, const QVariant &value, int rol
                 qDebug() << "New Hop: " << newMalt->getName();
                 f->setName(newMalt->getName());
                 f->setPppg(newMalt->getPppg());
+                f->setLov(newMalt->getLov());
                 f->setMashed(newMalt->getMashed());
                 f->setSteep(newMalt->getSteep());
                 f->ferments(newMalt->ferments());
