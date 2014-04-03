@@ -60,7 +60,7 @@
         <enum>Qt::NoFocus</enum>
        </property>
        <property name="currentIndex">
-        <number>3</number>
+        <number>5</number>
        </property>
        <widget class="QWidget" name="details">
         <property name="sizePolicy">
@@ -2208,6 +2208,8 @@
     <addaction name="actionExtract_Tool"/>
     <addaction name="actionHydrometer"/>
     <addaction name="actionConversion"/>
+    <addaction name="separator"/>
+    <addaction name="actionToElsinore"/>
    </widget>
    <addaction name="menuStrangeBrew"/>
    <addaction name="menuEdit"/>
@@ -2403,6 +2405,14 @@
   <action name="actionUpload">
    <property name="text">
     <string>Upload</string>
+   </property>
+  </action>
+  <action name="actionToElsinore">
+   <property name="text">
+    <string>Send Mash</string>
+   </property>
+   <property name="shortcut">
+    <string>Ctrl+Shift+E</string>
    </property>
   </action>
  </widget>

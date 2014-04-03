@@ -289,6 +289,7 @@ void StrangeBrew::updateUI() {
 
     // Setup the Mash list
     mashModel->dataList(currentRecipe->getMash());
+    qDebug() << "MASH JSON: " << currentRecipe->getMash()->toJSONString();
 
     if (mashid == NULL) {
         mashid = new MashItemDelegate(ui->mashStepsTable);
@@ -1524,4 +1525,9 @@ void StrangeBrew::on_actionUpload_triggered()
 void StrangeBrew::on_actionSave_As_triggered()
 {
     saveFile(true);
+}
+
+void StrangeBrew::on_actionToElsinore_triggered()
+{
+    this->currentRecipe->sendMashToElsinore();
 }
