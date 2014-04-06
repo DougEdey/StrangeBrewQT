@@ -2349,7 +2349,16 @@ void Recipe::setFileName(QString f) {
 bool Recipe::sendMashToElsinore() {
     QSettings opts("Doug Edey", "StrangeBrew");
 
-    QString elsinoreAddress = opts.value("Settings/Elsinore_IP", "brewery:8080").toString();
+    QString elsinoreAddress = opts.value("Elsinore/Host", "").toString();
+
+    if (elsinoreAddress == "") {
+        QMessageBox msgBox;
+        msgBox.setIcon(QMessageBox::Critical);
+        msgBox.setText("Elsinore Host isn't setup! Please check your preferences!");
+        msgBox.setStandardButtons(QMessageBox::Ok);
+        msgBox.exec();
+        return false;
+    }
 
     // First do a getStatus to make sure Elsinore is up and support the mash profile
     nam = new QNetworkAccessManager(this);
@@ -2374,8 +2383,9 @@ void Recipe::validateElsinoreFinished(QNetworkReply *networkReply) {
         if (elsinoreObject.find("mash") == elsinoreObject.end() && elsinoreObject.end().key() != "mash") {
             QMessageBox msgBox;
             msgBox.setIcon(QMessageBox::Critical);
+            msgBox.setTextFormat(Qt::RichText);
             msgBox.setText("Your version of Elsinore Does not support mash profiles. Please update to use this function.\n"
-                          "<INSERT DOC URL HERE>");
+                          "<a href='http://dougedey.github.io/2014/04/05/Elsinore-Mash-Profiles/'>Documentation</a>");
             msgBox.setStandardButtons(QMessageBox::Ok);
             msgBox.exec();
             qDebug() << "Elsinore doesn't support mash";
@@ -2432,7 +2442,7 @@ void Recipe::validateElsinoreFinished(QNetworkReply *networkReply) {
         QString error = networkReply->errorString();
         QMessageBox msgBox;
         msgBox.setIcon(QMessageBox::Critical);
-        msgBox.setText("Error connecting to Elsinore, is it turned on?\n" + error);
+        msgBox.setText("Error connecting to Elsinore ("+networkReply->url().toString()+"), is it turned on?\n" + error);
         msgBox.setStandardButtons(QMessageBox::Ok);
         msgBox.exec();
         qDebug() << "Reply failed: " << error;

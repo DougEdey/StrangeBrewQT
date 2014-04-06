@@ -103,6 +103,9 @@ void Preferences::loadSettings() {
     country = settings.value("Labels/Country", "Your Country").toString();
     email = settings.value("Labels/Email", "Your Email").toString();
 
+    // Elsinore Settings
+    elsinoreHost = settings.value("Elsinore/Host", "").toString();
+
     recipeDIR = settings.value("Recipes/DIR", QDir::currentPath() + QDir::separator() + "data").toString();
 
     // Carbonation
@@ -203,6 +206,8 @@ void Preferences::saveSettings() {
     settings.setValue("Labels/Country", country);
     settings.setValue("Labels/Email", email);
 
+    // Elsinore
+    settings.setValue("Elsinore/Host", elsinoreHost);
     settings.setValue("Recipes/DIR", recipeDIR);
 
     // Carbonation
@@ -357,6 +362,7 @@ void Preferences::updateBrewer() {
     ui->recipeDirEdit->setText(recipeDIR);
     ui->efficiencySpin->setValue(efficiency);
     ui->attenuationSpin->setValue(attenuation);
+    ui->elsinoreHostText->setText(elsinoreHost);
 }
 
 void Preferences::updateStyle() {
@@ -807,4 +813,9 @@ void Preferences::on_waterProfileCombo_currentIndexChanged(const QString &arg1)
 void Preferences::on_buttonBox_accepted()
 {
     saveSettings();
+}
+
+void Preferences::on_elsinoreHostText_editingFinished()
+{
+    elsinoreHost = ui->elsinoreHostText->text();
 }

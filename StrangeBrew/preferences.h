@@ -154,6 +154,8 @@ private slots:
 
     void on_buttonBox_accepted();
 
+    void on_elsinoreHostText_editingFinished();
+
 private:
     Ui::Preferences *ui;
 
@@ -194,6 +196,9 @@ private:
 
     // brewer preferences
     QString name, phone, street, city, state, code, club, country, email, recipeDIR;
+
+    // Elsinore Settings
+    QString elsinoreHost;
 
     // Carbonation
     bool kegged;
