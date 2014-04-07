@@ -1536,3 +1536,31 @@ void StrangeBrew::on_actionToElsinore_triggered()
 {
     this->currentRecipe->sendMashToElsinore();
 }
+
+void StrangeBrew::on_actionExit_triggered()
+{
+
+    if (this->currentRecipe->isDirty) {
+        QMessageBox::StandardButton reply;
+        reply = QMessageBox::question(this,
+                   "Save Recipe?",
+                   "Save the current Recipe?",
+                  QMessageBox::Yes | QMessageBox::No);
+
+        if (reply == QMessageBox::Yes) {
+            this->on_actionSave_triggered();
+        }
+    }
+
+    QMessageBox::StandardButton reply;
+    reply = QMessageBox::question(this,
+               "Quit?",
+               "Do you really want to quit Elsinore?",
+              QMessageBox::Yes | QMessageBox::No);
+
+    if (reply == QMessageBox::No) {
+        return;
+    }
+
+    QApplication::quit();
+}
