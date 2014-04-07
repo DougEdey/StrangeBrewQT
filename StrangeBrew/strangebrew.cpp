@@ -294,6 +294,7 @@ void StrangeBrew::updateUI() {
 
     // Setup the Mash list
     mashModel->dataList(currentRecipe->getMash());
+    qDebug() << "MASH JSON: " << currentRecipe->getMash()->toJSONString();
 
     if (mashid == NULL) {
         mashid = new MashItemDelegate(ui->mashStepsTable);
@@ -1529,4 +1530,37 @@ void StrangeBrew::on_actionUpload_triggered()
 void StrangeBrew::on_actionSave_As_triggered()
 {
     saveFile(true);
+}
+
+void StrangeBrew::on_actionToElsinore_triggered()
+{
+    this->currentRecipe->sendMashToElsinore();
+}
+
+void StrangeBrew::on_actionExit_triggered()
+{
+
+    if (this->currentRecipe->isDirty) {
+        QMessageBox::StandardButton reply;
+        reply = QMessageBox::question(this,
+                   "Save Recipe?",
+                   "Save the current Recipe?",
+                  QMessageBox::Yes | QMessageBox::No);
+
+        if (reply == QMessageBox::Yes) {
+            this->on_actionSave_triggered();
+        }
+    }
+
+    QMessageBox::StandardButton reply;
+    reply = QMessageBox::question(this,
+               "Quit?",
+               "Do you really want to quit Elsinore?",
+              QMessageBox::Yes | QMessageBox::No);
+
+    if (reply == QMessageBox::No) {
+        return;
+    }
+
+    QApplication::quit();
 }

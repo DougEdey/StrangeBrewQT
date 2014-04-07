@@ -218,6 +218,8 @@ private slots:
 
     void on_actionSave_As_triggered();
 
+    void on_actionToElsinore_triggered();
+
 private:
     QSettings *preferences;
     Recipe *currentRecipe;

@@ -1,6 +1,6 @@
 #include "recipe.h"
 
-Recipe::Recipe()
+Recipe::Recipe(QObject *parent) : QObject(parent)
 {
     isDirty = false;
     acid = Acid::getAcidByName(CITRIC);
@@ -2348,4 +2348,160 @@ QString Recipe::getFileName() {
 void Recipe::setFileName(QString f) {
     filename=f;
     fileinfo.setFile(f);
+}
+
+/****************************************************
+ * Send the recipe to the current elsinore option   *
+ ***************************************************/
+bool Recipe::sendMashToElsinore() {
+    QSettings opts("Doug Edey", "StrangeBrew");
+
+    QString elsinoreAddress = opts.value("Elsinore/Host", "").toString();
+
+    if (elsinoreAddress == "") {
+        QMessageBox msgBox;
+        msgBox.setIcon(QMessageBox::Critical);
+        msgBox.setText("Elsinore Host isn't setup! Please check your preferences!");
+        msgBox.setStandardButtons(QMessageBox::Ok);
+        msgBox.exec();
+        return false;
+    }
+
+    // First do a getStatus to make sure Elsinore is up and support the mash profile
+    nam = new QNetworkAccessManager(this);
+    QObject::connect(nam, SIGNAL(finished(QNetworkReply*)),
+           this, SLOT(validateElsinoreFinished(QNetworkReply*)));
+
+    QUrl url("http://" + elsinoreAddress + "/getstatus");
+    QNetworkReply* reply = nam->get(QNetworkRequest(url));
+    return true;
+}
+
+void Recipe::validateElsinoreFinished(QNetworkReply *networkReply) {
+
+    if (networkReply->error() == QNetworkReply::NoError) {
+        QString replyText = networkReply->readAll();
+        qDebug() << replyText;
+
+        QJsonDocument elsinoreState = QJsonDocument::fromJson(replyText.toUtf8());
+        QJsonObject elsinoreObject = elsinoreState.object();
+
+        // Look for the Mash object
+        if (elsinoreObject.find("mash") == elsinoreObject.end() && elsinoreObject.end().key() != "mash") {
+            QMessageBox msgBox;
+            msgBox.setIcon(QMessageBox::Critical);
+            msgBox.setTextFormat(Qt::RichText);
+            msgBox.setText("Your version of Elsinore Does not support mash profiles. Please update to use this function.\n"
+                          "<a href='http://dougedey.github.io/2014/04/05/Elsinore-Mash-Profiles/'>Documentation</a>");
+            msgBox.setStandardButtons(QMessageBox::Ok);
+            msgBox.exec();
+            qDebug() << "Elsinore doesn't support mash";
+            return;
+        } else if (elsinoreObject.value("mash").toString("Unset") != "Unset") {
+            // Give the user an option to quit if theres a mash profile
+            QMessageBox::StandardButton reply =
+                    QMessageBox::question(NULL,
+                                          "A mash profile is already set, do you wish to override?",
+                                          "Override", QMessageBox::Yes|QMessageBox::No);
+
+            if (reply == QMessageBox::No) {
+                return;
+            }
+
+        }
+
+        // Prompt for the input
+        QMessageBox msgBox;
+        msgBox.setIcon(QMessageBox::Question);
+        msgBox.setText("Which Output would you like to use?");
+
+        QList<QAbstractButton*> elementButtons;
+
+        Q_FOREACH(QString element, elsinoreObject.keys()) {
+            if (element == "mash" || elsinoreObject.value(element).toObject().value("gpio") == QJsonValue::Undefined) {
+                continue;
+            }
+
+            elementButtons.append(msgBox.addButton(element, QMessageBox::ActionRole));
+        }
+
+        msgBox.addButton(QMessageBox::Cancel);
+        if (msgBox.exec() == QMessageBox::Cancel) {
+            return;
+        }
+
+        QString buttonText = "";
+        Q_FOREACH(QAbstractButton *pb, elementButtons) {
+            if (msgBox.clickedButton() == pb) {
+                buttonText = pb->text();
+                break;
+            }
+        }
+
+        if (buttonText == "") {
+            QMessageBox::information(NULL, "Error!", "Couldn't read the selected button.", QMessageBox::Ok);
+            return;
+        }
+
+        // We should be OK now to update
+        sendMashProfile(networkReply->url(), buttonText);
+    } else {
+        QString error = networkReply->errorString();
+        QMessageBox msgBox;
+        msgBox.setIcon(QMessageBox::Critical);
+        msgBox.setText("Error connecting to Elsinore ("+networkReply->url().toString()+"), is it turned on?\n" + error);
+        msgBox.setStandardButtons(QMessageBox::Ok);
+        msgBox.exec();
+        qDebug() << "Reply failed: " << error;
+    }
+
+
+}
+
+void Recipe::sendMashProfile(QUrl url, QString output) {
+    // Send the mash profile to Elsinore
+    nam = new QNetworkAccessManager(this);
+
+    QJsonObject mashObject(getMash()->toJSONObject());
+    mashObject.insert("pid", output);
+    QJsonDocument mashDocument(mashObject);
+
+    qDebug() << "Sending " << mashDocument.toJson();
+    QByteArray dataArray = mashDocument.toJson();
+
+    // Setup the URL to post to
+    url.setPath("/mashprofile");
+    qDebug() << url.toString();
+
+    QNetworkRequest request(url);
+    request.setRawHeader("Content-Type", "application/json");
+    request.setRawHeader("Content-Length", QByteArray::number(dataArray.size()));
+
+
+    QObject::connect(nam, SIGNAL(finished(QNetworkReply*)),
+                     this, SLOT(mashProfileSent(QNetworkReply*)));
+
+
+    QNetworkReply *reply = nam->post(request, dataArray);
+}
+
+void Recipe::mashProfileSent(QNetworkReply *networkReply) {
+    QString msg = "";
+    QMessageBox::Icon format = QMessageBox::Information;
+
+    if (networkReply->error() == QNetworkReply::NoError) {
+        msg += "Profile sent to elsinore!";
+    } else {
+        msg += "Failed to send profile to elsinore!\n";
+        msg += networkReply->error() + ": " + networkReply->errorString();
+        format = QMessageBox::Critical;
+    }
+
+    QMessageBox msgBox;
+    msgBox.setIcon(format);
+    msgBox.setText(msg);
+    msgBox.setStandardButtons(QMessageBox::Ok);
+    msgBox.exec();
+
+    return;
 }

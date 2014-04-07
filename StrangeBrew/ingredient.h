@@ -80,6 +80,7 @@ public:
     {
         return name < other.name;
     }
+
     virtual bool operator ==(const Ingredient &other) const
     {
         return name == other.name;

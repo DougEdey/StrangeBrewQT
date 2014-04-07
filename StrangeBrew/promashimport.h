@@ -12,7 +12,7 @@ class ProMashImport
 {
 public:
     ProMashImport();
-    Recipe readRecipe(QString inputFileName);
+    Recipe *readRecipe(QString inputFileName);
     QString readString(QTextStream fs, int b);
     int readInt(QTextStream fs);
     long readLong(QTextStream fs);

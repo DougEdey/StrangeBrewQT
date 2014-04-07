@@ -1,9 +1,15 @@
 #ifndef RECIPE_H
 #define RECIPE_H
 
+#include <QObject>
 #include <QString>
 #include <QSettings>
 #include <QList>
+#include <QNetworkAccessManager>
+#include <QNetworkReply>
+#include <QJsonDocument>
+#include <QPushButton>
+
 
 #include <vector>
 
@@ -29,10 +35,12 @@
 
 using namespace std;
 
-class Recipe
+class Recipe: public QObject
 {
+    Q_OBJECT
+
 public:
-    Recipe();
+    Recipe(QObject *parent = 0);
 
     double getAlcohol() const;
     QString getAlcMethod() const;
@@ -318,8 +326,14 @@ public:
     void setPreBoil(Quantity p);
     QString getFilePath();
     QString getFullFileName();
+
+    bool sendMashToElsinore();
+
+
+    void sendMashProfile(QUrl url, QString output);
 private:
     // Basics
+    QNetworkAccessManager *nam = NULL;
     QFileInfo fileinfo;
     QString version;
     QString filename;
@@ -403,6 +417,9 @@ private:
     // notes
     QList<Note> notes;
 
+private slots:
+    void validateElsinoreFinished(QNetworkReply*);
+    void mashProfileSent(QNetworkReply *networkReply);
 };
 
 

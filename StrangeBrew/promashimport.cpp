@@ -1,7 +1,7 @@
 #include "promashimport.h"
 
-Recipe ProMashImport::readRecipe(QString inputFileName) {
-    Recipe myRecipe;
+Recipe *ProMashImport::readRecipe(QString inputFileName) {
+    Recipe *myRecipe = new Recipe();
 
     // File f = new File(path);
     QFile in(inputFileName);
@@ -18,7 +18,7 @@ Recipe ProMashImport::readRecipe(QString inputFileName) {
     s = inStream.read(82);
 
     qDebug() << "Recipe name: " << s;
-    myRecipe.setName(s);
+    myRecipe->setName(s);
 
     // get the various sizes
     long hopCount;
@@ -40,27 +40,27 @@ Recipe ProMashImport::readRecipe(QString inputFileName) {
     inStream >> fl;
     qDebug() << "Wort size: " << fl;
 
-    myRecipe.setReadVolUnits("gal");
+    myRecipe->setReadVolUnits("gal");
     Quantity postBoil;
-    postBoil.setUnits(myRecipe.getVolUnits());
+    postBoil.setUnits(myRecipe->getVolUnits());
     postBoil.setAmount(fl);
 
-    myRecipe.setPostBoil(postBoil);
+    myRecipe->setPostBoil(postBoil);
     inStream.read(8);
     inStream >> fl;
     qDebug() << "%effic: " << fl*100;
-    myRecipe.setEfficiency(fl*100);
+    myRecipe->setEfficiency(fl*100);
 
     inStream >> x;
     qDebug() << "Boil time: " << x;
-    myRecipe.setBoilMinutes(x);
+    myRecipe->setBoilMinutes(x);
     inStream.read(8);
 
     // Style
     s = inStream.read(55);
     s = inStream.read(55);
     qDebug() << "Style: " << s;
-    myRecipe.setStyle(s.trimmed());
+    myRecipe->setStyle(s.trimmed());
 
 
 
@@ -114,7 +114,7 @@ Recipe ProMashImport::readRecipe(QString inputFileName) {
         inStream >> x;
         qDebug() << "Min:" << x;
         h->setMinutes(x);
-        myRecipe.addHop(h);
+        myRecipe->addHop(h);
 
         inStream.read(5);
 
@@ -202,7 +202,7 @@ Recipe ProMashImport::readRecipe(QString inputFileName) {
         m->setAmount(fl);
         m->setUnits("lb");
 
-        myRecipe.addMalt(m);
+        myRecipe->addMalt(m);
 
         inStream.read(4);
     }
@@ -302,7 +302,7 @@ Recipe ProMashImport::readRecipe(QString inputFileName) {
         qDebug() << "Comments: " << s;
         m->setComments(s);
 
-        myRecipe.addMisc(m);
+        myRecipe->addMisc(m);
 
         inStream.read(145);
     }
@@ -335,7 +335,7 @@ Recipe ProMashImport::readRecipe(QString inputFileName) {
     descr += "Comments: " + s.trimmed() + "\n";
     y->setDescription(descr);
 
-    myRecipe.setYeast(y);
+    myRecipe->setYeast(y);
 
     inStream.read(22);
 
@@ -375,7 +375,7 @@ Recipe ProMashImport::readRecipe(QString inputFileName) {
         }
 
         if (l > 0){
-            myRecipe.getMash()->addStep(stepType, l,
+            myRecipe->getMash()->addStep(stepType, l,
                     l, "infusion",  l2, 0, 0);
         }
     }
