@@ -228,12 +228,14 @@ void StrangeBrew::saveFile(bool force) {
     }
 
     // Save to the filename
-    QFile outfile(currentRecipe->getFullFileName());
-    QTextStream out(&outfile);
+    QFile outfile(currentRecipe->getFullFileName());    
     // anything written to out will go to the file (when we flush it)
-    outfile.open(QFile::ReadWrite | QFile::Truncate | QIODevice::Text);
-
-    out << currentRecipe->toXML("");
+    if (! outfile.open(QFile::ReadWrite | QFile::Truncate | QFile::Text)){
+        qDebug() << "File create failed for: " << currentRecipe->getFullFileName();
+        return;
+    }
+    QTextStream out(&outfile);
+    out << currentRecipe->toXML("") << endl;
     outfile.flush();
     outfile.close();
     currentRecipe->setDirty(false);
@@ -250,7 +252,9 @@ void StrangeBrew::updateUI() {
         hcbid = new HopItemDelegate();
     }
     ui->hopsList->setItemDelegate(hcbid);
-    ui->hopsList->horizontalHeader()->setSectionResizeMode(QHeaderView::Stretch);
+    ui->hopsList->setColumnWidth(0, 200);
+    ui->hopsList->horizontalHeader()->setSectionResizeMode(QHeaderView::ResizeToContents);
+    ui->hopsList->horizontalHeader()->setSectionResizeMode(0,QHeaderView::Interactive);
 
     // setup the Malt list
     mModel->dataList(currentRecipe->getMaltList());
@@ -262,12 +266,13 @@ void StrangeBrew::updateUI() {
     ui->fermentablesList->setColumnWidth(0, 20);
     ui->fermentablesList->setColumnWidth(1, 20);
     ui->fermentablesList->setColumnWidth(2, 20);
+    ui->fermentablesList->setColumnWidth(3, 200);
 
     // Set the resize mode for the Fermentables list
     ui->fermentablesList->horizontalHeader()->setSectionResizeMode(0, QHeaderView::Fixed);
     ui->fermentablesList->horizontalHeader()->setSectionResizeMode(1, QHeaderView::Fixed);
     ui->fermentablesList->horizontalHeader()->setSectionResizeMode(2, QHeaderView::Fixed);
-    ui->fermentablesList->horizontalHeader()->setSectionResizeMode(3, QHeaderView::Stretch);
+    ui->fermentablesList->horizontalHeader()->setSectionResizeMode(3, QHeaderView::Interactive);
     ui->fermentablesList->horizontalHeader()->setSectionResizeMode(4, QHeaderView::Stretch);
     ui->fermentablesList->horizontalHeader()->setSectionResizeMode(5, QHeaderView::Stretch);
     ui->fermentablesList->horizontalHeader()->setSectionResizeMode(6, QHeaderView::Stretch);
@@ -1299,8 +1304,8 @@ void StrangeBrew::on_actionNew_triggered()
     }
 
     if (reply == QMessageBox::Yes) {
-        // Todo: Save the recipe
-        //saveRecipe();
+        // Save the recipe
+        saveFile(false);
     }
 
     // Now we can clear the recipe

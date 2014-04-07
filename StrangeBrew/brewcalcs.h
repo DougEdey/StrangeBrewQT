@@ -41,6 +41,9 @@ public:
     static double molesByAcid(Acid acid, double millequivs, double pH);
     static double acidAmountPerL(Acid acid, double moles);
     static double sgToBrix(double sg);
+#ifdef WIN32
+    static int round(double r);
+#endif
 };
 
 // utilization table for average floc yeast
