@@ -89,6 +89,7 @@ public:
     void updateCostPanel();
     void updateSettingsPanel();
     void saveFile(bool force);
+    void updateTitle();
 private slots:
     void openFile(QString fileName="");
     void hopsUpdated(const QModelIndex &from, const QModelIndex &to);
@@ -219,6 +220,8 @@ private slots:
     void on_actionSave_As_triggered();
 
     void on_actionToElsinore_triggered();
+
+    void on_actionExit_triggered();
 
 private:
     QSettings *preferences;

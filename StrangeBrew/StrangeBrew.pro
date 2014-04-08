@@ -10,7 +10,7 @@ QT       += core gui xml sql network
 
 greaterThan(QT_MAJOR_VERSION, 4): QT += widgets
 
-TARGET = StrangeBrew
+TARGET = $$DESTDIR/StrangeBrew
 TEMPLATE = app
 
 ICON = brew.ico
@@ -156,6 +156,10 @@ INCLUDEPATH += "edit_dialogs/"
 
 message ($$CONFIG)
 linux32 {
+    DESTDIR = ../build/linux/x86
+}
+
+linux-g++-32 {
     DESTDIR = ../build/linux/x86
 }
 
