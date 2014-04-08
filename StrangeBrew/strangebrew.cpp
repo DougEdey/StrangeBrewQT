@@ -315,8 +315,7 @@ void StrangeBrew::updateUI() {
 
 }
 
-void StrangeBrew::updateTopUI() {
-
+void StrangeBrew::updateTitle() {
     QString title = "StrangeBrew [";
     // No filename
     if (currentRecipe->getFileName() == "") {
@@ -333,10 +332,11 @@ void StrangeBrew::updateTopUI() {
     }
     title += "]";
 
-
     QWidget::setWindowTitle(title);
     //QApplication::setApplicationName(title);
+}
 
+void StrangeBrew::updateTopUI() {
     ui->nameEdit->setText(currentRecipe->getName());
 
     qDebug() << "Setting OG Spin: " << currentRecipe->getEstOg();
@@ -429,6 +429,7 @@ void StrangeBrew::updateTopUI() {
     updateWaterPanel();
     updateCostPanel();
     updateSettingsPanel();
+    updateTitle();
 }
 
 void StrangeBrew::updateMashDetails() {
@@ -1540,7 +1541,7 @@ void StrangeBrew::on_actionToElsinore_triggered()
 void StrangeBrew::on_actionExit_triggered()
 {
 
-    if (this->currentRecipe->isDirty) {
+    if (this->currentRecipe->getDirty()) {
         QMessageBox::StandardButton reply;
         reply = QMessageBox::question(this,
                    "Save Recipe?",
