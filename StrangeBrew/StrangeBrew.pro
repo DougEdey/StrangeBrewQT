@@ -10,7 +10,9 @@ QT       += core gui xml sql network
 
 greaterThan(QT_MAJOR_VERSION, 4): QT += widgets
 
-TARGET = $$DESTDIR/StrangeBrew
+TARGET = $$DESTDIR
+TARGET += StrangeBrew
+
 TEMPLATE = app
 
 ICON = brew.ico
@@ -157,31 +159,38 @@ INCLUDEPATH += "edit_dialogs/"
 message ($$CONFIG)
 linux32 {
     DESTDIR = ../build/linux/x86
+    COPYDIR = ../copy_data/
 }
 
 linux-g++-32 {
     DESTDIR = ../build/linux/x86
+    COPYDIR = ../copy_data/
 }
 
 linux64 {
     DESTDIR = ../build/linux/x64
+    COPYDIR = ../copy_data/
 }
 
 win32 {
-    DESTDIR = ../build/windows/x86
+    DESTDIR = ..\build\windows\x86
+    COPYDIR = ..\copy_data\
 }
 
 winx86 {
-    DESTDIR = ../build/windows/x86
+    DESTDIR = ..\build\windows\x86
+    COPYDIR = ..\copy_data\
 }
 
 winx64 {
-    DESTDIR = ../build/windows/x64
+    DESTDIR = ..\build\windows\x64
+    COPYDIR = ..\copy_data\
 }
 
 macx {
     DESTDIR = ../build/mac
+    COPYDIR = ../copy_data/
 }
 
-QMAKE_POST_LINK += $(COPY_DIR) ../data $$DESTDIR $$escape_expand(\\n\\t)
-QMAKE_POST_LINK += $(COPY_DIR) ../Recipes $$DESTDIR $$escape_expand(\\n\\t)
+QMAKE_POST_LINK += $(COPY_DIR) $$COPYDIR $$DESTDIR $$escape_expand(\\n\\t)
+
