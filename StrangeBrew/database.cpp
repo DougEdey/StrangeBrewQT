@@ -16,7 +16,7 @@ QList<WaterProfile*> Database::waterDB  = QList<WaterProfile*>();
 
 QStringList Database::styleYears = QStringList();
 QString Database::styleFileName = "";
-QString Database::dbPath = QDir::currentPath() + QDir::separator() + "data";
+QString Database::dbPath = QApplication::applicationDirPath() + QDir::separator() + "data";
 QString Database::dbName = dbPath+QDir::separator()+"sb_ingredients.db";
 QString Database::lastErrorString = "";
 
@@ -27,11 +27,26 @@ QString Database::lastError() {
 }
 
 QSqlDatabase Database::connectDB() {
+
+    QFile dbFile(dbName);
+    if (!dbFile.exists()) {
+        QMessageBox msgBox;
+        msgBox.setIcon(QMessageBox::Critical);
+        msgBox.setText("Could not find the Database at: " + dbName);
+        msgBox.setStandardButtons(QMessageBox::Ok);
+        msgBox.exec();
+
+        QApplication::quit();
+
+    }
+
     QSqlDatabase conn = QSqlDatabase::addDatabase("QSQLITE", dbName);
 
     qDebug() << "Config file is at " << preferences.fileName();
     qDebug() << dbName;
     conn.setDatabaseName(dbName);
+
+
     if (!conn.open())
     {
         qDebug() << conn.lastError().text();

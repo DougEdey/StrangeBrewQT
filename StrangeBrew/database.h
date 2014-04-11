@@ -7,6 +7,7 @@
 #include <QSettings>
 #include <QMessageBox>
 #include <QApplication>
+#include <QFile>
 
 #include <map>
 #include <vector>

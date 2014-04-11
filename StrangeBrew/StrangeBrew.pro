@@ -156,41 +156,57 @@ RESOURCES += \
 
 INCLUDEPATH += "edit_dialogs/"
 
-message ($$CONFIG)
 linux32 {
-    DESTDIR = ../build/linux/x86
+    DESTDIR = ../build/linux/x86/
+    DATADEST = $$DESTDIR
     COPYDIR = ../copy_data/
 }
 
 linux-g++-32 {
-    DESTDIR = ../build/linux/x86
+    DESTDIR = ../build/linux/x86/
+    DATADEST = $$DESTDIR
     COPYDIR = ../copy_data/
 }
 
 linux64 {
-    DESTDIR = ../build/linux/x64
+    DESTDIR = ../build/linux/x64/
+    DATADEST = $$DESTDIR
     COPYDIR = ../copy_data/
 }
 
 win32 {
-    DESTDIR = ..\build\windows\x86
+    DESTDIR = ..\build\windows\x86\
+    DATADEST = $$DESTDIR
     COPYDIR = ..\copy_data\
 }
 
 winx86 {
-    DESTDIR = ..\build\windows\x86
+    DESTDIR = ..\build\windows\x86\
+    DATADEST = $$DESTDIR
     COPYDIR = ..\copy_data\
 }
 
 winx64 {
-    DESTDIR = ..\build\windows\x64
+    DESTDIR = ..\build\windows\x64\
+    DATADEST = $$DESTDIR
     COPYDIR = ..\copy_data\
 }
 
 macx {
-    DESTDIR = ../build/mac
+    DESTDIR = ../build/mac/
+    DATADEST = $$DESTDIR
+    DATADEST += /StrangeBrew.app/Contents/MacOS
     COPYDIR = ../copy_data/
+    CONFIG += x86 ppc
 }
 
-QMAKE_POST_LINK += $(COPY_DIR) $$COPYDIR $$DESTDIR $$escape_expand(\\n\\t)
+
+macx {
+    DESTDIR = ../build/mac
+    DATADEST = $$DESTDIR/StrangeBrew.app/Contents/MacOS
+    COPYDIR = ../copy_data/
+    CONFIG += x86 ppc
+}
+
+QMAKE_POST_LINK += $(COPY_DIR) $$COPYDIR $$DATADEST $$escape_expand(\\n\\t)
 

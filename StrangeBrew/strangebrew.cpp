@@ -35,6 +35,8 @@ StrangeBrew::StrangeBrew(QWidget *parent) :
     QTextCodec::setCodecForLocale(QTextCodec::codecForName("UTF-8"));
 
     preferences = new QSettings("Doug Edey", "StrangeBrew");
+    // Before reading the Database, set the filepath
+    Database::dbName = QApplication::applicationDirPath() + QDir::separator() + "data" + QDir::separator() + "sb_ingredients.db";
     Database();
     Database::readDB(preferences->value("Style/Year", "2004").toString());
 
