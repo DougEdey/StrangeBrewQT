@@ -223,6 +223,8 @@ private slots:
 
     void on_actionExit_triggered();
 
+    void on_nameEdit_editingFinished();
+
 private:
     QSettings *preferences;
     Recipe *currentRecipe;

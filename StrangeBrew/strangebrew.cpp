@@ -36,7 +36,28 @@ StrangeBrew::StrangeBrew(QWidget *parent) :
 
     preferences = new QSettings("Doug Edey", "StrangeBrew");
     // Before reading the Database, set the filepath
+
+#ifdef Q_OS_ANDROID
+    QString tmpString = QStandardPaths::writableLocation(QStandardPaths::HomeLocation);
+    qDebug() << "TMP: " << tmpString;
+    QFile dbAsset("assets:/data/sb_ingredients.db");
+    qDebug() << "FILE: " << dbAsset.fileName();
+    QFileInfo databaseFileInfo(QString("%1/%2").arg(tmpString).arg("data/sb_ingredients.db"));
+    QString databasePath = databaseFileInfo.absoluteFilePath();
+    qDebug() << "DB FILE: " << databasePath;
+    if ( !databaseFileInfo.exists() )
+    {
+        bool copySuccess = QFile::copy( QString("assets:/data/sb_ingredients.db"), databasePath );
+        if ( !copySuccess )
+        {
+            QMessageBox::critical(this, "Error:", QString("Could not copy database from 'assets' to %1").arg(databasePath));
+            databasePath.clear();
+        }
+    }
+    Database::dbName = databasePath;
+#else
     Database::dbName = QApplication::applicationDirPath() + QDir::separator() + "data" + QDir::separator() + "sb_ingredients.db";
+#endif
     Database();
     Database::readDB(preferences->value("Style/Year", "2004").toString());
 
@@ -218,6 +239,9 @@ void StrangeBrew::openFile(QString fileName) {
  * use force=true to force a file save dialog.
  * ********************/
 void StrangeBrew::saveFile(bool force) {
+    // Save the text boxes that may be focused.
+    this->on_nameEdit_editingFinished();
+
     if (force == true || currentRecipe->getFileName() == "") {
         QString recipesDIR = QSettings("Doug Edey", "StrangeBrew").value("Recipes/DIR").toString();
         QString fileName = QFileDialog::getSaveFileName(this, tr("Open Recipe File"),
@@ -1566,4 +1590,10 @@ void StrangeBrew::on_actionExit_triggered()
     }
 
     QApplication::quit();
+}
+
+void StrangeBrew::on_nameEdit_editingFinished()
+{
+    this->currentRecipe->setName(ui->nameEdit->text());
+    this->updateTitle();
 }

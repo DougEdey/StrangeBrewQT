@@ -185,3 +185,7 @@ bool WaterProfile::operator==(const WaterProfile &other) const {
 bool WaterProfile::operator<(const WaterProfile &second) const {
     return (name < second.name);
 }
+
+bool WaterProfile::lessThan(WaterProfile *a, WaterProfile *b) {
+    return a->getName() < b->getName();
+}

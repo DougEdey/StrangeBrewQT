@@ -104,7 +104,7 @@ bool Hop::operator<(const Hop &other) const {
         // Check to see if we have dry hopping
         if (add == other.add) {
             // Same addition, continue the compare
-            return Ingredient::operator<(other);
+            this->getName() < other.getName();
         } else {
             // Different addition type, so compare that. Boil is luckily
             // prior to Dry
@@ -123,7 +123,7 @@ bool Hop::operator>(const Hop &other) const {
         // Check to see if we have dry hopping
         if (add == other.add) {
             // Same addition, continue the compare
-            return Ingredient::operator>(other);
+            this->getName() > other.getName();
         } else {
             // Different addition type, so compare that. Boil is luckily
             // prior to Dry
@@ -140,7 +140,7 @@ bool Hop::operator==(const Hop &other) const {
     // Check to see if the additions are at the same time
     return (minutes == other.minutes
             && add == other.add
-            && Ingredient::operator==(other));
+            && this->getName() == other.getName());
 }
 
 bool Hop::operator==(const QString &other) const {

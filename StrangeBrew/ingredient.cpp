@@ -121,12 +121,12 @@ void Ingredient::convertTo(QString newUnits){
 
 
 // Comparators for Sort
-bool Ingredient::lessThan(Ingredient *a, Ingredient *b) {
-    return a < b;
+bool Ingredient::lessThan(const Ingredient *a, const Ingredient *b) {
+    return a->getName() < b->getName();
 }
 
 bool Ingredient::moreThan(Ingredient *a, Ingredient *b) {
-    return a > b;
+    return a->getName() > b->getName();
 }
 
 

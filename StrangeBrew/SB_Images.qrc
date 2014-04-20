@@ -13,4 +13,7 @@
         <file alias="sb2">images/sb2.gif</file>
         <file alias="brew_png">images/brew.png</file>
     </qresource>
+    <qresource prefix="/data">
+        <file>sb_ingredients.db</file>
+    </qresource>
 </RCC>

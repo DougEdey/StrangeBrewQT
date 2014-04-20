@@ -56,6 +56,10 @@ public:
     static void setProfiles(std::vector<WaterProfile>);
     bool operator ==(const WaterProfile &other) const;
     bool operator <(const WaterProfile &second) const;
+
+
+    static bool lessThan(WaterProfile *a, WaterProfile *b);
+
 };
 
 #endif // WATERPROFILE_H

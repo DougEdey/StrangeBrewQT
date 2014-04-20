@@ -71,37 +71,41 @@ public:
     void setUnits(QString a);
     void convertTo(QString newUnits);
 
-    virtual bool operator >(const Ingredient &other) const
-    {
-        return name > other.name;
-    }
 
-    virtual bool operator <(const Ingredient &other) const
-    {
-        return name < other.name;
-    }
 
-    virtual bool operator ==(const Ingredient &other) const
-    {
-        return name == other.name;
-    }
-
-    virtual bool operator !=(const Ingredient &other) const
-    {
-        return name != other.name;
-    }
-
-    virtual bool operator ==(QString name) const
+    bool operator ==(QString name) const
     {
         return (name.compare(this->name, Qt::CaseInsensitive) == 0);
     }
 
-    static bool lessThan(Ingredient *a, Ingredient *b);
+    static bool lessThan(const Ingredient *a, const Ingredient *b);
     static bool moreThan(Ingredient *a, Ingredient *b);
     static bool sortWeight(Ingredient *a, Ingredient *b);
     QString getStockUnits();
     void setStockUnits(QString u);
 };
+
+static bool operator> (const Ingredient &lhs, const Ingredient &rhs)
+{
+    qDebug() << "Comparing > " << lhs.getName() << " and " << rhs.getName();
+    return lhs.getName() > rhs.getName();
+}
+
+static bool operator <(const Ingredient &lhs, const Ingredient &rhs)
+{
+    qDebug() << "Comparing < " << lhs.getName() << " and " << rhs.getName();
+    return lhs.getName() < rhs.getName();
+}
+
+static bool operator ==(const Ingredient &lhs, const Ingredient &rhs)
+{
+    return lhs.getName() == rhs.getName();
+}
+
+static bool operator !=(const Ingredient &lhs, const Ingredient &rhs)
+{
+    return lhs.getName()!= rhs.getName();
+}
 
 Q_DECLARE_METATYPE(Ingredient)
 #endif // INGREDIENT_H

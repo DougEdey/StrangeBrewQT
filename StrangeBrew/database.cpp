@@ -29,16 +29,16 @@ QString Database::lastError() {
 QSqlDatabase Database::connectDB() {
 
     QFile dbFile(dbName);
-    if (!dbFile.exists()) {
-        QMessageBox msgBox;
-        msgBox.setIcon(QMessageBox::Critical);
-        msgBox.setText("Could not find the Database at: " + dbName);
-        msgBox.setStandardButtons(QMessageBox::Ok);
-        msgBox.exec();
+//    if (!dbFile.exists()) {
+//        QMessageBox msgBox;
+//        msgBox.setIcon(QMessageBox::Critical);
+//        msgBox.setText("Could not find the Database at: " + dbName);
+//        msgBox.setStandardButtons(QMessageBox::Ok);
+//        msgBox.exec();
 
-        QApplication::quit();
+//        QApplication::quit();
 
-    }
+//    }
 
     QSqlDatabase conn = QSqlDatabase::addDatabase("QSQLITE", dbName);
 
@@ -338,11 +338,11 @@ bool Database::readDB(QString styleYear){
     // sort
     qDebug() << "Style DB Size: " << styleDB.size();
 
-    sort(styleDB.begin(), styleDB.end());
-    sort(fermDB.begin(), fermDB.end(), Fermentable::lessThan);
-    sort(hopsDB.begin(), hopsDB.end());
-    sort(yeastDB.begin(), yeastDB.end());
-    sort(waterDB.begin(), waterDB.end());
+    sort(styleDB.begin(), styleDB.end(), Style::lessThan);
+    sort(fermDB.begin(), fermDB.end(), Ingredient::lessThan);
+    sort(hopsDB.begin(), hopsDB.end(), Ingredient::lessThan);
+    sort(yeastDB.begin(), yeastDB.end(), Ingredient::lessThan);
+    sort(waterDB.begin(), waterDB.end(), WaterProfile::lessThan);
 
     return true;
 
@@ -351,7 +351,7 @@ bool Database::readDB(QString styleYear){
 bool Database::readFermentables() {
     QSqlDatabase conn = QSqlDatabase::database(dbName);
     QSqlQuery statement(conn);
-    statement.exec("SELECT * FROM fermentables");
+    statement.exec("SELECT * FROM fermentables ORDER BY Name ASC");
 
     // we weren't clearing this when updating
     stockFermDB.clear();
@@ -676,7 +676,7 @@ bool Database::readHops() {
     QSqlDatabase conn = QSqlDatabase::database(dbName);
     // Open the database and read the Hops
     QSqlQuery statement(conn);
-    statement.exec("SELECT * FROM hops");
+    statement.exec("SELECT * FROM hops ORDER BY Name ASC");
 
     hopsDB.clear();
 
@@ -1397,7 +1397,7 @@ bool Database::readMisc() {
     qDebug() << "Loading misc ingredients";
 
 
-    if(!selectMisc.exec("SELECT * FROM misc;")){
+    if(!selectMisc.exec("SELECT * FROM misc ORDER BY Name ASC;")){
         qDebug() << conn.lastError().text();
 
         QMessageBox msgBox;
@@ -1666,7 +1666,7 @@ bool Database::writePrimeSugar(PrimeSugar &p) {
 bool Database::readPrimeSugar() {
     QSqlDatabase conn = QSqlDatabase::database(dbName);
     QSqlQuery selectPrime(conn);
-    selectPrime.prepare("SELECT * FROM prime;");
+    selectPrime.prepare("SELECT * FROM prime  ORDER BY Name ASC;");
 
     if(!selectPrime.exec()) {
         qDebug() << conn.lastError().text();
@@ -1713,7 +1713,7 @@ bool Database::readWater() {
     QSqlDatabase conn = QSqlDatabase::database(dbName);
     QSqlQuery selectWater(conn);
 
-    if (!selectWater.exec("SELECT * FROM water_profiles;")) {
+    if (!selectWater.exec("SELECT * FROM water_profiles ORDER BY Name ASC;")) {
         qDebug() << conn.lastError().text();
 
         QMessageBox msgBox;

@@ -86,6 +86,10 @@ public:
     bool operator >(const Style &other) const;
     bool operator==(const Style &other) const;
 
+    static bool lessThan(const Style *a, const Style *b) {
+        return a->getName() < b->getName();
+    }
+
     void setFgLow(double fgLow);
     void setFgHigh(double fgHigh);
     double getFgLow() const;

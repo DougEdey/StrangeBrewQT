@@ -122,7 +122,7 @@ QString Fermentable::toXML(){
 // No special Comparators for this, but I may add them in the future if I decide to
 bool Fermentable::operator==(Fermentable other) const {
     return (this->getPppg() == other.getPppg()
-            && Ingredient::operator==(other));
+            && this->getName() == other.getName());
 }
 
 bool Fermentable::operator ==(QString other) const {

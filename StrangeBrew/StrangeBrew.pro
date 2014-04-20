@@ -155,11 +155,20 @@ RESOURCES += \
     SB_Images.qrc
 
 INCLUDEPATH += "edit_dialogs/"
+message($$CONFIG)
+
+linux {
+    DESTDIR = ../build/linux/x86/
+    DATADEST = $$DESTDIR
+    COPYDIR = ../copy_data/
+    QMAKE_LFLAGS += -lX11 -ldl -lXext
+}
 
 linux32 {
     DESTDIR = ../build/linux/x86/
     DATADEST = $$DESTDIR
     COPYDIR = ../copy_data/
+    QMAKE_LFLAGS += -lX11 -ldl -lXext
 }
 
 linux-g++-32 {
@@ -206,6 +215,13 @@ macx {
     DATADEST = $$DESTDIR/StrangeBrew.app/Contents/MacOS
     COPYDIR = ../copy_data/
     CONFIG += x86 ppc
+}
+
+android {
+    message("ANDROID DETECTED")
+    folder_01.path = /assets/
+    folder_01.files = data/sb_ingredients.db
+    INSTALLS += folder_01
 }
 
 QMAKE_POST_LINK += $(COPY_DIR) $$COPYDIR $$DATADEST $$escape_expand(\\n\\t)
